@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "project": "darknet",
+  "kernels": [
+    {
+      "symbol_name": "darknet_forward_crop_orig512",
+      "kernel_id": "darknet_forward_crop_orig512__d9d23ad2",
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/darknet/src/crop_layer_kernels.cu",
+          "line": 139,
+          "note": "The upstream kernel assigns one output element per CUDA thread, applies train/flip/random-offset branches, rotates crop coordinates, and bilinearly samples the source image without synchronization."
+        },
+        {
+          "kind": "derived_negative_control",
+          "file": "third_party/fuzz/adapters/darknet_forward_crop/adapter.cu",
+          "line": 84,
+          "note": "The fixed-SHA adapter preserves single-evaluation ownership and is registered at one logical block of the upstream BLOCK=512 geometry as the negative control."
+        },
+        {
+          "kind": "provenance",
+          "file": "third_party/fuzz/adapters/darknet_forward_crop/provenance.json",
+          "line": 1,
+          "note": "The extraction is tied to Darknet commit f6afaabcdf85f77e7aff2ec55c020c0e297c77f9 with source, adapter, patch, public-domain license, and probe hashes."
+        }
+      ]
+    },
+    {
+      "symbol_name": "darknet_forward_crop_vgeo",
+      "kernel_id": "darknet_forward_crop_vgeo__46faf06a",
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/darknet/src/crop_layer_kernels.cu",
+          "line": 139,
+          "note": "The upstream host fixes BLOCK=512 and covers size with cuda_gridsize; shrinking a singleton logical block without reassignment would leave output elements uncomputed."
+        },
+        {
+          "kind": "geometry_freed_variant",
+          "file": "third_party/fuzz/adapters/darknet_forward_crop/adapter.cu",
+          "line": 102,
+          "note": "The derived kernel changes only output-index ownership to a grid-stride loop, retaining the same per-element crop and interpolation helper for logical blocks 32 through 512."
+        },
+        {
+          "kind": "floating_point_equivalence",
+          "file": "third_party/fuzz/adapters/darknet_forward_crop/adapter_probe.cu",
+          "line": 83,
+          "note": "Each output remains independent and executes the same floating-point instruction sequence; the GPU probe requires byte-for-byte equality against the original kernel compiled with the same flags and run on the same device."
+        }
+      ]
+    }
+  ]
+}

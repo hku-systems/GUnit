@@ -1,0 +1,145 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 445,
+          "note": "single-block VConfig preserves the native (16,4,2) coordinates, while reviewed size constraints cover every linearized payload access."
+        }
+      ],
+      "kernel_id": "_Z14diffRev_kernelPfS_S_S_iiii__e9523a2e",
+      "symbol_name": "_Z14diffRev_kernelPfS_S_S_iiii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 415,
+          "note": "single-block VConfig preserves the native (4,4,1) coordinates; fixed Fs and zero tau_dp keep the sample window in bounds."
+        }
+      ],
+      "kernel_id": "_Z14envPred_kernelPfS_S_S_iiiffffffffff__4f38b2df",
+      "symbol_name": "_Z14envPred_kernelPfS_S_S_iiiffffffffff"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 392,
+          "note": "extern shared reduction is representable with fixed M=T=1,N=128,intRIR_N=1 and launch_policy target_dynamic_shared_bytes=512."
+        },
+        {
+          "kind": "callsite",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 669,
+          "note": "native final reduction uses one x block and nThreadsRed*sizeof(float), matching the fixed RAPID2 subset."
+        }
+      ],
+      "kernel_id": "_Z16reduceRIR_kernelPfS_iiii__a6bf7d18",
+      "symbol_name": "_Z16reduceRIR_kernelPfS_iiii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 254,
+          "note": "whole-warp VConfig preserves the native 3D coordinates; the constrained DIR_OMNI subset needs at most 96 bytes of dynamic shared memory."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 820,
+          "note": "native launch uses block (4,4,4); the supported single-block shapes (2,4,4) and (4,4,4) are whole-warp aligned."
+        }
+      ],
+      "kernel_id": "_Z17calcAmpTau_kernelPfS_S_S_S_S_S_iifffffffffiiiiiff__169eb460",
+      "symbol_name": "_Z17calcAmpTau_kernelPfS_S_S_S_S_S_iifffffffffiiiiiff"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 377,
+          "note": "single-block VConfig preserves the native (32,4,1) coordinates; iniRIR_N=1 and N<=ini_red bound the z slice and payload indices."
+        }
+      ],
+      "kernel_id": "_Z18generateRIR_kernelPfS_S_iiiiif__cd099106",
+      "symbol_name": "_Z18generateRIR_kernelPfS_S_iiiiif"
+    },
+    {
+      "decision": "skip",
+      "detail": "kernel payload element type half2 expands to CUDA __half fields with protected data members and non-trivially-copyable layout; generic private/protected materializer is intentionally deferred.",
+      "evidence": [
+        {
+          "kind": "manifest_arg",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 515,
+          "note": "Phase1 pointee_layout for half2 records protected_data_field and non_trivially_copyable materialization blockers."
+        }
+      ],
+      "kernel_id": "_Z19reduceRIR_mp_kernelP7__half2S0_iiii__ae859193",
+      "reason_code": "protected_data_field",
+      "symbol_name": "_Z19reduceRIR_mp_kernelP7__half2S0_iiii"
+    },
+    {
+      "decision": "skip",
+      "detail": "kernel takes cudaTextureObject_t sinc_lut and calls tex1D through image_sample_lut.",
+      "evidence": [
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 559,
+          "note": "generateRIR_kernel_lut has cudaTextureObject_t sinc_lut parameter"
+        },
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 568,
+          "note": "image_sample_lut dereferences texture object via tex1D"
+        }
+      ],
+      "kernel_id": "_Z22generateRIR_kernel_lutPfS_S_iiiiiiyf__6bd8b18f",
+      "reason_code": "external_texture_object_not_supported",
+      "symbol_name": "_Z22generateRIR_kernel_lutPfS_S_iiiiiiyf"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 541,
+          "note": "M=1 preserves the native single-y-block launch; half2 input is decoded as aligned raw 4-byte payload elements rather than field-wise construction."
+        }
+      ],
+      "kernel_id": "_Z24h2RIR_to_floatRIR_kernelP7__half2Pfii__d0f15d1b",
+      "symbol_name": "_Z24h2RIR_to_floatRIR_kernelP7__half2Pfii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 463,
+          "note": "uses strided loops over grid dimensions and can cover M_src/M_rcv/segment_size under the fixed RAPID2 launch."
+        }
+      ],
+      "kernel_id": "_Z27complexPointwiseMulAndScaleP6float2S0_iiif__f8f9b0f3",
+      "symbol_name": "_Z27complexPointwiseMulAndScaleP6float2S0_iiif"
+    }
+  ],
+  "project": "gpurir",
+  "schema_version": 1
+}

@@ -1,0 +1,1866 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 5,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 4,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 4,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "buffer_arg": 6,
+          "count_arg": 2,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 9,
+          "count_arg": 0,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "ReferenceGemm_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "M",
+          "type": "int"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "N",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "K",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "64",
+            "min_len": "64",
+            "nullable": false
+          },
+          "name": "A",
+          "type": "const float *"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "4",
+            "signed": true
+          },
+          "name": "lda",
+          "type": "int"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "64",
+            "min_len": "64",
+            "nullable": false
+          },
+          "name": "B",
+          "type": "const float *"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "4",
+            "signed": true
+          },
+          "name": "ldb",
+          "type": "int"
+        },
+        {
+          "arg": 9,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "64",
+            "min_len": "64",
+            "nullable": false
+          },
+          "name": "C",
+          "type": "float *"
+        },
+        {
+          "arg": 10,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "4",
+            "signed": true
+          },
+          "name": "ldc",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "call_site",
+          "line": 278,
+          "note": "ReferenceGemm passes M, N, K, A, lda, B, ldb, C, and ldc directly to ReferenceGemm_kernel."
+        },
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "allocation",
+          "line": 196,
+          "note": "AllocateMatrix uses sizeof(float) * rows * columns; fixed 64-byte buffers cover the bounded M/K and fixed leading dimensions."
+        },
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "call_site",
+          "line": 272,
+          "note": "Native launch uses dim3 block(16, 16); the fuzz subdomain pins N=1 so current block.y=1 physical execution covers all logical columns."
+        }
+      ],
+      "kernel_id": "_Z20ReferenceGemm_kerneliiifPKfiS0_ifPfi__efdc1030",
+      "launch_policy": {
+        "block_candidates": [
+          16,
+          8,
+          4,
+          1
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 16,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z20ReferenceGemm_kerneliiifPKfiS0_ifPfi"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 1,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 0,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 0,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "InitializeMatrix_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "matrix",
+          "type": "float *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "rows",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "columns",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "call_site",
+          "line": 185,
+          "note": "InitializeMatrix passes matrix, rows, columns, and seed directly to InitializeMatrix_kernel."
+        },
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "allocation",
+          "line": 196,
+          "note": "AllocateMatrix uses sizeof(float) * rows * columns; matrix bytes are constrained to the bounded rows*columns subdomain."
+        },
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "call_site",
+          "line": 179,
+          "note": "Native launch uses dim3 block(16, 16); the fuzz subdomain pins columns=1 so current block.y=1 physical execution covers all logical columns."
+        }
+      ],
+      "kernel_id": "_Z23InitializeMatrix_kernelPfiii__e2fd3d42",
+      "launch_policy": {
+        "block_candidates": [
+          16,
+          8,
+          4,
+          1
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 16,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z23InitializeMatrix_kernelPfiii"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<=",
+          "rhs_arg": 4
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<=",
+          "rhs_arg": 7
+        },
+        {
+          "dimension": "x",
+          "kind": "scalar_le_logical_block_dim",
+          "scalar_arg": 0
+        },
+        {
+          "dimension": "y",
+          "kind": "scalar_le_logical_block_dim",
+          "scalar_arg": 0
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 4,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 1,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 3,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 3,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 7,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 0,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 6,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 6,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "ReferenceSyrk_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "N",
+          "type": "int"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "K",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "A",
+          "type": "const double *"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "lda",
+          "type": "int"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "C",
+          "type": "double *"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldc",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/31_basic_syrk/basic_syrk.cu",
+          "kind": "call_site",
+          "line": 293,
+          "note": "ReferenceSyrk passes N, K, A, lda, C, and ldc directly to the 16x16 reference kernel launch."
+        },
+        {
+          "file": "third_party/cutlass/examples/31_basic_syrk/basic_syrk.cu",
+          "kind": "allocation",
+          "line": 325,
+          "note": "A is allocated as lda*K doubles, while C allocations at lines 331 and 338 are ldc*N doubles; variable 1..16 domains fit the 2048-byte payload maxima."
+        }
+      ],
+      "kernel_id": "_Z20ReferenceSyrk_kerneliidPKdidPdi__43f64bea",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z20ReferenceSyrk_kerneliidPKdidPdi"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 3,
+          "op": "<=",
+          "rhs_arg": 4
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "arg": 0,
+                    "kind": "arg_value"
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 1,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 2,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 3,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 6,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 6,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "arg": 0,
+                    "kind": "arg_value"
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 1,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 2,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 4,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 7,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 7,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "cutlass::nhwc_padding_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "n",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "h",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "w",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "c_in",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "c_out",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 0.0,
+            "min": 0.0
+          },
+          "name": "zero",
+          "path": [
+            "x"
+          ],
+          "type": "const float2"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 0.0,
+            "min": 0.0
+          },
+          "name": "zero",
+          "path": [
+            "y"
+          ],
+          "type": "const float2"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "32768",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "input",
+          "type": "const float2 *"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "32768",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "output",
+          "type": "float2 *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cutlass/tools/util/include/cutlass/util/device_nhwc_padding.h",
+          "kind": "call_site",
+          "line": 261,
+          "note": "The even-channel float path passes n, h, w, c_in/2, c_out/2, zero float2, and TensorRef data pointers directly to this specialization."
+        },
+        {
+          "file": "third_party/cutlass/tools/util/include/cutlass/util/device_nhwc_padding.h",
+          "kind": "precondition",
+          "line": 171,
+          "note": "The host helper requires positive matching N/H/W extents and c_in<=c_out; maxima of 8 keep n*h*w*c_out at 4096, well within signed 32-bit arithmetic, and both payload expressions use float2-sized elements."
+        }
+      ],
+      "kernel_id": "_ZN7cutlass19nhwc_padding_kernelI6float2EEviiiiiT_PKS2_PS2___af58c0d1",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          256,
+          1,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZN7cutlass19nhwc_padding_kernelI6float2EEviiiiiT_PKS2_PS2_"
+    },
+    {
+      "constraints": [
+        {
+          "dimension": "x",
+          "kind": "scalar_eq_logical_block_dim",
+          "scalar_arg": 0
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 1,
+          "op": "<=",
+          "rhs_arg": 5
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 1,
+          "op": "<=",
+          "rhs_arg": 8
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 5,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 4,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 4,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 8,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 1,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 7,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 7,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "reference_syrk_dispatch_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {
+                "name": "tile_8",
+                "value": "8"
+              },
+              {
+                "name": "tile_16",
+                "value": "16"
+              },
+              {
+                "name": "tile_32",
+                "value": "32"
+              }
+            ]
+          },
+          "name": "tile_x",
+          "type": "uint32_t"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "N",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "K",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "A",
+          "type": "const double *"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "lda",
+          "type": "int"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "C",
+          "type": "double *"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldc",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "benchmark/rq2/variants/cutlass_syrk_dispatch/reference_syrk_dispatch.cu",
+          "kind": "tile_shape_dispatch",
+          "line": 28,
+          "note": "tile_x selects exactly one matching logical block shape; pairing normalization repairs tile_x after VConfig shape selection."
+        },
+        {
+          "file": "third_party/cutlass/examples/31_basic_syrk/basic_syrk.cu",
+          "kind": "allocation",
+          "line": 325,
+          "note": "A requires lda*K doubles and C requires ldc*N doubles; expression constraints resize both payloads for the reviewed bounds."
+        }
+      ],
+      "kernel_id": "_Z30reference_syrk_dispatch_kerneljiidPKdidPdi__2f6a4695",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          32,
+          8,
+          1
+        ],
+        "logical_block_candidates": [
+          [
+            8,
+            8,
+            1
+          ],
+          [
+            16,
+            16,
+            1
+          ],
+          [
+            32,
+            8,
+            1
+          ]
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z30reference_syrk_dispatch_kerneljiidPKdidPdi"
+    },
+    {
+      "constraints": [
+        {
+          "dimension": "x",
+          "kind": "scalar_eq_logical_block_dim",
+          "scalar_arg": 0
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 1,
+          "op": "<=",
+          "rhs_arg": 6
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 3,
+          "op": "<=",
+          "rhs_arg": 8
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 1,
+          "op": "<=",
+          "rhs_arg": 11
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 6,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 3,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 5,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 5,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 8,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 7,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 7,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 11,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 10,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 10,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "reference_gemm_dispatch_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {
+                "name": "tile_8",
+                "value": "8"
+              },
+              {
+                "name": "tile_16",
+                "value": "16"
+              },
+              {
+                "name": "tile_32",
+                "value": "32"
+              }
+            ]
+          },
+          "name": "tile_x",
+          "type": "uint32_t"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "M",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "N",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "K",
+          "type": "int"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "A",
+          "type": "const float *"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "lda",
+          "type": "int"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "B",
+          "type": "const float *"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldb",
+          "type": "int"
+        },
+        {
+          "arg": 10,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "C",
+          "type": "float *"
+        },
+        {
+          "arg": 11,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldc",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "benchmark/rq2/variants/cutlass_gemm_dispatch/reference_gemm_dispatch.cu",
+          "kind": "tile_shape_dispatch",
+          "line": 31,
+          "note": "tile_x selects exactly one matching logical block shape; pairing normalization repairs tile_x after VConfig shape selection."
+        },
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "allocation",
+          "line": 196,
+          "note": "A requires lda*K floats, B requires ldb*N floats, and C requires ldc*N floats; expression constraints resize all payloads for the reviewed bounds."
+        }
+      ],
+      "kernel_id": "_Z30reference_gemm_dispatch_kerneljiiifPKfiS0_ifPfi__efc18fc2",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          32,
+          8,
+          1
+        ],
+        "logical_block_candidates": [
+          [
+            8,
+            8,
+            1
+          ],
+          [
+            16,
+            16,
+            1
+          ],
+          [
+            32,
+            8,
+            1
+          ]
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z30reference_gemm_dispatch_kerneljiiifPKfiS0_ifPfi"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<=",
+          "rhs_arg": 4
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<=",
+          "rhs_arg": 6
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<=",
+          "rhs_arg": 8
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 4,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 0,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 3,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 3,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 6,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 1,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 5,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 5,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 8,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 1,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 7,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 7,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "ReferenceTrmm_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "M",
+          "type": "int"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "N",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "A",
+          "type": "const double *"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "lda",
+          "type": "int"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "B",
+          "type": "const double *"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldb",
+          "type": "int"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "C",
+          "type": "double *"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldc",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/32_basic_trmm/basic_trmm.cu",
+          "kind": "call_site",
+          "line": 305,
+          "note": "ReferenceTrmm passes M, N, alpha, A, lda, B, ldb, C, and ldc directly to the native 16x16 reference kernel launch."
+        },
+        {
+          "file": "third_party/cutlass/examples/32_basic_trmm/basic_trmm.cu",
+          "kind": "allocation",
+          "line": 339,
+          "note": "A requires lda*M doubles, B requires ldb*N doubles, and C requires ldc*N doubles; expression constraints resize all payloads for the reviewed 1..16 bounds."
+        }
+      ],
+      "kernel_id": "_Z20ReferenceTrmm_kerneliidPKdiS0_iPdi__651c005f",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z20ReferenceTrmm_kerneliidPKdiS0_iPdi"
+    },
+    {
+      "constraints": [
+        {
+          "dimension": "x",
+          "kind": "scalar_eq_logical_block_dim",
+          "scalar_arg": 0
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 1,
+          "op": "<=",
+          "rhs_arg": 5
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 1,
+          "op": "<=",
+          "rhs_arg": 7
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 1,
+          "op": "<=",
+          "rhs_arg": 9
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 5,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 1,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 4,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 4,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 7,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 6,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 6,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 9,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 8,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 8,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "reference_trmm_dispatch_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {
+                "name": "tile_8",
+                "value": "8"
+              },
+              {
+                "name": "tile_16",
+                "value": "16"
+              },
+              {
+                "name": "tile_32",
+                "value": "32"
+              }
+            ]
+          },
+          "name": "tile_x",
+          "type": "uint32_t"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "M",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "8",
+            "min": "1",
+            "signed": true
+          },
+          "name": "N",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "A",
+          "type": "const double *"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "lda",
+          "type": "int"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "B",
+          "type": "const double *"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldb",
+          "type": "int"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "C",
+          "type": "double *"
+        },
+        {
+          "arg": 9,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "ldc",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "benchmark/rq2/variants/cutlass_trmm_dispatch/reference_trmm_dispatch.cu",
+          "kind": "tile_shape_dispatch",
+          "line": 29,
+          "note": "tile_x selects exactly one matching logical block shape; pairing normalization repairs tile_x after VConfig shape selection."
+        },
+        {
+          "file": "third_party/cutlass/examples/32_basic_trmm/basic_trmm.cu",
+          "kind": "allocation",
+          "line": 339,
+          "note": "A requires lda*M doubles, B requires ldb*N doubles, and C requires ldc*N doubles; expression constraints resize all payloads for the reviewed bounds."
+        }
+      ],
+      "kernel_id": "_Z30reference_trmm_dispatch_kerneljiidPKdiS0_iPdi__a79a6b09",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          32,
+          8,
+          1
+        ],
+        "logical_block_candidates": [
+          [
+            8,
+            8,
+            1
+          ],
+          [
+            16,
+            16,
+            1
+          ],
+          [
+            32,
+            8,
+            1
+          ]
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z30reference_trmm_dispatch_kerneljiidPKdiS0_iPdi"
+    }
+  ],
+  "project": "cutlass_basic",
+  "schema_version": 1
+}

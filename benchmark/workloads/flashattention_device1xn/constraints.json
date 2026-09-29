@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "project": "rq1_flashattention_device1xn",
+  "overrides": [
+    {
+      "symbol_name": "rq1_flashattention_device1xn",
+      "display_name": "rq1_flashattention_device1xn",
+      "domains": [
+        {"arg": 0, "name": "input", "type": "const float *", "domain": {"kind": "bytes", "min_len": "512", "max_len": "512", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 1, "name": "output", "type": "float *", "domain": {"kind": "bytes", "min_len": "512", "max_len": "512", "elem_size_bytes": 4, "nullable": false}}
+      ],
+      "constraints": [],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [128],
+        "physical_block_max": 128,
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": false
+      },
+      "evidence": [
+        {"kind": "upstream_extraction", "file": "benchmark/rq1/workloads/flashattention_device1xn/kernel.cu", "line": 5, "note": "fixed d=16 device1xN row-validity path from upstream patch"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,798 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rapid.local/schemas/kernel-manifest-v1.json",
+  "title": "RAPID KernelManifest v1",
+  "description": "Minimal manifest for kernel discovery, decode/invoke codegen, and fuzzer-side encoding.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kernels"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "kernels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/kernel"
+      }
+    }
+  },
+  "$defs": {
+    "kernel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["symbol_name", "display_name", "args"],
+      "properties": {
+        "symbol_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact linkage symbol used in BC/IR extraction (mangled for C++ kernels)."
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable kernel name for display (typically qualified C++ form)."
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/arg"
+          }
+        },
+        "constraints": {
+          "$ref": "#/$defs/constraints",
+          "description": "Optional kernel-level constraints that relate multiple args or fields. Single-arg constraints belong in args[*].domain."
+        },
+        "launch_policy": {
+          "$ref": "#/$defs/launch_policy",
+          "description": "Optional backend launch policy for fresh origin/rapid/rapid2 construction. Origin uses the bounded VConfig as the per-input CUDA launch shape, while rapid and rapid2 use it to select the persistent physical launch. This is a backend resource policy, not a Phase 2 structural support expansion."
+        },
+        "others": {
+          "$ref": "#/$defs/others",
+          "description": "Reserved metadata, such as source file and line info."
+        }
+      }
+    },
+    "launch_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "grid": {
+          "type": "array",
+          "const": [1, 1, 1],
+          "description": "Current backend physical grid envelope. Multi-block physical grid is not supported by rapid/rapid2 until the persistent runtime synchronization protocol is redesigned; origin also clamps per-input VConfig to this envelope for now."
+        },
+        "block_candidates": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "integer", "minimum": 1 },
+          "description": "Physical block.x candidates, sorted by the builder before runtime resource filtering."
+        },
+        "physical_block_max": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum physical block.x allowed for this kernel. Later VCONFIG support may use this as the physical envelope while running smaller logical launches."
+        },
+        "logical_grid": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "integer", "minimum": 1 },
+          "description": "Optional logical grid shape written into the RAPID task envelope. It must fit within the physical grid envelope; current rapid/rapid2 support therefore accepts only [1, 1, 1]."
+        },
+        "logical_block": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "integer", "minimum": 1 },
+          "description": "Optional logical block shape written into the RAPID task envelope. The product of its dimensions must fit in the selected physical block.x envelope."
+        },
+        "logical_block_candidates": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "integer", "minimum": 1 }
+          },
+          "description": "Optional discrete set of complete logical block shapes. Normalization and mutation select only these shapes."
+        },
+        "target_dynamic_shared_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Dynamic shared memory required by the target kernel itself. Coverage memory is global and is not included here."
+        },
+        "coverage_memory": {
+          "type": "string",
+          "const": "global"
+        },
+        "vconfig_reserved": {
+          "type": "boolean"
+        },
+        "vconfig_mutation": {
+          "type": "boolean",
+          "description": "When false, fuzzer-side VConfig mutation clamps logical grid/block to the manifest shape while preserving normal arg-pack mutation."
+        }
+      }
+    },
+    "arg": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "name", "type", "kind", "size_bytes", "align_bytes"],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": { "const": "pointer" }
+            },
+            "required": ["kind"]
+          },
+          "then": { "required": ["pointer_role", "pointee_layout"] },
+          "else": {
+            "not": {
+              "anyOf": [
+                { "required": ["pointer_role"] },
+                { "required": ["pointee_layout"] }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pointer_role": { "const": "derived_pointer" }
+            },
+            "required": ["pointer_role"]
+          },
+          "then": {
+            "required": ["base_arg"],
+            "anyOf": [
+              { "required": ["offset_bytes"] },
+              { "required": ["offset_arg"] }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pointer_role": { "const": "external_device_pointer" }
+            },
+            "required": ["pointer_role"]
+          },
+          "then": { "required": ["source"] }
+        }
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Argument type used for codegen decode/invoke."
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["scalar", "pointer", "opaque_val", "opaque_with_ptr"],
+          "description": "Stable manifest materialization category. scalar is a fixed-width value leaf. pointer is a real pointer leaf and must carry pointer_role and pointee_layout. opaque_val is a pointer-free inline aggregate that is byte-copy safe. opaque_with_ptr is an inline aggregate whose subtree contains pointer fields, or whose pointer-freeness cannot be proven, and must be materialized field-aware."
+        },
+        "pointer_role": {
+          "type": "string",
+          "enum": ["payload_buffer", "derived_pointer", "external_device_pointer"],
+          "description": "Required only for kind=pointer. payload_buffer means a fuzzer-owned device allocation encoded by arg-pack-v1 as optional canonical padding plus [len:u64][bytes + filler : len]. derived_pointer means an alias/subview such as base_arg+offset and must not be encoded as an independent buffer. external_device_pointer means a runtime/harness-provided device pointer."
+        },
+        "base_arg": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "For pointer_role=derived_pointer, index of the pointer argument that supplies the base allocation."
+        },
+        "offset_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "For pointer_role=derived_pointer, constant byte offset from base_arg."
+        },
+        "offset_arg": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "For pointer_role=derived_pointer, scalar argument index that supplies the byte offset from base_arg."
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "For pointer_role=external_device_pointer, runtime/harness metadata source used to provide the pointer."
+        },
+        "align_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "ABI alignment for the top-level kernel parameter. Required by decode/invoke generation and fuzzer-side encoding."
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "ABI sizeof(arg_type) for the top-level kernel parameter, captured from Clang when available. For pointer parameters this is pointer width, not pointee buffer length."
+        },
+        "domain": {
+          "$ref": "#/$defs/domain",
+          "description": "Reserved argument value-domain constraints."
+        },
+        "type_info": {
+          "$ref": "#/$defs/type_info",
+          "description": "Optional declaration-backed metadata for recovering the nominal type definition."
+        },
+        "pointee_layout": {
+          "$ref": "#/$defs/layout_node",
+          "description": "Required for kind=pointer. Describes the element layout behind one pointer dereference; it does not change the pointer node's own materialization rule."
+        },
+        "type_layout": {
+          "$ref": "#/$defs/type_layout",
+          "description": "Optional recursive field layout for inline aggregate arguments. The root arg already carries type/kind/size_bytes/align_bytes; type_layout only describes internal fields."
+        },
+        "materialization_status": {
+          "$ref": "#/$defs/materialization_status"
+        },
+        "materialization_reason_codes": {
+          "$ref": "#/$defs/materialization_reason_codes"
+        },
+        "materialization_blockers": {
+          "$ref": "#/$defs/materialization_blockers"
+        }
+      }
+    },
+    "type_info": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["struct", "class", "union", "enum", "interface", "typedef"]
+        },
+        "qualified_name": {
+          "type": "string"
+        },
+        "usr": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decl_loc": {
+          "$ref": "#/$defs/source_loc"
+        },
+        "definition": {
+          "$ref": "#/$defs/definition_info"
+        }
+      }
+    },
+    "definition_info": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["available", "declaration_only"]
+        },
+        "loc": {
+          "$ref": "#/$defs/source_loc"
+        }
+      }
+    },
+    "source_loc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "line", "column"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "materialization_status": {
+      "type": "string",
+      "enum": ["ok", "unsafe"],
+      "description": "Whether Phase1 believes this value can be field-wise materialized by generated decode code without violating basic C++ object layout/access/lifetime constraints."
+    },
+    "materialization_reason_codes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "materialization_blockers": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "domain": {
+      "description": "Optional single-argument or single-field value-domain constraints. Cross-argument relationships belong in kernels[*].constraints.",
+      "oneOf": [
+        { "$ref": "#/$defs/int_range_domain" },
+        { "$ref": "#/$defs/float_range_domain" },
+        { "$ref": "#/$defs/enum_domain" },
+        { "$ref": "#/$defs/bytes_domain" }
+      ]
+    },
+    "int_range_domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "const": "int_range" },
+        "min": {
+          "type": "string",
+          "description": "Inclusive integer lower bound encoded as a decimal string to preserve 64-bit precision."
+        },
+        "max": {
+          "type": "string",
+          "description": "Inclusive integer upper bound encoded as a decimal string to preserve 64-bit precision."
+        },
+        "signed": { "type": "boolean" }
+      }
+    },
+    "float_range_domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "const": "float_range" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "allow_nan": { "type": "boolean" }
+      }
+    },
+    "enum_domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "values"],
+      "properties": {
+        "kind": { "type": "string", "const": "enum" },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/enum_value" }
+        },
+        "allow_unknown": { "type": "boolean" }
+      }
+    },
+    "enum_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "type": "string" },
+        "value": {
+          "type": "string",
+          "description": "Enum discriminant encoded as a decimal string to preserve 64-bit precision."
+        }
+      }
+    },
+    "bytes_domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "const": "bytes" },
+        "min_len": {
+          "type": "string",
+          "description": "Minimum buffer length in bytes, encoded as a decimal string."
+        },
+        "max_len": {
+          "type": "string",
+          "description": "Maximum buffer length in bytes, encoded as a decimal string."
+        },
+        "elem_size_bytes": { "type": "integer", "minimum": 1 },
+        "nullable": { "type": "boolean" },
+        "pattern_hex": {
+          "type": "string",
+          "pattern": "^(?:[0-9A-Fa-f]{2})+$",
+          "description": "Non-empty byte pattern repeated across the normalized payload; structured mutation is repaired back to this pattern."
+        }
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/constraint" }
+    },
+    "constraint": {
+      "oneOf": [
+        { "$ref": "#/$defs/scalar_le_logical_block_dim_constraint" },
+        { "$ref": "#/$defs/scalar_eq_logical_block_dim_constraint" },
+        { "$ref": "#/$defs/scalar_le_buffer_len_constraint" },
+        { "$ref": "#/$defs/scalar_compare_const_constraint" },
+        { "$ref": "#/$defs/scalar_compare_scalar_constraint" },
+        { "$ref": "#/$defs/scalar_product_le_const_constraint" },
+        { "$ref": "#/$defs/count_fits_buffer_constraint" },
+        { "$ref": "#/$defs/buffer_elements_lt_scalar_constraint" },
+        { "$ref": "#/$defs/expression_compare_constraint" }
+      ]
+    },
+    "scalar_le_logical_block_dim_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "scalar_arg", "dimension"],
+      "properties": {
+        "kind": { "type": "string", "const": "scalar_le_logical_block_dim" },
+        "scalar_arg": { "type": "integer", "minimum": 0 },
+        "dimension": { "type": "string", "enum": ["x", "y", "z"] }
+      }
+    },
+    "scalar_eq_logical_block_dim_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "scalar_arg", "dimension"],
+      "properties": {
+        "kind": { "type": "string", "const": "scalar_eq_logical_block_dim" },
+        "scalar_arg": { "type": "integer", "minimum": 0 },
+        "dimension": { "type": "string", "enum": ["x", "y", "z"] }
+      }
+    },
+    "expression_compare_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "lhs", "op", "rhs", "repair"],
+      "properties": {
+        "kind": { "type": "string", "const": "expression_compare" },
+        "lhs": { "$ref": "#/$defs/constraint_expr" },
+        "op": { "$ref": "#/$defs/constraint_op" },
+        "rhs": { "$ref": "#/$defs/constraint_expr" },
+        "repair": { "$ref": "#/$defs/constraint_repair" }
+      }
+    },
+    "constraint_expr": {
+      "oneOf": [
+        { "$ref": "#/$defs/arg_value_expr" },
+        { "$ref": "#/$defs/payload_len_expr" },
+        { "$ref": "#/$defs/const_expr" },
+        { "$ref": "#/$defs/binary_expr" }
+      ]
+    },
+    "arg_value_expr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "arg"],
+      "properties": {
+        "kind": { "type": "string", "const": "arg_value" },
+        "arg": { "type": "integer", "minimum": 0 },
+        "path": { "$ref": "#/$defs/field_path" }
+      }
+    },
+    "payload_len_expr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "arg"],
+      "properties": {
+        "kind": { "type": "string", "const": "payload_len" },
+        "arg": { "type": "integer", "minimum": 0 },
+        "path": { "$ref": "#/$defs/field_path" }
+      }
+    },
+    "const_expr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "value"],
+      "properties": {
+        "kind": { "type": "string", "const": "const" },
+        "value": { "type": "integer" }
+      }
+    },
+    "binary_expr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "op", "lhs", "rhs"],
+      "properties": {
+        "kind": { "type": "string", "const": "binary" },
+        "op": { "type": "string", "enum": ["+", "-", "*", "/"] },
+        "lhs": { "$ref": "#/$defs/constraint_expr" },
+        "rhs": { "$ref": "#/$defs/constraint_expr" }
+      }
+    },
+    "constraint_repair": {
+      "oneOf": [
+        { "$ref": "#/$defs/resize_payload_repair" }
+      ]
+    },
+    "resize_payload_repair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "arg"],
+      "properties": {
+        "kind": { "type": "string", "const": "resize_payload" },
+        "arg": { "type": "integer", "minimum": 0 },
+        "path": { "$ref": "#/$defs/field_path" }
+      }
+    },
+    "scalar_le_buffer_len_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "scalar_arg", "buffer_arg", "unit"],
+      "properties": {
+        "kind": { "type": "string", "const": "scalar_le_buffer_len" },
+        "scalar_arg": { "type": "integer", "minimum": 0 },
+        "scalar_path": { "$ref": "#/$defs/field_path" },
+        "buffer_arg": { "type": "integer", "minimum": 0 },
+        "buffer_path": { "$ref": "#/$defs/field_path" },
+        "unit": { "type": "string", "enum": ["bytes", "elements"] }
+      }
+    },
+    "constraint_op": {
+      "type": "string",
+      "enum": ["<=", "<", "==", "!=", ">=", ">"]
+    },
+    "scalar_compare_const_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "scalar_arg", "op", "value"],
+      "properties": {
+        "kind": { "type": "string", "const": "scalar_compare_const" },
+        "scalar_arg": { "type": "integer", "minimum": 0 },
+        "scalar_path": { "$ref": "#/$defs/field_path" },
+        "op": { "$ref": "#/$defs/constraint_op" },
+        "value": { "type": "integer" }
+      }
+    },
+    "scalar_compare_scalar_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "lhs_arg", "op", "rhs_arg"],
+      "properties": {
+        "kind": { "type": "string", "const": "scalar_compare_scalar" },
+        "lhs_arg": { "type": "integer", "minimum": 0 },
+        "lhs_path": { "$ref": "#/$defs/field_path" },
+        "op": { "$ref": "#/$defs/constraint_op" },
+        "rhs_arg": { "type": "integer", "minimum": 0 },
+        "rhs_path": { "$ref": "#/$defs/field_path" }
+      }
+    },
+    "scalar_product_le_const_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "lhs_arg", "rhs_arg", "value", "repair_arg"],
+      "properties": {
+        "kind": { "type": "string", "const": "scalar_product_le_const" },
+        "lhs_arg": { "type": "integer", "minimum": 0 },
+        "lhs_path": { "$ref": "#/$defs/field_path" },
+        "rhs_arg": { "type": "integer", "minimum": 0 },
+        "rhs_path": { "$ref": "#/$defs/field_path" },
+        "value": { "type": "integer", "minimum": 0 },
+        "repair_arg": { "type": "integer", "minimum": 0 },
+        "repair_path": { "$ref": "#/$defs/field_path" }
+      }
+    },
+    "count_fits_buffer_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "count_arg", "buffer_arg", "elem_size_bytes"],
+      "properties": {
+        "kind": { "type": "string", "const": "count_fits_buffer" },
+        "count_arg": { "type": "integer", "minimum": 0 },
+        "count_path": { "$ref": "#/$defs/field_path" },
+        "buffer_arg": { "type": "integer", "minimum": 0 },
+        "buffer_path": { "$ref": "#/$defs/field_path" },
+        "elem_size_bytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "buffer_elements_lt_scalar_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "buffer_arg", "scalar_arg"],
+      "properties": {
+        "kind": { "type": "string", "const": "buffer_elements_lt_scalar" },
+        "buffer_arg": { "type": "integer", "minimum": 0 },
+        "buffer_path": { "$ref": "#/$defs/field_path" },
+        "scalar_arg": { "type": "integer", "minimum": 0 },
+        "scalar_path": { "$ref": "#/$defs/field_path" },
+        "elem_size_bytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "field_path": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Relative path segments inside the referenced argument. Field-name segments descend through fields; decimal string segments descend through fixed-size array elements. For example [\"nested\", \"choice\", \"tag\"] means arg.nested.choice.tag, and [\"items\", \"1\", \"inner\", \"data\"] means arg.items[1].inner.data. Omit the path field to reference the top-level argument itself."
+    },
+    "type_layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layout_status"],
+      "properties": {
+        "layout_status": {
+          "type": "string",
+          "enum": ["complete", "partial", "opaque"]
+        },
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/layout_node" }
+        },
+        "element": { "$ref": "#/$defs/layout_node" },
+        "element_count": { "type": "integer", "minimum": 0 },
+        "materialization_status": { "$ref": "#/$defs/materialization_status" },
+        "materialization_reason_codes": { "$ref": "#/$defs/materialization_reason_codes" },
+        "materialization_blockers": { "$ref": "#/$defs/materialization_blockers" }
+      }
+    },
+    "layout_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "name", "type", "kind", "size_bytes", "align_bytes"],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": { "const": "pointer" }
+            },
+            "required": ["kind"]
+          },
+          "then": { "required": ["pointer_role", "pointee_layout"] },
+          "else": {
+            "not": {
+              "anyOf": [
+                { "required": ["pointer_role"] },
+                { "required": ["pointee_layout"] }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pointer_role": { "const": "derived_pointer" }
+            },
+            "required": ["pointer_role"]
+          },
+          "then": {
+            "allOf": [
+              {
+                "anyOf": [
+                  { "required": ["base_arg"] },
+                  { "required": ["base_path"] }
+                ]
+              },
+              {
+                "anyOf": [
+                  { "required": ["offset_arg"] },
+                  { "required": ["offset_path"] }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "pointer_role": { "const": "external_device_pointer" }
+            },
+            "required": ["pointer_role"]
+          },
+          "then": { "required": ["source"] }
+        }
+      ],
+      "properties": {
+        "index": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable recursive field path such as params.inner[].buf. Array element templates use []."
+        },
+        "name": { "type": "string" },
+        "type": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": ["scalar", "pointer", "opaque_val", "opaque_with_ptr"],
+          "description": "Materialization category for this field node. Pointer nodes must carry pointer_role and pointee_layout. Arrays and records use opaque_val or opaque_with_ptr plus fields/element metadata; union facts are preserved through type_info.kind."
+        },
+        "pointer_role": {
+          "type": "string",
+          "enum": ["payload_buffer", "derived_pointer", "external_device_pointer"]
+        },
+        "base_arg": { "type": "integer", "minimum": 0 },
+        "base_path": { "$ref": "#/$defs/field_path" },
+        "offset_arg": { "type": "integer", "minimum": 0 },
+        "offset_path": { "$ref": "#/$defs/field_path" },
+        "source": { "type": "string", "minLength": 1 },
+        "size_bytes": { "type": "integer", "minimum": 0 },
+        "align_bytes": { "type": "integer", "minimum": 1 },
+        "type_info": { "$ref": "#/$defs/type_info" },
+        "pointee_layout": { "$ref": "#/$defs/layout_node" },
+        "layout_status": {
+          "type": "string",
+          "enum": ["complete", "partial", "opaque"]
+        },
+        "bit_offset": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Bit offset within the containing aggregate for bitfield fields."
+        },
+        "bit_width": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Declared bit width for bitfield fields."
+        },
+        "domain": { "$ref": "#/$defs/domain" },
+        "materialization_status": { "$ref": "#/$defs/materialization_status" },
+        "materialization_reason_codes": { "$ref": "#/$defs/materialization_reason_codes" },
+        "materialization_blockers": { "$ref": "#/$defs/materialization_blockers" },
+        "fields": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/layout_node" }
+        },
+        "element": { "$ref": "#/$defs/layout_node" },
+        "element_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "others": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_file": {
+          "type": "string"
+        },
+        "source_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_column": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "variant_id": {
+          "type": "string"
+        },
+        "type_shim_header": {
+          "type": "string"
+        },
+        "type_shim_status": {
+          "type": "string"
+        },
+        "type_shim_reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type_shim_missing_dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type_shim_system_headers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "type_shim_system_includes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "materialization_status": {
+          "$ref": "#/$defs/materialization_status"
+        },
+        "materialization_reason_codes": {
+          "$ref": "#/$defs/materialization_reason_codes"
+        },
+        "materialization_blockers": {
+          "$ref": "#/$defs/materialization_blockers"
+        },
+        "origin_project": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

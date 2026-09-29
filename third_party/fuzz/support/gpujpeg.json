@@ -1,0 +1,63 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_dct_gpu.cu",
+          "kind": "kernel_body",
+          "line": 182,
+          "note": "the block_count_x/block_count_y guard precedes every global-memory access; WARP_COUNT=4 uses the native warp-synchronous (32,4) block."
+        },
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_dct_gpu.cu",
+          "kind": "call_site",
+          "line": 665,
+          "note": "the encoder instantiates WARP_COUNT=4 and passes flat source, output, and 64-float quantization buffers."
+        }
+      ],
+      "kernel_id": "_Z22gpujpeg_dct_gpu_kernelILi4EEviiPhjPsiPKf__1d4723f3",
+      "symbol_name": "_Z22gpujpeg_dct_gpu_kernelILi4EEviiPhjPsiPKf"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_preprocessor.cu",
+          "kind": "kernel_body",
+          "line": 490,
+          "note": "the two-dimensional width/height guard precedes all accesses to the flat in-place buffer."
+        },
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_preprocessor.cu",
+          "kind": "call_site",
+          "line": 556,
+          "note": "the host dispatch instantiates GPUJPEG_422_U8_P1020 and launches a native (16,16) block."
+        }
+      ],
+      "kernel_id": "_Z20channel_remap_kernelIL20gpujpeg_pixel_format3EEvPhiiij__587fa403",
+      "symbol_name": "_Z20channel_remap_kernelIL20gpujpeg_pixel_format3EEvPhiiij"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_dct_gpu.cu",
+          "kind": "kernel_body",
+          "line": 180,
+          "note": "The derived dispatcher preserves the original WARP_COUNT body: each complete warp owns four horizontal 8x8 blocks and a disjoint shared-memory transpose slice."
+        },
+        {
+          "file": "benchmark/rq2/variants/gpujpeg_dct_dispatch/gpujpeg_dct_dispatch.cu",
+          "kind": "warp_shape_dispatch",
+          "line": 173,
+          "note": "The tracked derived kernel dispatches only WARP_COUNT 2, 4, or 8, requires the matching full-warp block shape, and allocates one 8-warp maximum shared buffer."
+        }
+      ],
+      "kernel_id": "_Z27gpujpeg_dct_dispatch_kerneljiiPhjPsiPKf__82472776",
+      "symbol_name": "_Z27gpujpeg_dct_dispatch_kerneljiiPhjPsiPKf"
+    }
+  ],
+  "project": "gpujpeg",
+  "schema_version": 1
+}

@@ -1,0 +1,574 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 3,
+          "op": "<=",
+          "rhs_arg": 7
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 8,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "elem_size_bytes": 4,
+          "kind": "buffer_elements_lt_scalar",
+          "scalar_arg": 8
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 7,
+                "kind": "arg_value"
+              },
+              "op": "/",
+              "rhs": {
+                "kind": "const",
+                "value": 128
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 144
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 2,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 2,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "quantize_mmq_q8_1",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "2048",
+            "nullable": false
+          },
+          "name": "x",
+          "type": "const float *__restrict"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "4",
+            "min_len": "4",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "ids",
+          "type": "const int32_t *__restrict"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 1,
+            "kind": "bytes",
+            "max_len": "576",
+            "min_len": "576",
+            "nullable": false
+          },
+          "name": "vy",
+          "type": "void *__restrict"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "ne00_4", "value": "4"},
+              {"name": "ne00_128", "value": "128"},
+              {"name": "ne00_256", "value": "256"},
+              {"name": "ne00_384", "value": "384"},
+              {"name": "ne00_512", "value": "512"}
+            ]
+          },
+          "name": "ne00",
+          "type": "const int64_t"
+        },
+        {
+          "arg": 4,
+          "domain": {"kind": "int_range", "max": "512", "min": "512", "signed": true},
+          "name": "s01",
+          "type": "const int64_t"
+        },
+        {
+          "arg": 5,
+          "domain": {"kind": "int_range", "max": "512", "min": "512", "signed": true},
+          "name": "s02",
+          "type": "const int64_t"
+        },
+        {
+          "arg": 6,
+          "domain": {"kind": "int_range", "max": "512", "min": "512", "signed": true},
+          "name": "s03",
+          "type": "const int64_t"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "ne0_128", "value": "128"},
+              {"name": "ne0_256", "value": "256"},
+              {"name": "ne0_384", "value": "384"},
+              {"name": "ne0_512", "value": "512"}
+            ]
+          },
+          "name": "ne0",
+          "type": "const int64_t"
+        },
+        {
+          "arg": 8,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "ne1",
+          "type": "const int"
+        },
+        {
+          "arg": 9,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "ne2",
+          "type": "const int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/quantize.cu",
+          "kind": "host_constraints",
+          "line": 289,
+          "note": "The wrapper requires ne00 multiples of 4, ne0 multiples of 128, and launches 128 threads; the discrete domains retain several valid sizes within one block."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/mmq.cu",
+          "kind": "host_allocation",
+          "line": 121,
+          "note": "The native path passes null ids and allocates padded q8_1 output; fixed ids[0]=0 is behaviorally equivalent for the constrained single-column grid."
+        }
+      ],
+      "kernel_id": "_ZL17quantize_mmq_q8_1IL18mmq_q8_1_ds_layout2EEvPKfPKiPvlllllii__b56d9d0f",
+      "launch_policy": {
+        "block_candidates": [128],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [128, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [96, 1, 1], [128, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 128,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZL17quantize_mmq_q8_1IL18mmq_q8_1_ds_layout2EEvPKfPKiPvlllllii"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 8,
+          "op": "<=",
+          "rhs_arg": 6
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 9,
+          "op": "<=",
+          "rhs_arg": 7
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "arg": 7,
+                    "kind": "arg_value"
+                  },
+                  "op": "-",
+                  "rhs": {"kind": "const", "value": 1}
+                },
+                "op": "*",
+                "rhs": {"arg": 3, "kind": "arg_value"}
+              },
+              "op": "+",
+              "rhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {"arg": 6, "kind": "arg_value"},
+                  "op": "-",
+                  "rhs": {"kind": "const", "value": 1}
+                },
+                "op": "*",
+                "rhs": {"arg": 2, "kind": "arg_value"}
+              }
+            },
+            "op": "+",
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "repair": {"arg": 0, "kind": "resize_payload"},
+          "rhs": {"arg": 0, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {"arg": 8, "kind": "arg_value"},
+                  "op": "*",
+                  "rhs": {"arg": 9, "kind": "arg_value"}
+                },
+                "op": "*",
+                "rhs": {"arg": 10, "kind": "arg_value"}
+              },
+              "op": "*",
+              "rhs": {"arg": 11, "kind": "arg_value"}
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "repair": {"arg": 1, "kind": "resize_payload"},
+          "rhs": {"arg": 1, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "upscale_f32_bilinear_antialias",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "1024", "nullable": false},
+          "name": "src0",
+          "type": "const float *"
+        },
+        {
+          "arg": 1,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "4", "nullable": false},
+          "name": "dst",
+          "type": "float *"
+        },
+        {
+          "arg": 2,
+          "domain": {"kind": "int_range", "max": "4", "min": "4", "signed": true},
+          "name": "nb00",
+          "type": "const int"
+        },
+        {
+          "arg": 3,
+          "domain": {"kind": "int_range", "max": "64", "min": "64", "signed": true},
+          "name": "nb01",
+          "type": "const int"
+        },
+        {
+          "arg": 4,
+          "domain": {"kind": "int_range", "max": "1024", "min": "1024", "signed": true},
+          "name": "nb02",
+          "type": "const int"
+        },
+        {
+          "arg": 5,
+          "domain": {"kind": "int_range", "max": "1024", "min": "1024", "signed": true},
+          "name": "nb03",
+          "type": "const int"
+        },
+        {
+          "arg": 6,
+          "domain": {"kind": "int_range", "max": "16", "min": "16", "signed": true},
+          "name": "ne00_src",
+          "type": "const int"
+        },
+        {
+          "arg": 7,
+          "domain": {"kind": "int_range", "max": "16", "min": "16", "signed": true},
+          "name": "ne01_src",
+          "type": "const int"
+        },
+        {
+          "arg": 8,
+          "domain": {"kind": "int_range", "max": "16", "min": "4", "signed": true},
+          "name": "ne10_dst",
+          "type": "const int"
+        },
+        {
+          "arg": 9,
+          "domain": {"kind": "int_range", "max": "16", "min": "4", "signed": true},
+          "name": "ne11_dst",
+          "type": "const int"
+        },
+        {
+          "arg": 10,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "ne12_dst",
+          "type": "const int"
+        },
+        {
+          "arg": 11,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "ne13_dst",
+          "type": "const int"
+        },
+        {
+          "arg": 12,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 0.25},
+          "name": "sf0",
+          "type": "const float"
+        },
+        {
+          "arg": 13,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 0.25},
+          "name": "sf1",
+          "type": "const float"
+        },
+        {
+          "arg": 14,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 1.0},
+          "name": "sf2",
+          "type": "const float"
+        },
+        {
+          "arg": 15,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 1.0},
+          "name": "sf3",
+          "type": "const float"
+        },
+        {
+          "arg": 16,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 0.5, "min": 0.5},
+          "name": "pixel_offset",
+          "type": "const float"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/upscale.cu",
+          "kind": "host_launch",
+          "line": 229,
+          "note": "The launcher uses 256 threads and ceil(dst elements/256) blocks; destination extents are capped at 256 elements for the supported single-block subset."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/upscale.cu",
+          "kind": "host_shape",
+          "line": 257,
+          "note": "The source is contiguous and sf[d]=dst_ne[d]/src_ne[d]; the selected 16x16x1x1 source and positive downscale ranges keep all clipped reads in bounds while varying shapes and filter support."
+        }
+      ],
+      "kernel_id": "_ZL30upscale_f32_bilinear_antialiasPKfPfiiiiiiiiiifffff__e079a648",
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZL30upscale_f32_bilinear_antialiasPKfPfiiiiiiiiiifffff"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {"arg": 3, "kind": "arg_value"},
+            "op": "*",
+            "rhs": {"kind": "const", "value": 512}
+          },
+          "op": "<=",
+          "repair": {"arg": 0, "kind": "resize_payload"},
+          "rhs": {"arg": 0, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {"arg": 3, "kind": "arg_value"},
+              "op": "*",
+              "rhs": {"arg": 4, "kind": "arg_value"}
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "repair": {"arg": 1, "kind": "resize_payload"},
+          "rhs": {"arg": 1, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {"arg": 3, "kind": "arg_value"},
+            "op": "*",
+            "rhs": {"kind": "const", "value": 512}
+          },
+          "op": "<=",
+          "repair": {"arg": 2, "kind": "resize_payload"},
+          "rhs": {"arg": 2, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "topk_moe_cuda_128_no_bias_adapter",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "512", "nullable": false},
+          "name": "logits",
+          "type": "const float *"
+        },
+        {
+          "arg": 1,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false},
+          "name": "weights",
+          "type": "float *"
+        },
+        {
+          "arg": 2,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "512", "nullable": false},
+          "name": "ids",
+          "type": "int32_t *"
+        },
+        {
+          "arg": 3,
+          "domain": {"kind": "int_range", "max": "4", "min": "1", "signed": true},
+          "name": "n_rows",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {"kind": "int_range", "max": "128", "min": "1", "signed": true},
+          "name": "n_expert_used",
+          "type": "int"
+        },
+        {
+          "arg": 5,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 0.000001},
+          "name": "clamp_val",
+          "type": "float"
+        },
+        {
+          "arg": 6,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 4.0, "min": -4.0},
+          "name": "scale_val",
+          "type": "float"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "softmax", "value": "0"},
+              {"name": "sigmoid", "value": "1"}
+            ]
+          },
+          "name": "use_sigmoid",
+          "type": "bool"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "no_norm", "value": "0"},
+              {"name": "normalize", "value": "1"}
+            ]
+          },
+          "name": "with_norm",
+          "type": "bool"
+        },
+        {
+          "arg": 9,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "eager", "value": "0"},
+              {"name": "delayed", "value": "1"}
+            ]
+          },
+          "name": "delayed_softmax",
+          "type": "bool"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/topk-moe.cu",
+          "kind": "host_shape",
+          "line": 326,
+          "note": "The host path derives n_rows from logits, n_expert_used from weights, requires ids row stride 128, and rejects simultaneous with_norm plus delayed_softmax."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/llama_cpp/capture_sources/topk_moe_cuda_128_no_bias_adapter.cu",
+          "kind": "adapter_bounds",
+          "line": 73,
+          "note": "The supported subdomain uses 1..4 rows, 1..128 selected experts, logits[128*n_rows], weights[n_expert_used*n_rows], and ids stride 128; the adapter canonicalizes the mutually exclusive normalization modes."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/llama_cpp/capture_sources/topk_moe_cuda_128_no_bias_adapter.cu",
+          "kind": "vconfig_boundary",
+          "line": 131,
+          "note": "Full-mask shuffle reductions require block.x=32; varying only complete row warps through block.y=1..4 does not change the lane-to-expert mapping. Per the RQ2 hard filter: 固定几何，仅可作阴性对照."
+        }
+      ],
+      "kernel_id": "topk_moe_cuda_128_no_bias_adapter__fb60f880",
+      "launch_policy": {
+        "block_candidates": [128],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [32, 4, 1],
+        "logical_block_candidates": [[32, 1, 1], [32, 2, 1], [32, 3, 1], [32, 4, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 128,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "topk_moe_cuda_128_no_bias_adapter"
+    }
+  ],
+  "project": "llama_cpp",
+  "schema_version": 1
+}

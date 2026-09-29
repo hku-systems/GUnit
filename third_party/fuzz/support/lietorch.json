@@ -1,0 +1,25 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave2/lietorch/capture_sources/cholesky_solve6x6_forward_raw.cu",
+          "kind": "raw_pointer_adapter",
+          "line": 55,
+          "note": "the adapter exposes only flat float buffers and preserves the vendor kernel's per-thread 6x6 factorization, solve, and contiguous component-major indexing."
+        },
+        {
+          "file": "third_party/lietorch/lietorch/extras/se3_solver.cu",
+          "kind": "call_site",
+          "line": 154,
+          "note": "the host wrapper derives batch_size, ht, and wd from H, allocates x like b, and launches the forward kernel with NUM_THREADS=64 at lines 161-166."
+        }
+      ],
+      "kernel_id": "cholesky_solve6x6_forward_raw_kernel__3e2391fd",
+      "symbol_name": "cholesky_solve6x6_forward_raw_kernel"
+    }
+  ],
+  "project": "lietorch",
+  "schema_version": 1
+}

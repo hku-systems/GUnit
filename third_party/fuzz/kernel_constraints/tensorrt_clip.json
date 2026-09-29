@@ -1,0 +1,1309 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "buffer_arg": 3,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 4,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 3,
+          "count_arg": 0,
+          "elem_size_bytes": 1,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 4,
+          "count_arg": 0,
+          "elem_size_bytes": 1,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "clipKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "n",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 1,
+            "kind": "bytes",
+            "max_len": "4",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "input",
+          "type": "const signed char *"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "elem_size_bytes": 1,
+            "kind": "bytes",
+            "max_len": "4",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "output",
+          "type": "signed char *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 90,
+          "note": "INT8 launch uses clipKernel<int8_t, int8_t, 512><<<divUp(n, 512), 512>>>; n is the element count for input and output."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "enqueue computes n as mInputVolume * batchSize before calling clipInference."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIaaLj512EEviT_S0_PKT0_PS1___e7ab6476",
+      "launch_policy": {
+        "block_candidates": [
+          512,
+          256,
+          128,
+          64,
+          32
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z10clipKernelIaaLj512EEviT_S0_PKT0_PS1_"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 3,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 4,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 3,
+          "count_arg": 0,
+          "elem_size_bytes": 2,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 4,
+          "count_arg": 0,
+          "elem_size_bytes": 2,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "clipKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "n",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 2,
+            "kind": "bytes",
+            "max_len": "8",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "input",
+          "type": "const __half *"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "elem_size_bytes": 2,
+            "kind": "bytes",
+            "max_len": "8",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "output",
+          "type": "__half *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 74,
+          "note": "HALF storage launch uses clipKernel<float, half, 512><<<divUp(n, 512), 512>>>; n is the element count for input and output."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "enqueue computes n as mInputVolume * batchSize before calling clipInference."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIf6__halfLj512EEviT_S1_PKT0_PS2___79d01888",
+      "launch_policy": {
+        "block_candidates": [
+          512,
+          256,
+          128,
+          64,
+          32
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z10clipKernelIf6__halfLj512EEviT_S1_PKT0_PS2_"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 3,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 4,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 3,
+          "count_arg": 0,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 4,
+          "count_arg": 0,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "clipKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "n",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "input",
+          "type": "const float *"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "output",
+          "type": "float *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 62,
+          "note": "FLOAT launch uses clipKernel<float, float, 512><<<divUp(n, 512), 512>>>; n is the element count for input and output."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "enqueue computes n as mInputVolume * batchSize before calling clipInference."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIffLj512EEviT_S0_PKT0_PS1___c1c27f18",
+      "launch_policy": {
+        "block_candidates": [
+          512,
+          256,
+          128,
+          64,
+          32
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z10clipKernelIffLj512EEviT_S0_PKT0_PS1_"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 3,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 4,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 0,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 3,
+          "count_arg": 0,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 4,
+          "count_arg": 0,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "clipKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "n",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "input",
+          "type": "const int *"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "output",
+          "type": "int *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 82,
+          "note": "INT32 launch uses clipKernel<int32_t, int32_t, 512><<<divUp(n, 512), 512>>>; n is the element count for input and output."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "enqueue computes n as mInputVolume * batchSize before calling clipInference."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIiiLj512EEviT_S0_PKT0_PS1___136e29ff",
+      "launch_policy": {
+        "block_candidates": [
+          512,
+          256,
+          128,
+          64,
+          32
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z10clipKernelIiiLj512EEviT_S0_PKT0_PS1_"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 7,
+          "op": "<=",
+          "rhs_arg": 5
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 8,
+          "op": "<=",
+          "rhs_arg": 6
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<=",
+          "rhs_arg": 8
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": ">=",
+          "rhs_arg": 8
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "arg": 4,
+                    "kind": "arg_value"
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 9,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 5,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 6,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 1,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 1,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 4,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 3,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 16
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 2,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 2,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "kind": "binary",
+                    "lhs": {
+                      "arg": 4,
+                      "kind": "arg_value"
+                    },
+                    "op": "*",
+                    "rhs": {
+                      "arg": 3,
+                      "kind": "arg_value"
+                    }
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 7,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 8,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 9,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 11,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 11,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "buffer_arg": 11,
+          "count_arg": 0,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "nvinfer1::plugin::cropAndResizeKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "nthreads",
+          "type": "const int"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "64",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "image_ptr",
+          "type": "const float *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "boxes_ptr",
+          "type": "const float *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "num_boxes",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "batch",
+          "type": "int"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "image_height",
+          "type": "int"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "image_width",
+          "type": "int"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "crop_height",
+          "type": "int"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "crop_width",
+          "type": "int"
+        },
+        {
+          "arg": 9,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "depth",
+          "type": "int"
+        },
+        {
+          "arg": 10,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 1.0,
+            "min": -1.0
+          },
+          "name": "extrapolation_value",
+          "type": "float"
+        },
+        {
+          "arg": 11,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "crops_ptr",
+          "type": "float *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/common/kernels/cropAndResizeKernel.cu",
+          "kind": "call_site",
+          "line": 128,
+          "note": "cropAndResizeInference computes output_volume as batch_size * num_boxes * crop_height * crop_width * depth and launches with buffers shaped by the corresponding image, box, and output products."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/cropAndResizePlugin/cropAndResizePlugin.cpp",
+          "kind": "call_site",
+          "line": 97,
+          "note": "enqueue sources batch and image dimensions from input tensor 0, box count from input tensor 1, and crop dimensions from validated plugin fields."
+        }
+      ],
+      "kernel_id": "_ZN8nvinfer16plugin19cropAndResizeKernelIfEEviPKT_PKfiiiiiiifPf__1e27108f",
+      "launch_policy": {
+        "block_candidates": [
+          1024,
+          512,
+          256,
+          128,
+          64,
+          32
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 1024,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZN8nvinfer16plugin19cropAndResizeKernelIfEEviPKT_PKfiiiiiiifPf"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<=",
+          "rhs_arg": 19
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": ">=",
+          "rhs_arg": 19
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 5,
+          "op": "<=",
+          "rhs_arg": 19
+        },
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 5,
+          "op": ">=",
+          "rhs_arg": 19
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "arg": 15,
+                    "kind": "arg_value"
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 16,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 4,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 5,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 1,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 1,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "kind": "binary",
+                    "lhs": {
+                      "kind": "binary",
+                      "lhs": {
+                        "kind": "binary",
+                        "lhs": {
+                          "arg": 15,
+                          "kind": "arg_value"
+                        },
+                        "op": "*",
+                        "rhs": {
+                          "arg": 17,
+                          "kind": "arg_value"
+                        }
+                      },
+                      "op": "*",
+                      "rhs": {
+                        "kind": "const",
+                        "value": 2
+                      }
+                    },
+                    "op": "*",
+                    "rhs": {
+                      "arg": 6,
+                      "kind": "arg_value"
+                    }
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 7,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 18,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 19,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 2,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 2,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "kind": "binary",
+                    "lhs": {
+                      "kind": "binary",
+                      "lhs": {
+                        "arg": 15,
+                        "kind": "arg_value"
+                      },
+                      "op": "*",
+                      "rhs": {
+                        "arg": 17,
+                        "kind": "arg_value"
+                      }
+                    },
+                    "op": "*",
+                    "rhs": {
+                      "arg": 6,
+                      "kind": "arg_value"
+                    }
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 7,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 18,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 19,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 3,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 3,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {
+                    "kind": "binary",
+                    "lhs": {
+                      "kind": "binary",
+                      "lhs": {
+                        "arg": 16,
+                        "kind": "arg_value"
+                      },
+                      "op": "*",
+                      "rhs": {
+                        "arg": 6,
+                        "kind": "arg_value"
+                      }
+                    },
+                    "op": "*",
+                    "rhs": {
+                      "arg": 7,
+                      "kind": "arg_value"
+                    }
+                  },
+                  "op": "*",
+                  "rhs": {
+                    "arg": 15,
+                    "kind": "arg_value"
+                  }
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 18,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 19,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 20,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 20,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "buffer_arg": 20,
+          "count_arg": 0,
+          "elem_size_bytes": 4,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "modulatedDeformableIm2colGpuKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "n",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "dataIm",
+          "type": "const float *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "32",
+            "min_len": "8",
+            "nullable": false
+          },
+          "name": "dataOffset",
+          "type": "const float *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "dataMask",
+          "type": "const float *"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "height",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "width",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "kernelH",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "kernelW",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "kind": "int_range",
+            "max": "0",
+            "min": "0",
+            "signed": true
+          },
+          "name": "padH",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 9,
+          "domain": {
+            "kind": "int_range",
+            "max": "0",
+            "min": "0",
+            "signed": true
+          },
+          "name": "padW",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 10,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "strideH",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 11,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "strideW",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 12,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "dilationH",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 13,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "dilationW",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 14,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "channelPerDeformableGroup",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 15,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "batchSize",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 16,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "numChannels",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 17,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "deformableGroup",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 18,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "heightCol",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 19,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "widthCol",
+          "type": "const int32_t"
+        },
+        {
+          "arg": 20,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "dataCol",
+          "type": "float *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/modulatedDeformConvPlugin/modulatedDeformConvPluginKernel.cu",
+          "kind": "call_site",
+          "line": 190,
+          "note": "trtModulatedDeformableIm2col derives channelPerDeformableGroup and numKernels, then passes all tensor dimensions and buffer pointers directly to the kernel at line 193."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/modulatedDeformConvPlugin/modulatedDeformConvPluginKernel.cu",
+          "kind": "call_site",
+          "line": 233,
+          "note": "The host launcher computes heightOut and widthOut from input size, kernel size, padding, stride, and dilation; the selected one-tap subdomain keeps heightCol=height=1 and widthCol=width while allowing width 1..4."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/modulatedDeformConvPlugin/modulatedDeformConvPlugin.cpp",
+          "kind": "allocation",
+          "line": 197,
+          "note": "TensorRT allocates the im2col workspace from channels * kernelW * kernelH * outputHeight * outputWidth * element size, rounded up to 16-byte alignment."
+        }
+      ],
+      "kernel_id": "_Z34modulatedDeformableIm2colGpuKernelIfEviPKT_S__418d0e4b",
+      "launch_policy": {
+        "block_candidates": [
+          512,
+          256,
+          128,
+          64,
+          32
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z34modulatedDeformableIm2colGpuKernelIfEviPKT_S2_S2_iiiiiiiiiiiiiiiiPS0_"
+    }
+  ],
+  "project": "tensorrt_clip",
+  "schema_version": 1
+}

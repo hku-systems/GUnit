@@ -1,0 +1,12 @@
+# GDB init for RAPID/LibAFL restarting fuzzers.
+#
+# Usage:
+#   gdb -x scripts/gdbinit --args <binary> <args...>
+# or inside gdb:
+#   (gdb) source scripts/gdbinit
+#
+# Follow the forked fuzzing child process (the respawner stays in the parent).
+set follow-fork-mode child
+set detach-on-fork off
+set print pretty on
+

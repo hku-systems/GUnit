@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "project": "darknet",
+  "overrides": [
+    {
+      "symbol_name": "darknet_forward_crop_orig512",
+      "kernel_id": "darknet_forward_crop_orig512__d9d23ad2",
+      "display_name": "darknet_forward_crop_orig512",
+      "domains": [
+        {"arg": 0, "name": "input", "type": "float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "32768", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 1, "name": "output", "type": "float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "2048", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 2, "name": "batch", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "2", "signed": false}},
+        {"arg": 3, "name": "channels", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": false}},
+        {"arg": 4, "name": "height", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": false}},
+        {"arg": 5, "name": "width", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": false}},
+        {"arg": 6, "name": "crop_height", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "8", "signed": false}},
+        {"arg": 7, "name": "crop_width", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "8", "signed": false}},
+        {"arg": 8, "name": "train", "type": "int32_t", "domain": {"kind": "enum", "values": [{"name": "inference", "value": "0"}, {"name": "training", "value": "1"}], "allow_unknown": false}},
+        {"arg": 9, "name": "flip", "type": "int32_t", "domain": {"kind": "enum", "values": [{"name": "disabled", "value": "0"}, {"name": "enabled", "value": "1"}], "allow_unknown": false}},
+        {"arg": 10, "name": "angle", "type": "float", "domain": {"kind": "float_range", "min": -3.141592654, "max": 3.141592654, "allow_nan": false}},
+        {"arg": 11, "name": "r4", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 12, "name": "r5", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 13, "name": "r6", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 14, "name": "r7", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}}
+      ],
+      "constraints": [
+        {"kind": "scalar_compare_scalar", "lhs_arg": 6, "op": "<=", "rhs_arg": 4},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 7, "op": "<=", "rhs_arg": 5},
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 2}, "rhs": {"kind": "arg_value", "arg": 3}}, "rhs": {"kind": "arg_value", "arg": 4}}, "rhs": {"kind": "arg_value", "arg": 5}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 2}, "rhs": {"kind": "arg_value", "arg": 3}}, "rhs": {"kind": "arg_value", "arg": 6}}, "rhs": {"kind": "arg_value", "arg": 7}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [512],
+        "physical_block_max": 512,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [512, 1, 1],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": false
+      },
+      "evidence": [
+        {
+          "kind": "upstream_launch_and_indexing",
+          "file": "third_party/darknet/src/crop_layer_kernels.cu",
+          "line": 139,
+          "note": "The original kernel evaluates one id and the host uses BLOCK=512; this singleton negative-control domain caps batch*channels*crop_height*crop_width at 512 through scalar maxima."
+        },
+        {
+          "kind": "adapter_bounds",
+          "file": "third_party/fuzz/adapters/darknet_forward_crop/adapter.cu",
+          "line": 8,
+          "note": "Crop dimensions are repaired below source dimensions, input covers batch*channels*height*width floats, output covers batch*channels*crop_height*crop_width floats, and the adapter repeats the reviewed shape guard before access."
+        }
+      ]
+    },
+    {
+      "symbol_name": "darknet_forward_crop_vgeo",
+      "kernel_id": "darknet_forward_crop_vgeo__46faf06a",
+      "display_name": "darknet_forward_crop_vgeo",
+      "domains": [
+        {"arg": 0, "name": "input", "type": "float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "65536", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 1, "name": "output", "type": "float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "65536", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 2, "name": "batch", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": false}},
+        {"arg": 3, "name": "channels", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": false}},
+        {"arg": 4, "name": "height", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": false}},
+        {"arg": 5, "name": "width", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": false}},
+        {"arg": 6, "name": "crop_height", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": false}},
+        {"arg": 7, "name": "crop_width", "type": "uint32_t", "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": false}},
+        {"arg": 8, "name": "train", "type": "int32_t", "domain": {"kind": "enum", "values": [{"name": "inference", "value": "0"}, {"name": "training", "value": "1"}], "allow_unknown": false}},
+        {"arg": 9, "name": "flip", "type": "int32_t", "domain": {"kind": "enum", "values": [{"name": "disabled", "value": "0"}, {"name": "enabled", "value": "1"}], "allow_unknown": false}},
+        {"arg": 10, "name": "angle", "type": "float", "domain": {"kind": "float_range", "min": -3.141592654, "max": 3.141592654, "allow_nan": false}},
+        {"arg": 11, "name": "r4", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 12, "name": "r5", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 13, "name": "r6", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 14, "name": "r7", "type": "float", "domain": {"kind": "float_range", "min": 0.0, "max": 1.0, "allow_nan": false}}
+      ],
+      "constraints": [
+        {"kind": "scalar_compare_scalar", "lhs_arg": 6, "op": "<=", "rhs_arg": 4},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 7, "op": "<=", "rhs_arg": 5},
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 2}, "rhs": {"kind": "arg_value", "arg": 3}}, "rhs": {"kind": "arg_value", "arg": 4}}, "rhs": {"kind": "arg_value", "arg": 5}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 2}, "rhs": {"kind": "arg_value", "arg": 3}}, "rhs": {"kind": "arg_value", "arg": 6}}, "rhs": {"kind": "arg_value", "arg": 7}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [32, 64, 128, 256, 512],
+        "physical_block_max": 512,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [512, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1], [512, 1, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "derived_variant",
+          "file": "third_party/fuzz/adapters/darknet_forward_crop/adapter.cu",
+          "line": 102,
+          "note": "Grid-stride reassignment covers up to 16384 reviewed output elements from one logical block without synchronization or cross-thread floating-point state."
+        },
+        {
+          "kind": "correctness_contract",
+          "file": "third_party/fuzz/adapters/darknet_forward_crop/adapter_probe.cu",
+          "line": 83,
+          "note": "The GPU probe compares every 32/64/128/256/512-thread vgeo output byte-for-byte against an upstream-style 512-thread original launch across train/flip, edge offsets, angle endpoints, singleton, exact-crop, and greater-than-512 cases."
+        }
+      ]
+    }
+  ]
+}

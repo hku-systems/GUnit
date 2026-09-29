@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "project": "rq2_pytorch_batchnorm",
+  "overrides": [
+    {
+      "symbol_name": "rq1_pytorch_batchnorm",
+      "display_name": "rq1_pytorch_batchnorm",
+      "domains": [
+        {"arg": 0, "name": "input", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "4", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 1, "name": "z", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "4", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 2, "name": "mean", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 3, "name": "inv_std", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 4, "name": "weight", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 5, "name": "shift", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 6, "name": "out", "type": "float *__restrict", "domain": {"kind": "bytes", "min_len": "4", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 7, "name": "reduction_size", "type": "const int", "domain": {"kind": "int_range", "min": "1", "max": "16", "signed": true}},
+        {"arg": 8, "name": "stride", "type": "const int", "domain": {"kind": "int_range", "min": "1", "max": "16", "signed": true}},
+        {"arg": 9, "name": "fuse_relu", "type": "const bool", "domain": {"kind": "int_range", "min": "0", "max": "1", "signed": false}}
+      ],
+      "constraints": [
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 7}, "rhs": {"kind": "arg_value", "arg": 8}}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 0}, "repair": {"kind": "resize_payload", "arg": 0}},
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 7}, "rhs": {"kind": "arg_value", "arg": 8}}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 1}, "repair": {"kind": "resize_payload", "arg": 1}},
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 8}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 2}, "repair": {"kind": "resize_payload", "arg": 2}},
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 8}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 3}, "repair": {"kind": "resize_payload", "arg": 3}},
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 8}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 4}, "repair": {"kind": "resize_payload", "arg": 4}},
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 8}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 5}, "repair": {"kind": "resize_payload", "arg": 5}},
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 7}, "rhs": {"kind": "arg_value", "arg": 8}}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 6}, "repair": {"kind": "resize_payload", "arg": 6}}
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [32],
+        "physical_block_max": 32,
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [32, 1, 1],
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {"kind": "upstream_extraction", "file": "benchmark/rq2/workloads/pytorch_batchnorm/kernel.cu", "line": 5, "note": "float NHWC forward body with PARALLEL_LOADS=2 and fixed early return"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+../../../workloads/apex_index_mul_2d_vgeo/adapter.cu

@@ -1,0 +1,221 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 65,
+          "note": "FindMaxCorr uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z11FindMaxCorrPfP9SiftPointS1_iii__4f286b5c",
+      "symbol_name": "_Z11FindMaxCorrPfP9SiftPointS1_iii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 289,
+          "note": "one-dimensional bounds-clamped kernel; native launch is CleanMatches<<<iDivUp(numPts1, 64), 64>>>; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12CleanMatchesP9SiftPointi__071b39fb",
+      "symbol_name": "_Z12CleanMatchesP9SiftPointi"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 180,
+          "note": "FindMaxCorr2 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr2P9SiftPointS0_ii__497a5665",
+      "symbol_name": "_Z12FindMaxCorr2P9SiftPointS0_ii"
+    },
+    {
+      "decision": "skip",
+      "detail": "barriers after the p1 < numPts1 guard are threadIdx.y-dependent; Phase2 has no proof that every logical thread takes the same barrier region.",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 116,
+          "note": "p1 depends on threadIdx.y and conditionally guards the later reduction barriers"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr3PfP9SiftPointS1_ii__079ca3bd",
+      "reason_code": "vconfig_barrier_unsupported",
+      "symbol_name": "_Z12FindMaxCorr3PfP9SiftPointS1_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 244,
+          "note": "FindMaxCorr4 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr4P9SiftPointS0_ii__8a70bde8",
+      "symbol_name": "_Z12FindMaxCorr4P9SiftPointS0_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 763,
+          "note": "FindMaxCorr5 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr5P9SiftPointS0_ii__8f05425b",
+      "symbol_name": "_Z12FindMaxCorr5P9SiftPointS0_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 699,
+          "note": "FindMaxCorr6 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr6P9SiftPointS0_ii__628acd7d",
+      "symbol_name": "_Z12FindMaxCorr6P9SiftPointS0_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 618,
+          "note": "FindMaxCorr7 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr7P9SiftPointS0_ii__59fbb48a",
+      "symbol_name": "_Z12FindMaxCorr7P9SiftPointS0_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 530,
+          "note": "FindMaxCorr8 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr8P9SiftPointS0_ii__a552c77d",
+      "symbol_name": "_Z12FindMaxCorr8P9SiftPointS0_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 414,
+          "note": "FindMaxCorr9 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr9P9SiftPointS0_ii__d5ba6cd9",
+      "symbol_name": "_Z12FindMaxCorr9P9SiftPointS0_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 301,
+          "note": "FindMaxCorr10 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z13FindMaxCorr10P9SiftPointS0_ii__845fd768",
+      "symbol_name": "_Z13FindMaxCorr10P9SiftPointS0_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 6,
+          "note": "MatchSiftPoints uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z15MatchSiftPointsP9SiftPointS0_Pfii__a1978421",
+      "symbol_name": "_Z15MatchSiftPointsP9SiftPointS0_Pfii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 39,
+          "note": "MatchSiftPoints2 uses native 2D block/threadIdx.y layout; fixed and mutation VConfig validation passed."
+        },
+        {
+          "file": "third_party/fuzz/kernel_constraints/cudasift.json",
+          "kind": "constraint_policy",
+          "line": 177,
+          "note": "RAPID override preserves logical block=(16,16,1), physical block=256, and enables whole-warp VConfig mutation."
+        }
+      ],
+      "kernel_id": "_Z16MatchSiftPoints2P9SiftPointS0_Pfii__35c51f10",
+      "symbol_name": "_Z16MatchSiftPoints2P9SiftPointS0_Pfii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 959,
+          "note": "shared homo/cnts arrays are indexed by tx and ty; fixed and mutation VConfig validation passed."
+        },
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 962,
+          "note": "reads threadIdx.y"
+        },
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "launchsite",
+          "line": 1066,
+          "note": "native launch uses dim3 threads(TESTHOMO_TESTS, TESTHOMO_LOOPS)"
+        }
+      ],
+      "kernel_id": "_Z16TestHomographiesPfS_Piif__7f683dcb",
+      "symbol_name": "_Z16TestHomographiesPfS_Piif"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 910,
+          "note": "one-dimensional kernel uses idx = blockDim.x*blockIdx.x + threadIdx.x; payload constraints provide randPts and homo sizes; fixed and mutation VConfig validation passed."
+        }
+      ],
+      "kernel_id": "_Z19ComputeHomographiesPfPiS_i__6c6a7b01",
+      "symbol_name": "_Z19ComputeHomographiesPfPiS_i"
+    }
+  ],
+  "project": "cudasift",
+  "schema_version": 1
+}

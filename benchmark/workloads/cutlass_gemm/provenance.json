@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workload_id": "cutlass_gemm",
+  "upstream": {
+    "repository": "https://github.com/NVIDIA/cutlass",
+    "commit": "73c59c055c0fec87792470dbf33325158113db5e",
+    "path": "examples/00_basic_gemm/basic_gemm.cu",
+    "source_file": "upstream.source",
+    "sha256": "2abd83bd93f3b53b5acfba545adc1fab753540adf9afd67bddcba4255d47cc3b",
+    "license_file": "LICENSE.upstream"
+  },
+  "extraction": {
+    "kernel_file": "kernel.cu",
+    "kernel_sha256": "31317b15d12647243c7172263250c5d6a327c92963d0f8f5de4e5e0ecf96e25d",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "bdb7692de00d15e66e95b882bf800e17b841786968cac2db426d54d8514b3986",
+    "constraints_file": "constraints.json",
+    "constraints_sha256": "d21d099217684ce0424cac71873b2d61ad2086742560dc7cd3077777ec5530d7"
+  },
+  "execution": {
+    "entry": "rq1_cutlass_gemm",
+    "grid": [1, 1, 1],
+    "block": [16, 1, 1],
+    "dynamic_shared_bytes": 0,
+    "payload_size": 252,
+    "vconfig": {"fixed": true, "grid": [1, 1, 1], "block": [16, 1, 1]}
+  }
+}

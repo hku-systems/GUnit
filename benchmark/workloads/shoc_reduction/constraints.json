@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "project": "rq1_shoc_reduction",
+  "overrides": [
+    {
+      "symbol_name": "rq1_shoc_reduction",
+      "display_name": "rq1_shoc_reduction",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "g_idata",
+          "type": "const float *__restrict",
+          "domain": {"kind": "bytes", "min_len": "2048", "max_len": "2048", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "g_odata",
+          "type": "float *__restrict",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "4", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "n",
+          "type": "const unsigned int",
+          "domain": {"kind": "int_range", "min": "512", "max": "512", "signed": false}
+        }
+      ],
+      "constraints": [
+        {"kind": "count_fits_buffer", "count_arg": 2, "buffer_arg": 0, "elem_size_bytes": 4}
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [256],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 1024,
+        "coverage_memory": "global",
+        "vconfig_reserved": false
+      },
+      "evidence": [
+        {"kind": "upstream_extraction", "file": "benchmark/rq1/workloads/shoc_reduction/kernel.cu", "line": 22, "note": "fixed one-block reduce<float,256> contract with n=512"}
+      ]
+    }
+  ]
+}

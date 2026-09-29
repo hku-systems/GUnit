@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workloads": [
+    {
+      "id": "shoc_reduction",
+      "label": "SHOC Reduction",
+      "rq1_provenance": "../rq1/workloads/shoc_reduction/provenance.json",
+      "kernel": "workloads/shoc_reduction/kernel.cu",
+      "constraints": "workloads/shoc_reduction/constraints.json",
+      "vconfig_adaptation": "workloads/shoc_reduction/vconfig_adaptation.json"
+    },
+    {
+      "id": "shoc_radix_sort",
+      "label": "SHOC RadixSortBlock",
+      "rq1_provenance": "../rq1/workloads/shoc_radix_sort/provenance.json",
+      "kernel": "workloads/shoc_radix_sort/kernel.cu",
+      "constraints": "workloads/shoc_radix_sort/constraints.json"
+    },
+    {
+      "id": "shoc_scan",
+      "label": "SHOC ScanSingleBlock",
+      "rq1_provenance": "../rq1/workloads/shoc_scan/provenance.json",
+      "kernel": "workloads/shoc_scan/kernel.cu",
+      "constraints": "workloads/shoc_scan/constraints.json",
+      "vconfig_adaptation": "workloads/shoc_scan/vconfig_adaptation.json"
+    },
+    {
+      "id": "cutlass_gemm",
+      "label": "CUTLASS ReferenceGemm",
+      "rq1_provenance": "../rq1/workloads/cutlass_gemm/provenance.json",
+      "kernel": "workloads/cutlass_gemm/kernel.cu",
+      "constraints": "workloads/cutlass_gemm/constraints.json"
+    },
+    {
+      "id": "flashattention_device1xn",
+      "label": "FlashAttention-derived device1xN",
+      "rq1_provenance": "../rq1/workloads/flashattention_device1xn/provenance.json",
+      "kernel": "workloads/flashattention_device1xn/kernel.cu",
+      "constraints": "workloads/flashattention_device1xn/constraints.json",
+      "vconfig_adaptation": "workloads/flashattention_device1xn/vconfig_adaptation.json"
+    },
+    {
+      "id": "pytorch_batchnorm",
+      "label": "PyTorch-derived BatchNorm",
+      "rq1_provenance": "../rq1/workloads/pytorch_batchnorm/provenance.json",
+      "kernel": "workloads/pytorch_batchnorm/kernel.cu",
+      "constraints": "workloads/pytorch_batchnorm/constraints.json"
+    },
+    {
+      "id": "synth_complex",
+      "label": "Synthetic Complex Coverage",
+      "synthetic_provenance": "workloads/synth_complex/provenance.json",
+      "kernel": "workloads/synth_complex/kernel.cu",
+      "constraints": "workloads/synth_complex/constraints.json"
+    }
+  ]
+}

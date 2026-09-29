@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# This hook amends the last commit to add a Signed-off-by line if it's missing.
+# WARNING: This will change the commit hash of the last commit.
+# This can be problematic if you have already shared the commit.
+
+# Prevent the hook from running on the amend commit it creates
+if [ "$GIT_AMENDING" = "true" ]; then
+    exit 0
+fi
+
+if ! git log -1 --pretty=%B | grep -q -i -E '^Signed-off-by:'; then
+    echo "Git post-commit hook: Adding Signed-off-by... (This will amend the commit)"
+    export GIT_AMENDING=true
+    git commit --amend --no-edit --signoff
+    unset GIT_AMENDING
+fi

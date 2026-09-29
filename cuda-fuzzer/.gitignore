@@ -1,0 +1,10 @@
+target
+crashes
+corpus
+
+Cargo.lock
+*.rs.bk
+*.rs.swp
+*.rs.swo
+*.rs.swp~
+*.rs.swo~

@@ -1,0 +1,106 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr10",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "18432",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "576",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "32",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "1",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 301,
+          "note": "replay variant: numPts2 in [1,32] to trigger negative-index bug when numPts2 < 32"
+        }
+      ],
+      "kernel_id": "_Z13FindMaxCorr10P9SiftPointS0_ii__845fd768",
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [32, 8, 1],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z13FindMaxCorr10P9SiftPointS0_ii"
+    }
+  ],
+  "project": "cudasift",
+  "schema_version": 1
+}

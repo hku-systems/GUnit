@@ -1,0 +1,104 @@
+[
+  {
+    "name": "deep_template_with_bool_nttps",
+    "demangled": "void flash::flash_fwd_kernel<flash::Flash_fwd_hdim64, false, false, true>(flash::Flash_fwd_params)",
+    "expected_qualified": "flash::flash_fwd_kernel",
+    "expected_filter": "flash_fwd_kernel"
+  },
+  {
+    "name": "lambda_call_operator",
+    "demangled": "ns::outer()::{lambda(int)#1}::operator()(int) const",
+    "expected_qualified": "ns::outer()::{lambda(int)#1}::operator()",
+    "expected_filter": "operator()"
+  },
+  {
+    "name": "conversion_operator_bool",
+    "demangled": "ns::Optional<int>::operator bool() const",
+    "expected_qualified": "ns::Optional::operator bool",
+    "expected_filter": "operator bool"
+  },
+  {
+    "name": "operator_shift_left",
+    "demangled": "std::ostream& ns::Foo::operator<<(std::ostream&, Foo const&)",
+    "expected_qualified": "ns::Foo::operator<<",
+    "expected_filter": "operator<<"
+  },
+  {
+    "name": "constructor_templated",
+    "demangled": "ns::Foo<int>::Foo(int)",
+    "expected_qualified": "ns::Foo::Foo",
+    "expected_filter": "Foo"
+  },
+  {
+    "name": "destructor_templated",
+    "demangled": "ns::Foo<int>::~Foo()",
+    "expected_qualified": "ns::Foo::~Foo",
+    "expected_filter": "~Foo"
+  },
+  {
+    "name": "function_returning_function_pointer",
+    "demangled": "void (*ns::make_cb(int))(double)",
+    "expected_qualified": "ns::make_cb",
+    "expected_filter": "make_cb"
+  },
+  {
+    "name": "thunk_prefix",
+    "demangled": "non-virtual thunk to ns::Foo::bar(int)",
+    "expected_qualified": "ns::Foo::bar",
+    "expected_filter": "bar"
+  },
+  {
+    "name": "simple_global_function",
+    "demangled": "void my_kernel(float*, int)",
+    "expected_qualified": "my_kernel",
+    "expected_filter": "my_kernel"
+  },
+  {
+    "name": "simple_namespaced",
+    "demangled": "void ns::sub::my_func(int, double)",
+    "expected_qualified": "ns::sub::my_func",
+    "expected_filter": "my_func"
+  },
+  {
+    "name": "operator_equals",
+    "demangled": "bool ns::Widget::operator==(ns::Widget const&) const",
+    "expected_qualified": "ns::Widget::operator==",
+    "expected_filter": "operator=="
+  },
+  {
+    "name": "operator_new_array",
+    "demangled": "void* ns::Pool::operator new[](unsigned long)",
+    "expected_qualified": "ns::Pool::operator new[]",
+    "expected_filter": "operator new[]"
+  },
+  {
+    "name": "operator_delete",
+    "demangled": "void ns::Pool::operator delete(void*)",
+    "expected_qualified": "ns::Pool::operator delete",
+    "expected_filter": "operator delete"
+  },
+  {
+    "name": "virtual_thunk",
+    "demangled": "virtual thunk to ns::Base::method(int)",
+    "expected_qualified": "ns::Base::method",
+    "expected_filter": "method"
+  },
+  {
+    "name": "deeply_nested_templates",
+    "demangled": "void cutlass::gemm::kernel::GemmUniversal<cutlass::gemm::GemmShape<128, 128, 32>, cutlass::arch::Sm80>::run(cutlass::gemm::GemmCoord)",
+    "expected_qualified": "cutlass::gemm::kernel::GemmUniversal::run",
+    "expected_filter": "run"
+  },
+  {
+    "name": "nested_template_scope_this_one",
+    "demangled": "void flash<flash<flash<..., false, false, ...>>::flash_fwd_kernel<..., false, false, ...>>::this_one(a<false, false...>, b<false, false...>)",
+    "expected_qualified": "flash::this_one",
+    "expected_filter": "this_one"
+  },
+  {
+    "name": "no_params_no_return",
+    "demangled": "simple_func",
+    "expected_qualified": "simple_func",
+    "expected_filter": "simple_func"
+  }
+]

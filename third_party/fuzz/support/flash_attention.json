@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "project": "flash_attention",
+  "kernels": [
+    {
+      "symbol_name": "flash_bwd_dot_do_o_pod_kernel",
+      "kernel_id": "flash_bwd_dot_do_o_pod_kernel__4271cecf",
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "upstream_body",
+          "file": "third_party/flash-attention/csrc/flash_attn/src/flash_bwd_preprocess_kernel.h",
+          "line": 55,
+          "note": "compute_dot_do_o forms one dot(dO,O) value per query row, scales it by p_dropout, writes dsoftmax_sum, and clears the corresponding dQaccum tile on the non-deterministic path."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/flash-attention/csrc/flash_attn/src/flash_bwd_launch_template.h",
+          "line": 74,
+          "note": "The native launch derives grid.x from ceil(seqlen_q/kBlockM), launches kNThreads, and selects Clear_dQaccum=true when deterministic mode is off."
+        },
+        {
+          "kind": "adapter_bounds",
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/flash_attention/capture_sources/flash_bwd_dot_do_o_pod.cu",
+          "line": 10,
+          "note": "The POD adapter extracts one batch/head tile, guards rows by seqlen_q, strides by logical blockDim.x, and bounds all half/float accesses by seqlen_q*head_dim; responsiveness grade B because geometry and warp assignment are variable but branching is simple."
+        }
+      ]
+    },
+    {
+      "symbol_name": "flash_bwd_convert_dq_pod_kernel",
+      "kernel_id": "flash_bwd_convert_dq_pod_kernel__0ad34144",
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "upstream_body",
+          "file": "third_party/flash-attention/csrc/flash_attn/src/flash_bwd_preprocess_kernel.h",
+          "line": 182,
+          "note": "convert_dQ accumulates fp32 values across nsplits, applies scale_softmax_rp_dropout, converts to the output element type, and stores only in-range seqlen/head-dimension elements."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/flash-attention/csrc/flash_attn/src/flash_bwd_launch_template.h",
+          "line": 119,
+          "note": "The native conversion launch uses the same query-block grid, kNThreads, and nsplits=1 or deterministic gridDimx."
+        },
+        {
+          "kind": "adapter_bounds",
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/flash_attention/capture_sources/flash_bwd_convert_dq_pod.cu",
+          "line": 10,
+          "note": "The POD adapter compacts one batch/head tile into contiguous split planes and bounds reads by nsplits*seqlen_q*head_dim and writes by seqlen_q*head_dim; responsiveness grade B because scalar-gated grid-stride addressing changes warp assignment but branching is simple."
+        }
+      ]
+    }
+  ]
+}

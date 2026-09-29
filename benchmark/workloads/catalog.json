@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workloads": [
+    {
+      "id": "shoc_reduction",
+      "label": "SHOC Reduction",
+      "source_kind": "standalone",
+      "provenance": "shoc_reduction/provenance.json"
+    },
+    {
+      "id": "shoc_radix_sort",
+      "label": "SHOC RadixSortBlock",
+      "source_kind": "standalone",
+      "provenance": "shoc_radix_sort/provenance.json"
+    },
+    {
+      "id": "shoc_scan",
+      "label": "SHOC ScanSingleBlock",
+      "source_kind": "standalone",
+      "provenance": "shoc_scan/provenance.json"
+    },
+    {
+      "id": "cutlass_gemm",
+      "label": "CUTLASS ReferenceGemm",
+      "source_kind": "standalone",
+      "provenance": "cutlass_gemm/provenance.json"
+    },
+    {
+      "id": "flashattention_device1xn",
+      "label": "FlashAttention-derived device1xN",
+      "source_kind": "standalone",
+      "provenance": "flashattention_device1xn/provenance.json"
+    },
+    {
+      "id": "pytorch_batchnorm",
+      "label": "PyTorch-derived BatchNorm",
+      "source_kind": "standalone",
+      "provenance": "pytorch_batchnorm/provenance.json"
+    },
+    {
+      "id": "apex_maybe_cast",
+      "label": "Apex / maybe_cast",
+      "source_kind": "third_party",
+      "project": "apex",
+      "kernel_id": "apex_maybe_cast_kernel__206ea46b",
+      "support_registry": "../../third_party/fuzz/support/apex.json",
+      "constraint_registry": "../../third_party/fuzz/kernel_constraints/apex.json",
+      "submodule": "../../third_party/apex",
+      "submodule_commit": "12ec844e01121ef615eb6fe68a28715af5f33105",
+      "upstream_path": "apex/contrib/csrc/optimizers/fused_adam_cuda_kernel.cu",
+      "adapter": "apex_maybe_cast/adapter.cu",
+      "adapter_sha256": "860cb7e24ad7edfbd6285be008685bf0a590448525fe0e858a538a1b2ad0a344"
+    },
+    {
+      "id": "llama_upscale_f32_bilinear",
+      "label": "llama.cpp / upscale_f32_bilinear",
+      "source_kind": "third_party",
+      "project": "llama_cpp",
+      "kernel_id": "_ZL30upscale_f32_bilinear_antialiasPKfPfiiiiiiiiiifffff__e079a648",
+      "support_registry": "../../third_party/fuzz/support/llama_cpp.json",
+      "constraint_registry": "../../third_party/fuzz/kernel_constraints/llama_cpp.json",
+      "submodule": "../../third_party/llama.cpp",
+      "submodule_commit": "ff52ee964d9051e07da0e89a66567f0b893129c6",
+      "upstream_path": "ggml/src/ggml-cuda/upscale.cu"
+    },
+    {
+      "id": "gpurir_generate_rir",
+      "label": "gpuRIR / generateRIR",
+      "source_kind": "third_party",
+      "project": "gpurir",
+      "kernel_id": "_Z18generateRIR_kernelPfS_S_iiiiif__cd099106",
+      "support_registry": "../../third_party/fuzz/support/gpurir.json",
+      "constraint_registry": "../../third_party/fuzz/kernel_constraints/gpurir.json",
+      "submodule": "../../third_party/gpuRIR",
+      "submodule_commit": "fd8af43a4a113d3c2c05f0085a0119ecb1f1a484",
+      "upstream_path": "src/gpuRIR_cuda.cu"
+    },
+    {
+      "id": "apex_index_mul_2d_vgeo",
+      "label": "Apex / index_mul_2d_vgeo",
+      "source_kind": "third_party",
+      "project": "apex",
+      "kernel_id": "_Z23index_mul_2d_float_vgeoPfPKfS1_PKlll__88cdac70",
+      "support_registry": "../../third_party/fuzz/support/apex.json",
+      "constraint_registry": "../../third_party/fuzz/kernel_constraints/apex.json",
+      "submodule": "../../third_party/apex",
+      "submodule_commit": "12ec844e01121ef615eb6fe68a28715af5f33105",
+      "upstream_path": "apex/contrib/csrc/index_mul_2d/index_mul_2d_cuda_kernel.cu",
+      "adapter": "apex_index_mul_2d_vgeo/adapter.cu",
+      "adapter_sha256": "31bb6d94f7df3aab6f94eb4a41da7ce6e962e86b7f87601d42acc2b756a8ecf6"
+    },
+    {
+      "id": "cuda_samples_inverse_cnd",
+      "label": "CUDA Samples / inverseCND",
+      "source_kind": "third_party",
+      "project": "cuda_samples",
+      "kernel_id": "inverseCNDKernel_vgeo",
+      "support_registry": "../../third_party/fuzz/support/cuda_samples.json",
+      "constraint_registry": "../../third_party/fuzz/kernel_constraints/cuda_samples.json",
+      "submodule": "../../third_party/cuda-samples",
+      "submodule_commit": "b7c5481c556c3fe98db060207ecaa41a4b9a9abc",
+      "upstream_path": "cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu"
+    },
+    {
+      "id": "synth_complex",
+      "label": "Synthetic / byte_fingerprint",
+      "source_kind": "synthetic",
+      "provenance": "synth_complex/provenance.json"
+    }
+  ]
+}

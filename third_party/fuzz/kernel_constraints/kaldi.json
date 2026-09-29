@@ -1,0 +1,872 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<",
+          "rhs_arg": 2
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {"arg": 0, "kind": "arg_value"},
+              "op": "+",
+              "rhs": {"kind": "const", "value": 2}
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "repair": {"arg": 1, "kind": "resize_payload"},
+          "rhs": {"arg": 1, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {"arg": 0, "kind": "arg_value"},
+                "op": "/",
+                "rhs": {"kind": "const", "value": 2}
+              },
+              "op": "+",
+              "rhs": {"kind": "const", "value": 1}
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "repair": {"arg": 3, "kind": "resize_payload"},
+          "rhs": {"arg": 3, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "kaldi::power_spectrum_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "fft_32", "value": "32"},
+              {"name": "fft_64", "value": "64"},
+              {"name": "fft_128", "value": "128"},
+              {"name": "fft_256", "value": "256"}
+            ]
+          },
+          "name": "row_length",
+          "type": "int"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "1032",
+            "min_len": "136",
+            "nullable": false
+          },
+          "name": "A_in",
+          "type": "const float *"
+        },
+        {
+          "arg": 2,
+          "domain": {"kind": "int_range", "max": "258", "min": "258", "signed": true},
+          "name": "ldi",
+          "type": "int32_t"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "516",
+            "min_len": "68",
+            "nullable": false
+          },
+          "name": "A_out",
+          "type": "float *"
+        },
+        {
+          "arg": 4,
+          "domain": {"kind": "int_range", "max": "129", "min": "129", "signed": true},
+          "name": "ldo",
+          "type": "int32_t"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "magnitude", "value": "0"},
+              {"name": "power", "value": "1"}
+            ]
+          },
+          "name": "use_power",
+          "type": "bool"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "allocation",
+          "line": 79,
+          "note": "tmp_window_ allocates padded_length+2 elements per row and power_spectrum_ allocates padded_length/2+1; the enum retains four positive even FFT sizes while fixed maximum strides satisfy every choice."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 173,
+          "note": "The call passes separate tmp_window_ and power_spectrum_ allocations. Generated arg-pack payload slots preserve that required in/out disjointness."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 448,
+          "note": "The float2 loop is gated by row_length/2, thread 0 reads A_in[row_length], and the loop stride is compile-time CU1DBLOCK rather than blockDim.x."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 483,
+          "note": "The supported subset fixes max_chunk_frames*num_lanes=1 and both physical and logical block.x=256."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi21power_spectrum_kernelEiPKfiPfib__7815ddf8",
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[256, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZN5kaldi21power_spectrum_kernelEiPKfiPfib"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "scalar_compare_scalar",
+          "lhs_arg": 0,
+          "op": "<",
+          "rhs_arg": 2
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {"arg": 0, "kind": "arg_value"},
+              "op": "+",
+              "rhs": {"kind": "const", "value": 2}
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "repair": {"arg": 1, "kind": "resize_payload"},
+          "rhs": {"arg": 1, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {"arg": 0, "kind": "arg_value"},
+                "op": "/",
+                "rhs": {"kind": "const", "value": 2}
+              },
+              "op": "+",
+              "rhs": {"kind": "const", "value": 1}
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "repair": {"arg": 3, "kind": "resize_payload"},
+          "rhs": {"arg": 3, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "kaldi::power_spectrum_kernel_blockdim_stride",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "fft_32", "value": "32"},
+              {"name": "fft_64", "value": "64"},
+              {"name": "fft_128", "value": "128"},
+              {"name": "fft_256", "value": "256"}
+            ]
+          },
+          "name": "row_length",
+          "type": "int"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "1032",
+            "min_len": "136",
+            "nullable": false
+          },
+          "name": "A_in",
+          "type": "const float *"
+        },
+        {
+          "arg": 2,
+          "domain": {"kind": "int_range", "max": "258", "min": "258", "signed": true},
+          "name": "ldi",
+          "type": "int32_t"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "516",
+            "min_len": "68",
+            "nullable": false
+          },
+          "name": "A_out",
+          "type": "float *"
+        },
+        {
+          "arg": 4,
+          "domain": {"kind": "int_range", "max": "129", "min": "129", "signed": true},
+          "name": "ldo",
+          "type": "int32_t"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "magnitude", "value": "0"},
+              {"name": "power", "value": "1"}
+            ]
+          },
+          "name": "use_power",
+          "type": "bool"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "benchmark/rq2/variants/kaldi_power_spectrum_blockdim/power_spectrum_blockdim.cu",
+          "kind": "derived_variant",
+          "line": 17,
+          "note": "GO-S B-class decision variant: the only vendor-body rewrite is the blockDim.x loop stride, permitting logical whole-warp blocks within the physical 256-thread envelope."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "allocation",
+          "line": 79,
+          "note": "Each FFT input row has padded_length+2 elements; the positive even enum and fixed maximum input stride preserve that bound in the selected one-row subset."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "allocation",
+          "line": 83,
+          "note": "Each disjoint power-spectrum output row has padded_length/2+1 elements; the fixed maximum output stride preserves that bound in the selected one-row subset."
+        },
+        {
+          "file": "benchmark/rq2/variants/kaldi_power_spectrum_blockdim/probe.cu",
+          "kind": "correctness_probe",
+          "line": 101,
+          "note": "The tracked probe compares all half_length+1 outputs, including both special endpoints, bitwise."
+        },
+        {
+          "file": "benchmark/rq2/variants/kaldi_power_spectrum_blockdim/probe.cu",
+          "kind": "correctness_matrix",
+          "line": 120,
+          "note": "The probe covers every row_length and logical block candidate for both magnitude and power output."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi37power_spectrum_kernel_blockdim_strideEiPKfiPfib__48ee4406",
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZN5kaldi37power_spectrum_kernel_blockdim_strideEiPKfiPfib"
+    },
+    {
+      "constraints": [
+        {"buffer_arg": 11, "kind": "scalar_le_buffer_len", "scalar_arg": 3, "unit": "elements"},
+        {"buffer_arg": 12, "kind": "scalar_le_buffer_len", "scalar_arg": 3, "unit": "elements"},
+        {"buffer_arg": 14, "kind": "scalar_le_buffer_len", "scalar_arg": 3, "unit": "elements"},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "<=", "rhs_arg": 13},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "<=", "rhs_arg": 15}
+      ],
+      "display_name": "kaldi::batched_process_window_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 28,
+            "kind": "bytes",
+            "max_len": "28",
+            "min_len": "28",
+            "nullable": false,
+            "pattern_hex": "00000000000100000000000001000000000000000100000001000000"
+          },
+          "name": "lanes",
+          "type": "const kaldi::LaneDesc *"
+        },
+        {
+          "arg": 1,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "n_lanes",
+          "type": "int32_t"
+        },
+        {
+          "arg": 2,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "max_chunk_frames",
+          "type": "int32_t"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "frame_32", "value": "32"},
+              {"name": "frame_64", "value": "64"},
+              {"name": "frame_128", "value": "128"},
+              {"name": "frame_256", "value": "256"}
+            ]
+          },
+          "name": "frame_length",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 0.1, "min": 0.0},
+          "name": "dither",
+          "type": "float"
+        },
+        {
+          "arg": 5,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 0.000001},
+          "name": "energy_floor",
+          "type": "float"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [{"name": "keep_dc", "value": "0"}, {"name": "remove_dc", "value": "1"}]
+          },
+          "name": "remove_dc_offset",
+          "type": "bool"
+        },
+        {
+          "arg": 7,
+          "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 0.0},
+          "name": "preemph_coeff",
+          "type": "float"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [{"name": "skip_raw_energy", "value": "0"}, {"name": "raw_energy", "value": "1"}]
+          },
+          "name": "need_raw_log_energy",
+          "type": "bool"
+        },
+        {
+          "arg": 9,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "4", "min_len": "4", "nullable": false},
+          "name": "log_energy_pre_window",
+          "type": "float *"
+        },
+        {
+          "arg": 10,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "lde",
+          "type": "int32_t"
+        },
+        {
+          "arg": 11,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "128", "nullable": false},
+          "name": "windowing",
+          "type": "const float *"
+        },
+        {
+          "arg": 12,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "128", "nullable": false},
+          "name": "tmp_windows",
+          "type": "float *"
+        },
+        {
+          "arg": 13,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "ldt",
+          "type": "int32_t"
+        },
+        {
+          "arg": 14,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "128", "nullable": false},
+          "name": "windows",
+          "type": "float *"
+        },
+        {
+          "arg": 15,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "ldw",
+          "type": "int32_t"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 123,
+          "note": "The native call supplies frame_length_, one-frame/lane buffers, their strides, and the windowing coefficients."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 153,
+          "note": "The fixed LaneDesc encodes channel=0, num_chunk_samples=256, num_chunk_frames=1, current frame/sample zero, and first/last=true; the fixed one-row grid therefore selects valid row/lane zero."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 522,
+          "note": "CUB BlockReduce<float,CU1DBLOCK> and CU1DBLOCK-strided loops require the native fixed 256-thread logical block."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi29batched_process_window_kernelEPKNS_8L__abf3b5ce",
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[256, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZN5kaldi29batched_process_window_kernelEPKNS_8LaneDescEiiiffbfbPfiPKfS3_iS3_i"
+    },
+    {
+      "constraints": [
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "<=", "rhs_arg": 4},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "==", "rhs_arg": 9},
+        {"buffer_arg": 6, "kind": "scalar_le_buffer_len", "scalar_arg": 3, "unit": "elements"},
+        {"buffer_arg": 8, "kind": "scalar_le_buffer_len", "scalar_arg": 4, "unit": "elements"},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "<=", "rhs_arg": 7},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 4, "op": "<=", "rhs_arg": 10},
+        {"buffer_arg": 11, "kind": "scalar_le_buffer_len", "scalar_arg": 12, "unit": "elements"}
+      ],
+      "display_name": "kaldi::batched_extract_window_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 28,
+            "kind": "bytes",
+            "max_len": "28",
+            "min_len": "28",
+            "nullable": false,
+            "pattern_hex": "00000000000100000000000001000000000000000100000001000000"
+          },
+          "name": "lanes",
+          "type": "const kaldi::LaneDesc *"
+        },
+        {
+          "arg": 1,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "num_lanes",
+          "type": "int32_t"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "shift_16", "value": "16"},
+              {"name": "shift_32", "value": "32"},
+              {"name": "shift_64", "value": "64"}
+            ]
+          },
+          "name": "frame_shift",
+          "type": "int32"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "frame_32", "value": "32"},
+              {"name": "frame_64", "value": "64"},
+              {"name": "frame_128", "value": "128"},
+              {"name": "frame_256", "value": "256"}
+            ]
+          },
+          "name": "frame_length",
+          "type": "int32"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "padded_32", "value": "32"},
+              {"name": "padded_64", "value": "64"},
+              {"name": "padded_128", "value": "128"},
+              {"name": "padded_256", "value": "256"}
+            ]
+          },
+          "name": "frame_length_padded",
+          "type": "int32"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [{"name": "snip_edges", "value": "1"}]
+          },
+          "name": "snip_edges",
+          "type": "bool"
+        },
+        {
+          "arg": 6,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "128", "nullable": false},
+          "name": "wave",
+          "type": "const kaldi::BaseFloat *__restrict"
+        },
+        {
+          "arg": 7,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "ldw",
+          "type": "int32_t"
+        },
+        {
+          "arg": 8,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "128", "nullable": false},
+          "name": "windows",
+          "type": "kaldi::BaseFloat *__restrict"
+        },
+        {
+          "arg": 9,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "window_32", "value": "32"},
+              {"name": "window_64", "value": "64"},
+              {"name": "window_128", "value": "128"},
+              {"name": "window_256", "value": "256"}
+            ]
+          },
+          "name": "window_size",
+          "type": "int32_t"
+        },
+        {
+          "arg": 10,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "wlda",
+          "type": "int32_t"
+        },
+        {
+          "arg": 11,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "4",
+            "min_len": "4",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "stash",
+          "type": "kaldi::BaseFloat *"
+        },
+        {
+          "arg": 12,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "ssize",
+          "type": "int32_t"
+        },
+        {
+          "arg": 13,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "lds",
+          "type": "int32_t"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 109,
+          "note": "The host passes WindowShift, WindowSize, PaddedWindowSize, wave/window strides, and stash dimensions from their owning buffers."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 327,
+          "note": "For fixed first-frame LaneDesc data and snip_edges=true, wave_start=0 and frame_length<=num_chunk_samples=256 select the bounded direct-copy path; padded writes are separately bounded by frame_length_padded."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 536,
+          "note": "The native physical block has 256 threads; blockDim.x-strided loops support logical whole-warp candidates 32, 64, 128, and 256 in the one-block subset."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi29batched_extract_window_kernelEPKNS_8L__5231516c",
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZN5kaldi29batched_extract_window_kernelEPKNS_8LaneDescEiiiibPKfiPfiiS5_ii"
+    },
+    {
+      "constraints": [
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "<=", "rhs_arg": 4},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "==", "rhs_arg": 9},
+        {"buffer_arg": 6, "kind": "scalar_le_buffer_len", "scalar_arg": 3, "unit": "elements"},
+        {"buffer_arg": 8, "kind": "scalar_le_buffer_len", "scalar_arg": 4, "unit": "elements"},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 3, "op": "<=", "rhs_arg": 7},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 4, "op": "<=", "rhs_arg": 10},
+        {"buffer_arg": 11, "kind": "scalar_le_buffer_len", "scalar_arg": 12, "unit": "elements"}
+      ],
+      "display_name": "kaldi::batched_extract_window_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 28,
+            "kind": "bytes",
+            "max_len": "28",
+            "min_len": "28",
+            "nullable": false,
+            "pattern_hex": "00000000000100000000000001000000000000000100000001000000"
+          },
+          "name": "lanes",
+          "type": "const kaldi::LaneDesc *"
+        },
+        {
+          "arg": 1,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "num_lanes",
+          "type": "int32_t"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "shift_16", "value": "16"},
+              {"name": "shift_32", "value": "32"},
+              {"name": "shift_64", "value": "64"}
+            ]
+          },
+          "name": "frame_shift",
+          "type": "int32"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "frame_32", "value": "32"},
+              {"name": "frame_64", "value": "64"},
+              {"name": "frame_128", "value": "128"},
+              {"name": "frame_256", "value": "256"}
+            ]
+          },
+          "name": "frame_length",
+          "type": "int32"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "padded_32", "value": "32"},
+              {"name": "padded_64", "value": "64"},
+              {"name": "padded_128", "value": "128"},
+              {"name": "padded_256", "value": "256"}
+            ]
+          },
+          "name": "frame_length_padded",
+          "type": "int32"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [{"name": "snip_edges", "value": "1"}]
+          },
+          "name": "snip_edges",
+          "type": "bool"
+        },
+        {
+          "arg": 6,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "128", "nullable": false},
+          "name": "wave",
+          "type": "const kaldi::BaseFloat *__restrict"
+        },
+        {
+          "arg": 7,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "ldw",
+          "type": "int32_t"
+        },
+        {
+          "arg": 8,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "1024", "min_len": "128", "nullable": false},
+          "name": "windows",
+          "type": "kaldi::BaseFloat *__restrict"
+        },
+        {
+          "arg": 9,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "window_32", "value": "32"},
+              {"name": "window_64", "value": "64"},
+              {"name": "window_128", "value": "128"},
+              {"name": "window_256", "value": "256"}
+            ]
+          },
+          "name": "window_size",
+          "type": "int32_t"
+        },
+        {
+          "arg": 10,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "wlda",
+          "type": "int32_t"
+        },
+        {
+          "arg": 11,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "4",
+            "min_len": "4",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "stash",
+          "type": "kaldi::BaseFloat *"
+        },
+        {
+          "arg": 12,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "ssize",
+          "type": "int32_t"
+        },
+        {
+          "arg": 13,
+          "domain": {"kind": "int_range", "max": "1", "min": "1", "signed": true},
+          "name": "lds",
+          "type": "int32_t"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "derived_variant",
+          "line": 283,
+          "note": "This direct-VConfig registry variant reuses the unchanged Kaldi kernel body and symbol under a distinct kernel ID."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "block_size_invariance",
+          "line": 329,
+          "note": "The direct-copy loop and the reflected-edge loop at line 346 both stride by blockDim.x, and the padding loop at lines 363-365 does likewise; each assigns disjoint output indices, so logical blocks 32, 64, 128, and 256 produce the same window without reductions or synchronization."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 109,
+          "note": "The host passes WindowShift, WindowSize, PaddedWindowSize, wave/window strides, and stash dimensions from their owning buffers."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 327,
+          "note": "For fixed first-frame LaneDesc data and snip_edges=true, wave_start=0 and frame_length<=num_chunk_samples=256 select the bounded direct-copy path; padded writes are separately bounded by frame_length_padded."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 536,
+          "note": "The native physical block has 256 threads; blockDim.x-strided loops support logical whole-warp candidates 32, 64, 128, and 256 in the one-block subset."
+        }
+      ],
+      "kernel_id": "batched_extract_window_vgeo",
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZN5kaldi29batched_extract_window_kernelEPKNS_8LaneDescEiiiibPKfiPfiiS5_ii"
+    }
+  ],
+  "project": "kaldi",
+  "schema_version": 1
+}

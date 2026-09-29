@@ -1,0 +1,1338 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/batchencoder.cu",
+          "kind": "kernel_body",
+          "line": 91,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z10decode_gpuPmS_S_m__8881d246",
+      "symbol_name": "_Z10decode_gpuPmS_S_m"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/batchencoder.cu",
+          "kind": "kernel_body",
+          "line": 51,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z10encode_gpuPmS_mS_mm__e665930e",
+      "symbol_name": "_Z10encode_gpuPmS_mS_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/prng.cu",
+          "kind": "kernel_body",
+          "line": 77,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z17sample_error_polyPmPKhPK8DModulusmm__2b9dc31e",
+      "symbol_name": "_Z17sample_error_polyPmPKhPK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/prng.cu",
+          "kind": "kernel_body",
+          "line": 49,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z19sample_ternary_polyPmPKhPK8DModulusmm__18d390c3",
+      "symbol_name": "_Z19sample_ternary_polyPmPKhPK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/prng.cu",
+          "kind": "kernel_body",
+          "line": 61,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z19sample_uniform_polyPmPKhPK8DModulusmm__7953714e",
+      "symbol_name": "_Z19sample_uniform_polyPmPKhPK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 19,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z12add_rns_polyPKmS0_PK8DModulusPmmm__0ea22044",
+      "symbol_name": "_Z12add_rns_polyPKmS0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 40,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z12sub_rns_polyPKmS0_PK8DModulusPmmm__925c8be5",
+      "symbol_name": "_Z12sub_rns_polyPKmS0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 26,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z14add_std_cipherPKmS0_PK8DModulusPmmm__150035c5",
+      "symbol_name": "_Z14add_std_cipherPKmS0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 6,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z15negate_rns_polyPKmPK8DModulusPmmm__86ec485f",
+      "symbol_name": "_Z15negate_rns_polyPKmPK8DModulusPmmm"
+    },
+    {
+      "decision": "skip",
+      "detail": "kernel has pointer-to-pointer arguments that cannot be materialized as standalone payload buffers.",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "manifest_arg",
+          "line": 61,
+          "note": "argument types include const uint64_t *const *"
+        }
+      ],
+      "kernel_id": "_Z17add_many_rns_polyPKPKmmPK8DModulusPmjjj__a36192be",
+      "reason_code": "pointer_to_pointer_not_supported",
+      "symbol_name": "_Z17add_many_rns_polyPKPKmmPK8DModulusPmjjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 76,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z17multiply_rns_polyPKmS0_PK8DModulusPmmm__49d107a6",
+      "symbol_name": "_Z17multiply_rns_polyPKmS0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 255,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z18abs_plain_rns_polyPKmmS0_Pmmm__bc564d28",
+      "symbol_name": "_Z18abs_plain_rns_polyPKmmS0_Pmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 203,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z22sub_and_scale_rns_polyPKmS0_S0_S0_PK8DModulusPmmm__c0293711",
+      "symbol_name": "_Z22sub_and_scale_rns_polyPKmS0_S0_S0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 54,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z23add_and_negate_rns_polyPKmS0_PK8DModulusPmmm__1bc551d6",
+      "symbol_name": "_Z23add_and_negate_rns_polyPKmS0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "skip",
+      "detail": "__syncthreads() is control-dependent on tid < ct1_size. The fuzz domains and RAPID2 physical launch can have ct1_size < blockDim.x, so only a subset of the block reaches the barrier and the target can deadlock independent of fuzzer validity.",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 667,
+          "note": "__syncthreads() appears inside if (tid < ct1_size), creating a divergent barrier when ct1_size is smaller than the physical block."
+        }
+      ],
+      "kernel_id": "_Z23zero_coeff_count_kernelPjPKmm__4fc80c15",
+      "reason_code": "target_bug_candidate_divergent_barrier",
+      "symbol_name": "_Z23zero_coeff_count_kernelPjPKmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 97,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z24multiply_scalar_rns_polyPKmS0_S0_PK8DModulusPmmm__003f5a3b",
+      "symbol_name": "_Z24multiply_scalar_rns_polyPKmS0_S0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 90,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z24multiply_scalar_rns_polyPKmmPK8DModulusPmmm__499ec75e",
+      "symbol_name": "_Z24multiply_scalar_rns_polyPKmmPK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 272,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z24tensor_prod_2x2_rns_polyPKmS0_PK8DModulusPmjj__8d3da421",
+      "symbol_name": "_Z24tensor_prod_2x2_rns_polyPKmS0_PK8DModulusPmjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 303,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z24tensor_prod_mxn_rns_polyPKmjS0_jPK8DModulusPmmjj__b9727e93",
+      "symbol_name": "_Z24tensor_prod_mxn_rns_polyPKmjS0_jPK8DModulusPmmjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 113,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z25multiply_and_add_rns_polyPKmS0_S0_PK8DModulusPmmm__7e40f32a",
+      "symbol_name": "_Z25multiply_and_add_rns_polyPKmS0_S0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 285,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z26tensor_square_2x2_rns_polyPKmPK8DModulusPmjj__ec2a0d18",
+      "symbol_name": "_Z26tensor_square_2x2_rns_polyPKmPK8DModulusPmjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 212,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z27bfv_add_timesQ_overt_kernelPmPKmmmS1_S1_PK8DModulusmmm__3c44a339",
+      "symbol_name": "_Z27bfv_add_timesQ_overt_kernelPmPKmmmS1_S1_PK8DModulusmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 223,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z27bfv_sub_timesQ_overt_kernelPmPKmmmS1_S1_PK8DModulusmmm__6d057ccb",
+      "symbol_name": "_Z27bfv_sub_timesQ_overt_kernelPmPKmmmS1_S1_PK8DModulusmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 195,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z29sub_and_scale_single_mod_polyPKmS0_mmmPmm__f9673008",
+      "symbol_name": "_Z29sub_and_scale_single_mod_polyPKmS0_mmmPmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 186,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z32multiply_and_add_negate_rns_polyPKmS0_S0_PK8DModulusPmmm__193c478c",
+      "symbol_name": "_Z32multiply_and_add_negate_rns_polyPKmS0_S0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 122,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z32multiply_scalar_and_add_rns_polyPKmS0_mPK8DModulusPmmm__72a8273b",
+      "symbol_name": "_Z32multiply_scalar_and_add_rns_polyPKmS0_mPK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 131,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z32multiply_scalar_and_sub_rns_polyPKmS0_mPK8DModulusPmmm__42d4dee7",
+      "symbol_name": "_Z32multiply_scalar_and_sub_rns_polyPKmS0_mPK8DModulusPmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "kernel_body",
+          "line": 238,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z33multiply_and_negated_add_rns_polyPKmmS0_S0_PK8DModulusPmmm__61b1dca7",
+      "symbol_name": "_Z33multiply_and_negated_add_rns_polyPKmmS0_S0_PK8DModulusPmmm"
+    },
+    {
+      "decision": "skip",
+      "detail": "kernel has pointer-to-pointer arguments that cannot be materialized as standalone payload buffers.",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/polymath.cu",
+          "kind": "manifest_arg",
+          "line": 168,
+          "note": "argument types include const uint64_t *const *, uint64_t **"
+        }
+      ],
+      "kernel_id": "_Z34multiply_temp_mod_and_add_rns_polyPKmPKS0_PK__279565ff",
+      "reason_code": "pointer_to_pointer_not_supported",
+      "symbol_name": "_Z34multiply_temp_mod_and_add_rns_polyPKmPKS0_PK8DModulusPPmmmmS0_S0_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_base.cu",
+          "kind": "kernel_body",
+          "line": 173,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z20compose_array_kernelP7double2PmS1_PKmjPK8DMo__a40e96fa",
+      "symbol_name": "_Z20compose_array_kernelP7double2PmS1_PKmjPK8DModulusS3_S3_S3_S3_S3_dj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_base.cu",
+          "kind": "call_site",
+          "line": 157,
+          "note": "Native launch derives gridDim from poly_degree * size() / blockDimGlb.x; reviewed override uses the size()==1 small domain so grid=1, blockDimGlb.x=128."
+        },
+        {
+          "file": "third_party/fuzz/kernel_constraints/phantom_fhe.json",
+          "kind": "constraint_override",
+          "line": 4585,
+          "note": "launch_policy fixes physical candidates to 128/64/32. Constraints come from DRNSBase::decompose_array and PhantomCKKSEncoder allocation: poly_degree=128, size()==1 DModulus, dst=128 uint64_t, and src=64 cuDoubleComplex=1024B."
+        }
+      ],
+      "kernel_id": "_Z29decompose_array_uint64_kernelPmPK7double2PK8DModulusj__60845b2f",
+      "symbol_name": "_Z29decompose_array_uint64_kernelPmPK7double2PK8DModulusj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_base.cu",
+          "kind": "call_site",
+          "line": 157,
+          "note": "Native launch derives gridDim from poly_degree * size() / blockDimGlb.x; reviewed override uses the size()==1 small domain so grid=1, blockDimGlb.x=128."
+        },
+        {
+          "file": "third_party/fuzz/kernel_constraints/phantom_fhe.json",
+          "kind": "constraint_override",
+          "line": 4714,
+          "note": "launch_policy fixes physical candidates to 128/64/32. Constraints come from DRNSBase::decompose_array and PhantomCKKSEncoder allocation: poly_degree=128, size()==1 DModulus, dst=128 uint64_t, and src=64 cuDoubleComplex=1024B."
+        }
+      ],
+      "kernel_id": "_Z30decompose_array_uint128_kernelPmPK7double2PK8DModulusj__4ca4c9ad",
+      "symbol_name": "_Z30decompose_array_uint128_kernelPmPK7double2PK8DModulusj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_base.cu",
+          "kind": "kernel_body",
+          "line": 104,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z36decompose_array_uint_slow_first_partPmPK7double2jj__a901faf2",
+      "symbol_name": "_Z36decompose_array_uint_slow_first_partPmPK7double2jj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_base.cu",
+          "kind": "kernel_body",
+          "line": 130,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z37decompose_array_uint_slow_second_partPmPKmPK8DModulusjj__6b3df71a",
+      "symbol_name": "_Z37decompose_array_uint_slow_second_partPmPKmPK8DModulusjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1290,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom13sm_mrq_kernelEPmPKmmmmPK8DModulusS2_S2_S2_mm__c1faf581",
+      "symbol_name": "_ZN7phantom13sm_mrq_kernelEPmPKmmmmPK8DModulusS2_S2_S2_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1811,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom26ExpandCRTBasisQlHat_kernelEPmPKmS2___3b197c82",
+      "symbol_name": "_ZN7phantom26ExpandCRTBasisQlHat_kernelEPmPKmS2_S2_PK8DModulusmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 984,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom28perform_final_multiplicationEPmPKmmmmPK8DModulus__d263cba0",
+      "symbol_name": "_ZN7phantom28perform_final_multiplicationEPmPKmmmmPK8DModulus"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1700,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom29scaleAndRound_HPS_QR_R_kernelEPmPKm__f9c1f42f",
+      "symbol_name": "_ZN7phantom29scaleAndRound_HPS_QR_R_kernelEPmPKmS2_PKdPK8DModulusmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1082,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom30divide_and_round_q_last_kernelEPmPK__0d25c4f6",
+      "symbol_name": "_ZN7phantom30divide_and_round_q_last_kernelEPmPKmPK8DModulusS2_S2_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1749,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom32scaleAndRound_HPS_QlRl_Ql_kernelEPm__12a8fdd4",
+      "symbol_name": "_ZN7phantom32scaleAndRound_HPS_QlRl_Ql_kernelEPmPKmS2_PKdPK8DModulusmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1837,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom36ExpandCRTBasisQlHat_add_to_ct_kerne__61475360",
+      "symbol_name": "_ZN7phantom36ExpandCRTBasisQlHat_add_to_ct_kernelEPmPKmS2_S2_PK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1128,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom37divide_and_round_reduce_q_last_kern__1637bfd2",
+      "symbol_name": "_ZN7phantom37divide_and_round_reduce_q_last_kernelEPmPKmPK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1141,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom38divide_and_round_ntt_inv_scalar_ker__60451525",
+      "symbol_name": "_ZN7phantom38divide_and_round_ntt_inv_scalar_kernelEPmPKmPK8DModulusS2_S2_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1571,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom40hps_decrypt_scale_and_round_kernel___379847e4",
+      "symbol_name": "_ZN7phantom40hps_decrypt_scale_and_round_kernel_largeEPmPKmS2_S2_PKdS2_S2_S4_mmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1519,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom40hps_decrypt_scale_and_round_kernel___0ab62d95",
+      "symbol_name": "_ZN7phantom40hps_decrypt_scale_and_round_kernel_smallEPmPKmS2_S2_PKdmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1603,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom45hps_decrypt_scale_and_round_kernel___f1d0f842",
+      "symbol_name": "_ZN7phantom45hps_decrypt_scale_and_round_kernel_large_lazyEPmPKmS2_PKdS2_S4_mmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1546,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom45hps_decrypt_scale_and_round_kernel___33529692",
+      "symbol_name": "_ZN7phantom45hps_decrypt_scale_and_round_kernel_small_lazyEPmPKmS2_PKdmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1186,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantomL25bgv_mod_t_divide_q_kernelEPmPKmS2___6ec7d3e7",
+      "symbol_name": "_ZN7phantomL25bgv_mod_t_divide_q_kernelEPmPKmS2_S2_S2_S2_S2_mmPK8DModulusmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns.cu",
+          "kind": "kernel_body",
+          "line": 1344,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantomL33bconv_fuse_sub_mul_unroll2_kernelE__fab9d8a3",
+      "symbol_name": "_ZN7phantomL33bconv_fuse_sub_mul_unroll2_kernelEPmPKmS2_S2_S2_S2_PK8DModulusmS5_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 217,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z16add_to_ct_kernelPmPKmPK8DModulusmm__317350d2",
+      "symbol_name": "_Z16add_to_ct_kernelPmPKmPK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 89,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z17bconv_mult_kernelPmPKmS1_S1_PK8DModulusmm__938f5910",
+      "symbol_name": "_Z17bconv_mult_kernelPmPKmS1_S1_PK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 100,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z19bconv_matmul_kernelPmPKmS1_PK8DModulusmS4_mm__56889a4e",
+      "symbol_name": "_Z19bconv_matmul_kernelPmPKmS1_PK8DModulusmS4_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 92,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z25bconv_mult_unroll2_kernelPmPKmS1_S1_PK8DModulusmm__0df54cba",
+      "symbol_name": "_Z25bconv_mult_unroll2_kernelPmPKmS1_S1_PK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 96,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z25bconv_mult_unroll4_kernelPmPKmS1_S1_PK8DModulusmm__0236ec7b",
+      "symbol_name": "_Z25bconv_mult_unroll4_kernelPmPKmS1_S1_PK8DModulusmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 104,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z27bconv_matmul_unroll2_kernelPmPKmS1_PK8DModulusmS4_mm__dbf79030",
+      "symbol_name": "_Z27bconv_matmul_unroll2_kernelPmPKmS1_PK8DModulusmS4_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 108,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z27bconv_matmul_unroll4_kernelPmPKmS1_PK8DModulusmS4_mm__f69f3327",
+      "symbol_name": "_Z27bconv_matmul_unroll4_kernelPmPKmS1_PK8DModulusmS4_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 680,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL14moddown_kernelPmPKmS1_PK8DModulusS1_S1_mm__7aa0c604",
+      "symbol_name": "_ZL14moddown_kernelPmPKmS1_PK8DModulusS1_S1_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 636,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL18bgv_moddown_kernelPmPKmS1_S1_S1_S1_S1_S1_mmPK8DModulusmmm__aaa0403f",
+      "symbol_name": "_ZL18bgv_moddown_kernelPmPKmS1_S1_S1_S1_S1_S1_mmPK8DModulusmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 522,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL24modup_copy_partQl_kernelPmPKmmmm__e25dd5be",
+      "symbol_name": "_ZL24modup_copy_partQl_kernelPmPKmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 374,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL26exact_convert_array_kernelPmPKmPK8DModulusm__14063d94",
+      "symbol_name": "_ZL26exact_convert_array_kernelPmPKmPK8DModulusmS4_mS1_S1_S1_S1_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 432,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL27modup_bconv_single_p_kernelPmPKmS1_mmPK8DModulusm__4817b22b",
+      "symbol_name": "_ZL27modup_bconv_single_p_kernelPmPKmS1_mmPK8DModulusm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "call_site",
+          "line": 796,
+          "note": "Native launch derives gridDim from n * size_Ql / blockDimGlb.x; reviewed override fixes n=128 and size_QlP=2, so size_Ql=1 and grid=1 with blockDimGlb.x=128."
+        },
+        {
+          "file": "third_party/fuzz/kernel_constraints/phantom_fhe.json",
+          "kind": "constraint_override",
+          "line": 11347,
+          "note": "launch_policy fixes physical candidates to 128/64/32. Constraints come from DRNSTool::moddown_from_NTT alpha==1 call path: n=128, size_QlP=2, size_Ql=1, dst/src=128 uint64_t, base_QlP=2 DModulus values."
+        }
+      ],
+      "kernel_id": "_ZL29moddown_bconv_single_p_kernelPmPKmmPK8DModulusm__0c521208",
+      "symbol_name": "_ZL29moddown_bconv_single_p_kernelPmPKmmPK8DModulusm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 249,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL30base_convert_matmul_hps_kernelPmPKmS1_S1_PK__528c2c14",
+      "symbol_name": "_ZL30base_convert_matmul_hps_kernelPmPKmS1_S1_PKdPK8DModulusmS6_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 455,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL34bconv_matmul_padded_unroll2_kernelPmPKmS1_P__95c06593",
+      "symbol_name": "_ZL34bconv_matmul_padded_unroll2_kernelPmPKmS1_PK8DModulusmS4_mmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 488,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL34bconv_matmul_padded_unroll4_kernelPmPKmS1_P__47dbbf5d",
+      "symbol_name": "_ZL34bconv_matmul_padded_unroll4_kernelPmPKmS1_PK8DModulusmS4_mmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 277,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL38base_convert_matmul_hps_unroll2_kernelPmPKm__6e41990a",
+      "symbol_name": "_ZL38base_convert_matmul_hps_unroll2_kernelPmPKmS1_S1_PKdPK8DModulusmS6_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/rns_bconv.cu",
+          "kind": "kernel_body",
+          "line": 313,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL38base_convert_matmul_hps_unroll4_kernelPmPKm__a83b3657",
+      "symbol_name": "_ZL38base_convert_matmul_hps_unroll4_kernelPmPKmS1_S1_PKdPK8DModulusmS6_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/fft.cu",
+          "kind": "kernel_body",
+          "line": 90,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z32inplace_special_ffft_base_kernelP7double2PKS_PKjjjjjj__b4321941",
+      "symbol_name": "_Z32inplace_special_ffft_base_kernelP7double2PKS_PKjjjjjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/fft.cu",
+          "kind": "kernel_body",
+          "line": 169,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z32inplace_special_ffft_iter_kernelP7double2PKS_PKjjjjjj__26e19602",
+      "symbol_name": "_Z32inplace_special_ffft_iter_kernelP7double2PKS_PKjjjjjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/fft.cu",
+          "kind": "kernel_body",
+          "line": 219,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z32inplace_special_ifft_base_kernelP7double2PKS_PKjjjjijd__c47660b3",
+      "symbol_name": "_Z32inplace_special_ifft_base_kernelP7double2PKS_PKjjjjijd"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/fft.cu",
+          "kind": "kernel_body",
+          "line": 299,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z32inplace_special_ifft_iter_kernelP7double2PKS_PKjjjjijd__cccf2b26",
+      "symbol_name": "_Z32inplace_special_ifft_iter_kernelP7double2PKS_PKjjjjijd"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ckks.cu",
+          "kind": "kernel_body",
+          "line": 9,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_Z18bit_reverse_kernelP7double2S0_mj__68b26d2a",
+      "symbol_name": "_Z18bit_reverse_kernelP7double2S0_mj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/galois.cu",
+          "kind": "kernel_body",
+          "line": 20,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom4util24apply_galois_permutationEPmPKmPK8DModulusS3_mm__63062f3e",
+      "symbol_name": "_ZN7phantom4util24apply_galois_permutationEPmPKmPK8DModulusS3_mm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/galois.cu",
+          "kind": "kernel_body",
+          "line": 11,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZN7phantom4util28apply_galois_ntt_permutationEPmPKmPKjmm__39e18b32",
+      "symbol_name": "_ZN7phantom4util28apply_galois_ntt_permutationEPmPKmPKjmm"
+    },
+    {
+      "decision": "skip",
+      "detail": "kernel has pointer-to-pointer arguments that cannot be materialized as standalone payload buffers.",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/eval_key_switch.cu",
+          "kind": "manifest_arg",
+          "line": 18,
+          "note": "argument types include const uint64_t *const *"
+        }
+      ],
+      "kernel_id": "_ZN7phantom32key_switch_inner_prod_c2_and_evkEPm__f1455aa9",
+      "reason_code": "pointer_to_pointer_not_supported",
+      "symbol_name": "_ZN7phantom32key_switch_inner_prod_c2_and_evkEPmPKmPKS2_PK8DModulusmmmmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/fntt_2d.cu",
+          "kind": "kernel_body",
+          "line": 10,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL26inplace_fnwt_radix8_phase1PmPKmS1_PK8DModulusmmmmm__45566194",
+      "symbol_name": "_ZL26inplace_fnwt_radix8_phase1PmPKmS1_PK8DModulusmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/fntt_2d.cu",
+          "kind": "kernel_body",
+          "line": 102,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL26inplace_fnwt_radix8_phase2PmPKmS1_PK8DModulusmmmmm__8ea29df9",
+      "symbol_name": "_ZL26inplace_fnwt_radix8_phase2PmPKmS1_PK8DModulusmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/fntt_2d.cu",
+          "kind": "kernel_body",
+          "line": 201,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL43inplace_fnwt_radix8_phase1_include_temp_mod__ef0f80f0",
+      "symbol_name": "_ZL43inplace_fnwt_radix8_phase1_include_temp_modPmPKmS1_PK8DModulusmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/fntt_2d.cu",
+          "kind": "kernel_body",
+          "line": 300,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL43inplace_fnwt_radix8_phase2_include_temp_mod__6964efee",
+      "symbol_name": "_ZL43inplace_fnwt_radix8_phase2_include_temp_modPmPKmS1_PK8DModulusmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/fntt_2d.cu",
+          "kind": "kernel_body",
+          "line": 408,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL46inplace_fnwt_radix8_phase1_include_special___066fe041",
+      "symbol_name": "_ZL46inplace_fnwt_radix8_phase1_include_special_modPmPKmS1_PK8DModulusmmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/fntt_2d.cu",
+          "kind": "kernel_body",
+          "line": 510,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL46inplace_fnwt_radix8_phase2_include_special___e1d3e509",
+      "symbol_name": "_ZL46inplace_fnwt_radix8_phase2_include_special_modPmPKmS1_PK8DModulusmmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_1d.cu",
+          "kind": "kernel_body",
+          "line": 17,
+          "note": "native sub-warp launch is retained for the n=4 fixed subset; the thread-dependent outer loop keeps this kernel out of the VConfig profile."
+        }
+      ],
+      "kernel_id": "_Z19inplace_fnwt_radix2PmPKmS1_PK8DModulusmmm__ea92ea12",
+      "symbol_name": "_Z19inplace_fnwt_radix2PmPKmS1_PK8DModulusmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_1d.cu",
+          "kind": "kernel_body",
+          "line": 194,
+          "note": "native sub-warp launch is retained for the n=4 fixed subset; the thread-dependent outer loop keeps this kernel out of the VConfig profile."
+        }
+      ],
+      "kernel_id": "_Z19inplace_inwt_radix2PmPKmS1_PK8DModulusS1_S1_mmm__2b2b07ce",
+      "symbol_name": "_Z19inplace_inwt_radix2PmPKmS1_PK8DModulusS1_S1_mmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_1d.cu",
+          "kind": "kernel_body",
+          "line": 78,
+          "note": "extern shared radix2 opt is representable for fixed single-mod n=64, whole-warp block.x=32, and target_dynamic_shared_bytes=512; inactive VConfig lanes replay the shift-loop barriers only."
+        },
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_1d.cu",
+          "kind": "callsite",
+          "line": 176,
+          "note": "native launch uses coeff_modulus_size grid blocks, dim/2 block threads, and dim*sizeof(uint64_t); fixed subset uses one coeff modulus."
+        }
+      ],
+      "kernel_id": "_Z23inplace_fnwt_radix2_optPmPKmS1_PK8DModulusm__39057492",
+      "symbol_name": "_Z23inplace_fnwt_radix2_optPmPKmS1_PK8DModulusm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_keyswitch_old.cu",
+          "kind": "kernel_body",
+          "line": 116,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL37inplace_fnwt_radix8_phase2_single_modPmPKmS__dd398638",
+      "symbol_name": "_ZL37inplace_fnwt_radix8_phase2_single_modPmPKmS1_PK8DModulusmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_keyswitch_old.cu",
+          "kind": "kernel_body",
+          "line": 11,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL49inplace_fnwt_radix8_phase1_single_mod_mod_u__432ee35b",
+      "symbol_name": "_ZL49inplace_fnwt_radix8_phase1_single_mod_mod_up_fusePmPKmS1_S1_PK8DModulusmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/intt_2d.cu",
+          "kind": "kernel_body",
+          "line": 10,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL26inplace_inwt_radix8_phase1PmPKmS1_PK8DModulusmmmmm__aca13bb5",
+      "symbol_name": "_ZL26inplace_inwt_radix8_phase1PmPKmS1_PK8DModulusmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/intt_2d.cu",
+          "kind": "kernel_body",
+          "line": 107,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL26inplace_inwt_radix8_phase2PmPKmS1_S1_S1_PK8DModulusmmmmm__0c6938e6",
+      "symbol_name": "_ZL26inplace_inwt_radix8_phase2PmPKmS1_S1_S1_PK8DModulusmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/intt_2d.cu",
+          "kind": "kernel_body",
+          "line": 210,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL36inplace_inwt_radix8_phase2_and_scalePmPKmS1__7bfd0f67",
+      "symbol_name": "_ZL36inplace_inwt_radix8_phase2_and_scalePmPKmS1_S1_S1_PK8DModulusmmmmmS1_S1_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/intt_2d.cu",
+          "kind": "kernel_body",
+          "line": 314,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL43inplace_inwt_radix8_phase1_include_temp_mod__2d61f627",
+      "symbol_name": "_ZL43inplace_inwt_radix8_phase1_include_temp_modPmPKmS1_PK8DModulusmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/intt_2d.cu",
+          "kind": "kernel_body",
+          "line": 412,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL46inplace_inwt_radix8_phase1_include_special___3ba6bb63",
+      "symbol_name": "_ZL46inplace_inwt_radix8_phase1_include_special_modPmPKmS1_PK8DModulusmmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/intt_2d.cu",
+          "kind": "kernel_body",
+          "line": 513,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL46inplace_inwt_radix8_phase2_include_special___6be5587f",
+      "symbol_name": "_ZL46inplace_inwt_radix8_phase2_include_special_modPmPKmS1_S1_S1_PK8DModulusmmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/intt_2d.cu",
+          "kind": "kernel_body",
+          "line": 620,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL53inplace_inwt_radix8_phase2_include_temp_mod__b5d063b6",
+      "symbol_name": "_ZL53inplace_inwt_radix8_phase2_include_temp_mod_and_scalePmPKmS1_S1_S1_PK8DModulusmmmmmmS1_S1_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_modup.cu",
+          "kind": "kernel_body",
+          "line": 10,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL18inwt_radix8_phase1PmPKmS1_S1_PK8DModulusmmmmm__3504e570",
+      "symbol_name": "_ZL18inwt_radix8_phase1PmPKmS1_S1_PK8DModulusmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_modup.cu",
+          "kind": "kernel_body",
+          "line": 109,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL26inplace_inwt_radix8_phase2PmPKmS1_S1_S1_PK8DModulusmmmmm__cd904c8c",
+      "symbol_name": "_ZL26inplace_inwt_radix8_phase2PmPKmS1_S1_S1_PK8DModulusmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_modup.cu",
+          "kind": "kernel_body",
+          "line": 213,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL32inplace_inwt_radix8_phase2_scalePmPKmS1_S1___1d1894b6",
+      "symbol_name": "_ZL32inplace_inwt_radix8_phase2_scalePmPKmS1_S1_S1_PK8DModulusmmmmmS1_S1_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_modup.cu",
+          "kind": "kernel_body",
+          "line": 396,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL60inplace_fnwt_radix8_phase1_include_special___8fa36ba6",
+      "symbol_name": "_ZL60inplace_fnwt_radix8_phase1_include_special_mod_exclude_rangePmPKmS1_PK8DModulusmmmmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_modup.cu",
+          "kind": "kernel_body",
+          "line": 499,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL60inplace_fnwt_radix8_phase2_include_special___05f9f3ce",
+      "symbol_name": "_ZL60inplace_fnwt_radix8_phase2_include_special_mod_exclude_rangePmPKmS1_PK8DModulusmmmmmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_moddown.cu",
+          "kind": "kernel_body",
+          "line": 10,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL26inplace_fnwt_radix8_phase1PmPKmS1_PK8DModulusmmmmm__c5485a71",
+      "symbol_name": "_ZL26inplace_fnwt_radix8_phase1PmPKmS1_PK8DModulusmmmmm"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/phantom-fhe/src/ntt/ntt_moddown.cu",
+          "kind": "kernel_body",
+          "line": 107,
+          "note": "Phase 2 built; arguments are scalar or payload-buffer pointers, with value constraints supplied by manifest overrides."
+        }
+      ],
+      "kernel_id": "_ZL39inplace_fnwt_radix8_phase2_fuse_moddownPmPK__a326f01f",
+      "symbol_name": "_ZL39inplace_fnwt_radix8_phase2_fuse_moddownPmPKmS1_S1_S_S1_S1_PK8DModulusmmmmm"
+    }
+  ],
+  "project": "phantom_fhe",
+  "schema_version": 1
+}

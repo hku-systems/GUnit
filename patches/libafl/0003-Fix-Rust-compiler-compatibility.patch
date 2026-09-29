@@ -1,0 +1,57 @@
+From 4c7ef79ab6f6372005c034d68d543c9e9dc5e228 Mon Sep 17 00:00:00 2001
+From: Qi HU <github@spcsky.com>
+Date: Sun, 26 Jul 2026 22:11:54 +0800
+Subject: [PATCH 3/3] Fix Rust compiler compatibility
+
+Signed-off-by: Qi HU <github@spcsky.com>
+---
+ crates/libafl/src/executors/forkserver.rs      | 4 +---
+ crates/libafl/src/monitors/stats/perf_stats.rs | 3 +--
+ crates/libafl_bolts/src/os/unix_signals.rs     | 2 +-
+ 3 files changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/crates/libafl/src/executors/forkserver.rs b/crates/libafl/src/executors/forkserver.rs
+index b0ecc353..a4b89dcd 100644
+--- a/crates/libafl/src/executors/forkserver.rs
++++ b/crates/libafl/src/executors/forkserver.rs
+@@ -825,9 +825,7 @@ where
+             // Extend like AFL++ does
+             input_size = self.min_input_size;
+             let mut input_bytes_copy = Vec::with_capacity(input_size);
+-            input_bytes_copy
+-                .as_slice_mut()
+-                .copy_from_slice(input.as_slice());
++            input_bytes_copy.as_slice_mut().copy_from_slice(input);
+             self.map_input_to_shmem(&input_bytes_copy, input_size)?;
+         } else {
+             self.map_input_to_shmem(input, input_size)?;
+diff --git a/crates/libafl/src/monitors/stats/perf_stats.rs b/crates/libafl/src/monitors/stats/perf_stats.rs
+index 928da933..048d13a6 100644
+--- a/crates/libafl/src/monitors/stats/perf_stats.rs
++++ b/crates/libafl/src/monitors/stats/perf_stats.rs
+@@ -378,8 +378,7 @@ impl fmt::Display for ClientPerfStats {
+         writeln!(
+             f,
+             "  {scheduler_percent:6.4} ({:>12} cyc): Scheduler\n  {manager_percent:6.4} ({:>12} cyc): Manager",
+-            self.scheduler,
+-            self.manager
++            self.scheduler, self.manager
+         )?;
+ 
+         // Calculate each stage
+diff --git a/crates/libafl_bolts/src/os/unix_signals.rs b/crates/libafl_bolts/src/os/unix_signals.rs
+index a2ed3ee2..823a27c1 100644
+--- a/crates/libafl_bolts/src/os/unix_signals.rs
++++ b/crates/libafl_bolts/src/os/unix_signals.rs
+@@ -486,7 +486,7 @@ pub unsafe fn setup_signal_handler<T: 'static + SignalHandler>(
+         sigemptyset(&raw mut sa.sa_mask);
+         sigaddset(&raw mut sa.sa_mask, SIGALRM);
+         sa.sa_flags = SA_NODEFER | SA_SIGINFO | SA_ONSTACK;
+-        sa.sa_sigaction = handle_signal as usize;
++        sa.sa_sigaction = handle_signal as *const () as usize;
+         let signals = (*handler).signals();
+         for sig in signals {
+             write_volatile(
+-- 
+2.34.1
+

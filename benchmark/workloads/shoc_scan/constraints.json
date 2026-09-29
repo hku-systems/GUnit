@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "project": "rq1_shoc_scan",
+  "overrides": [
+    {
+      "symbol_name": "rq1_shoc_scan",
+      "display_name": "rq1_shoc_scan",
+      "domains": [
+        {"arg": 0, "name": "g_block_sums", "type": "float *__restrict", "domain": {"kind": "bytes", "min_len": "1024", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 1, "name": "n", "type": "const int", "domain": {"kind": "int_range", "min": "1", "max": "256", "signed": true}}
+      ],
+      "constraints": [
+        {"kind": "count_fits_buffer", "count_arg": 1, "buffer_arg": 0, "elem_size_bytes": 4}
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [256],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 2048,
+        "coverage_memory": "global",
+        "vconfig_reserved": false
+      },
+      "evidence": [
+        {"kind": "upstream_extraction", "file": "benchmark/rq1/workloads/shoc_scan/kernel.cu", "line": 69, "note": "single scan_single_block<float,256> stage with 2x block shared storage"}
+      ]
+    }
+  ]
+}

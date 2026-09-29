@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workload_id": "shoc_scan",
+  "upstream": {
+    "repository": "https://github.com/vetter/shoc",
+    "commit": "00b25e2751dde4f1d7c595cadbb7fdb0873257b0",
+    "path": "src/cuda/level1/scan/scan_kernel.h",
+    "source_file": "upstream.source",
+    "sha256": "3951f4881126e03633ae2b4df53a424c8a03a8f0a74e936712364daedb73d955",
+    "license_file": "LICENSE.upstream"
+  },
+  "extraction": {
+    "kernel_file": "kernel.cu",
+    "kernel_sha256": "56193d2b560f2c3413c43ea17f247a4a9d025461d76152fe9394400be31d61f9",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "dea38443a6c5a6a593ab2a84f46815ec6877cb9849924e7728996c26af871147",
+    "constraints_file": "constraints.json",
+    "constraints_sha256": "74558e1a10ebc4a3581cabaee05d7a73af1e48e4f347575d1e131f94b31ec368"
+  },
+  "execution": {
+    "entry": "rq1_shoc_scan",
+    "grid": [1, 1, 1],
+    "block": [256, 1, 1],
+    "dynamic_shared_bytes": 2048,
+    "payload_size": 1036,
+    "vconfig": {"fixed": true, "grid": [1, 1, 1], "block": [256, 1, 1]}
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/Mandelbrot/Mandelbrot_cuda.cu",
+          "kind": "kernel_body",
+          "line": 183,
+          "note": "The float specialization self-strides over blockIndex, guards the current pixel and all four neighbors with imageW/imageH, and uses no block-wide barrier."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/Mandelbrot/Mandelbrot_cuda.cu",
+          "kind": "call_site",
+          "line": 471,
+          "note": "The native float launch uses a 16x16 block and passes grid.x plus grid.x*grid.y; the supported variable image domain stays within one such logical block."
+        }
+      ],
+      "kernel_id": "_Z11Mandelbrot1IfEvP6uchar4iiiT_S2_S2_S2_S2_S0_iiiib__deec3819",
+      "symbol_name": "_Z11Mandelbrot1IfEvP6uchar4iiiT_S2_S2_S2_S2_S0_iiiib"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "kernel_body",
+          "line": 146,
+          "note": "pathN gates both flat buffers, non-null d_Input selects the data-dependent sign/center/tail path, and the kernel uses no block-wide barrier."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "call_site",
+          "line": 171,
+          "note": "The native host wrapper launches 128 threads; the supported pathN domain is variable from one through one logical block."
+        }
+      ],
+      "kernel_id": "_ZL16inverseCNDKernelPfPjj__168b4c09",
+      "symbol_name": "_ZL16inverseCNDKernelPfPjj"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "derived_variant",
+          "line": 146,
+          "note": "This direct-VConfig registry variant reuses the unchanged vendor kernel body and symbol under a distinct kernel ID."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "block_size_invariance",
+          "line": 149,
+          "note": "tid and threadN partition every output position with a blockDim.x*gridDim.x grid stride, so logical blocks 32, 64, and 128 write the same per-position inverse-CND result without shared state or synchronization."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "call_site",
+          "line": 171,
+          "note": "The host wrapper supplies variable N to the native 128-thread launch; the derived registry keeps pathN positive, both flat buffers at least pathN elements, and d_Input non-null."
+        }
+      ],
+      "kernel_id": "inverseCNDKernel_vgeo",
+      "symbol_name": "_ZL16inverseCNDKernelPfPjj"
+    }
+  ],
+  "project": "cuda_samples",
+  "schema_version": 1
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workload_id": "synth_complex",
+  "source_kind": "synthetic",
+  "synthetic": {
+    "description": "RAPID RQ2 branch- and SIMT-memory-coverage workload",
+    "design": "WS1 of the approved coverage-curve plan"
+  },
+  "extraction": {
+    "kernel_file": "kernel.cu",
+    "kernel_sha256": "761b5affab11972eb934683e50b8ef31b840215cc6e72ba1728a2f493f2bbfdc",
+    "constraints_file": "base_constraints.json",
+    "constraints_sha256": "0029336cb454fe58582de67df1a26092f40e76ef1671358031cfc3dd46849ccf"
+  },
+  "execution": {
+    "entry": "rq1_synth_complex",
+    "grid": [1, 1, 1],
+    "block": [256, 1, 1],
+    "dynamic_shared_bytes": 0,
+    "payload_size": 1172,
+    "vconfig": {"fixed": true, "grid": [1, 1, 1], "block": [256, 1, 1]}
+  }
+}

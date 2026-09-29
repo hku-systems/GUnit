@@ -1,0 +1,8 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./LibAFL/Cargo.toml",
+        "./cuda-fuzzer/fuzzer/Cargo.toml"
+    ],
+    "rust-analyzer.cargo.buildScripts.enable": true,
+    "rust-analyzer.procMacro.enable": true
+}

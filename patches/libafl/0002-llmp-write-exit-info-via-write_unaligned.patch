@@ -1,0 +1,30 @@
+From 138e60ffb95150b1863efcdb1f88636e7c7840dd Mon Sep 17 00:00:00 2001
+From: Qi Hu <github@spcsky.com>
+Date: Sat, 3 Jan 2026 13:41:37 +0000
+Subject: [PATCH 2/3] llmp: write exit info via write_unaligned
+
+Signed-off-by: Qi Hu <github@spcsky.com>
+---
+ crates/libafl_bolts/src/llmp.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/crates/libafl_bolts/src/llmp.rs b/crates/libafl_bolts/src/llmp.rs
+index b40145f0..6be81905 100644
+--- a/crates/libafl_bolts/src/llmp.rs
++++ b/crates/libafl_bolts/src/llmp.rs
+@@ -3192,9 +3192,9 @@ where
+                 .alloc_next(size_of::<LlmpClientExitInfo>())
+                 .expect("Could not allocate a new message in shared map.");
+             (*msg).tag = LLMP_TAG_CLIENT_EXIT;
+-            let mut exitinfo =
+-                ((*msg).buf.as_mut_ptr() as *mut LlmpClientExitInfo).read_unaligned();
+-            exitinfo.client_id = client_id;
++            #[expect(clippy::cast_ptr_alignment)]
++            let exitinfo = (*msg).buf.as_mut_ptr() as *mut LlmpClientExitInfo;
++            exitinfo.write_unaligned(LlmpClientExitInfo { client_id });
+             sender.send(msg, true)
+         }
+     }
+-- 
+2.34.1
+

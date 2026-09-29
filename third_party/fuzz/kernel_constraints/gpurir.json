@@ -1,0 +1,1249 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 4,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 4,
+          "unit": "elements"
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 4,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 0,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 0,
+            "kind": "payload_len"
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "arg": 2,
+                  "kind": "arg_value"
+                },
+                "op": "*",
+                "rhs": {
+                  "arg": 3,
+                  "kind": "arg_value"
+                }
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 4,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 8
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 1,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 1,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "complexPointwiseMulAndScale",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "512",
+            "nullable": false
+          },
+          "name": "signal_segments",
+          "type": "cufftComplex *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 8,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "512",
+            "nullable": false
+          },
+          "name": "RIRs",
+          "type": "cufftComplex *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "segment_size",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "M_rcv",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "M_src",
+          "type": "int"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 1.0,
+            "min": 0.125
+          },
+          "name": "scale",
+          "type": "float"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "kind": "kernel_body",
+          "line": 463,
+          "note": "uses strided loops over grid dimensions and can cover M_src/M_rcv/segment_size under the fixed RAPID2 launch."
+        }
+      ],
+      "kernel_id": "_Z27complexPointwiseMulAndScaleP6float2S0_iiif__f8f9b0f3",
+      "symbol_name": "_Z27complexPointwiseMulAndScaleP6float2S0_iiif"
+    },
+    {
+      "symbol_name": "_Z16reduceRIR_kernelPfS_iiii",
+      "kernel_id": "_Z16reduceRIR_kernelPfS_iiii__a6bf7d18",
+      "display_name": "reduceRIR_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "initialRIR",
+          "type": "float *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "512",
+            "max_len": "512",
+            "elem_size_bytes": 4,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 1,
+          "name": "intermediateRIR",
+          "type": "float *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "4",
+            "max_len": "4",
+            "elem_size_bytes": 4,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 2,
+          "name": "M",
+          "type": "int",
+          "domain": {
+            "kind": "int_range",
+            "min": "1",
+            "max": "1",
+            "signed": true
+          }
+        },
+        {
+          "arg": 3,
+          "name": "T",
+          "type": "int",
+          "domain": {
+            "kind": "int_range",
+            "min": "1",
+            "max": "1",
+            "signed": true
+          }
+        },
+        {
+          "arg": 4,
+          "name": "N",
+          "type": "int",
+          "domain": {
+            "kind": "int_range",
+            "min": "128",
+            "max": "128",
+            "signed": true
+          }
+        },
+        {
+          "arg": 5,
+          "name": "intRIR_N",
+          "type": "int",
+          "domain": {
+            "kind": "int_range",
+            "min": "1",
+            "max": "1",
+            "signed": true
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "op": "*",
+            "lhs": {
+              "kind": "binary",
+              "op": "*",
+              "lhs": {
+                "kind": "binary",
+                "op": "*",
+                "lhs": {
+                  "kind": "arg_value",
+                  "arg": 2
+                },
+                "rhs": {
+                  "kind": "arg_value",
+                  "arg": 3
+                }
+              },
+              "rhs": {
+                "kind": "arg_value",
+                "arg": 4
+              }
+            },
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "rhs": {
+            "kind": "payload_len",
+            "arg": 0
+          },
+          "repair": {
+            "kind": "resize_payload",
+            "arg": 0
+          }
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "op": "*",
+            "lhs": {
+              "kind": "binary",
+              "op": "*",
+              "lhs": {
+                "kind": "binary",
+                "op": "*",
+                "lhs": {
+                  "kind": "arg_value",
+                  "arg": 2
+                },
+                "rhs": {
+                  "kind": "arg_value",
+                  "arg": 3
+                }
+              },
+              "rhs": {
+                "kind": "arg_value",
+                "arg": 5
+              }
+            },
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "rhs": {
+            "kind": "payload_len",
+            "arg": 1
+          },
+          "repair": {
+            "kind": "resize_payload",
+            "arg": 1
+          }
+        }
+      ],
+      "launch_policy": {
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "block_candidates": [
+          128,
+          64,
+          32
+        ],
+        "physical_block_max": 128,
+        "target_dynamic_shared_bytes": 512,
+        "coverage_memory": "global",
+        "vconfig_reserved": true
+      },
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 392,
+          "note": "extern shared reduction uses sdata[threadIdx.x] and native launch uses nThreadsRed*sizeof(float). With M=T=1,N=128,intRIR_N=1, fixed grid=(1,1,1), block.x=128, and 512B target dynamic shared cover the same memory accesses without VCONFIG."
+        },
+        {
+          "kind": "callsite",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 669,
+          "note": "final reduction launch uses dim3 numBlocksEnd(1,T,M), threadsPerBlockRed(nThreadsRed,1,1), and nThreadsRed*sizeof(float)."
+        }
+      ]
+    },
+    {
+      "symbol_name": "_Z17calcAmpTau_kernelPfS_S_S_S_S_S_iifffffffffiiiiiff",
+      "kernel_id": "_Z17calcAmpTau_kernelPfS_S_S_S_S_S_iifffffffffiiiiiff__169eb460",
+      "display_name": "calcAmpTau_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "g_amp",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "4096", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "g_tau",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "4096", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "g_tau_dp",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 3,
+          "name": "g_pos_src",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "12", "max_len": "48", "elem_size_bytes": 4, "nullable": false, "pattern_hex": "0000803f"}
+        },
+        {
+          "arg": 4,
+          "name": "g_pos_rcv",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "12", "max_len": "48", "elem_size_bytes": 4, "nullable": false, "pattern_hex": "00000000"}
+        },
+        {
+          "arg": 5,
+          "name": "g_orV_src",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "48", "elem_size_bytes": 4, "nullable": false, "pattern_hex": "00000000"}
+        },
+        {
+          "arg": 6,
+          "name": "g_orV_rcv",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "48", "elem_size_bytes": 4, "nullable": false, "pattern_hex": "00000000"}
+        },
+        {
+          "arg": 7,
+          "name": "spkr_pattern",
+          "type": "polarPattern",
+          "domain": {"kind": "int_range", "min": "0", "max": "0", "signed": true}
+        },
+        {
+          "arg": 8,
+          "name": "mic_pattern",
+          "type": "polarPattern",
+          "domain": {"kind": "int_range", "min": "0", "max": "0", "signed": true}
+        },
+        {
+          "arg": 9,
+          "name": "room_sz_x",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 1.0, "max": 10.0, "allow_nan": false}
+        },
+        {
+          "arg": 10,
+          "name": "room_sz_y",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 1.0, "max": 10.0, "allow_nan": false}
+        },
+        {
+          "arg": 11,
+          "name": "room_sz_z",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 1.0, "max": 10.0, "allow_nan": false}
+        },
+        {
+          "arg": 12,
+          "name": "beta_x1",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 13,
+          "name": "beta_x2",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 14,
+          "name": "beta_y1",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 15,
+          "name": "beta_y2",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 16,
+          "name": "beta_z1",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 17,
+          "name": "beta_z2",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 18,
+          "name": "nb_img_x",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 19,
+          "name": "nb_img_y",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 20,
+          "name": "nb_img_z",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 21,
+          "name": "M_src",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 22,
+          "name": "M_rcv",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 23,
+          "name": "c",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 300.0, "max": 400.0, "allow_nan": false}
+        },
+        {
+          "arg": 24,
+          "name": "Fs",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 8000.0, "max": 48000.0, "allow_nan": false}
+        }
+      ],
+      "constraints": [
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 18, "dimension": "x"},
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 19, "dimension": "y"},
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 20, "dimension": "z"},
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {
+                "kind": "binary", "op": "*",
+                "lhs": {
+                  "kind": "binary", "op": "*",
+                  "lhs": {
+                    "kind": "binary", "op": "*",
+                    "lhs": {"kind": "arg_value", "arg": 21},
+                    "rhs": {"kind": "arg_value", "arg": 22}
+                  },
+                  "rhs": {"kind": "arg_value", "arg": 18}
+                },
+                "rhs": {"kind": "arg_value", "arg": 19}
+              },
+              "rhs": {"kind": "arg_value", "arg": 20}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {
+                "kind": "binary", "op": "*",
+                "lhs": {
+                  "kind": "binary", "op": "*",
+                  "lhs": {
+                    "kind": "binary", "op": "*",
+                    "lhs": {"kind": "arg_value", "arg": 21},
+                    "rhs": {"kind": "arg_value", "arg": 22}
+                  },
+                  "rhs": {"kind": "arg_value", "arg": 18}
+                },
+                "rhs": {"kind": "arg_value", "arg": 19}
+              },
+              "rhs": {"kind": "arg_value", "arg": 20}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 21},
+              "rhs": {"kind": "arg_value", "arg": 22}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 2},
+          "repair": {"kind": "resize_payload", "arg": 2}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {"kind": "arg_value", "arg": 21},
+            "rhs": {"kind": "const", "value": 12}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 3},
+          "repair": {"kind": "resize_payload", "arg": 3}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {"kind": "arg_value", "arg": 22},
+            "rhs": {"kind": "const", "value": 12}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 4},
+          "repair": {"kind": "resize_payload", "arg": 4}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [64],
+        "physical_block_max": 64,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [4, 4, 4],
+        "logical_block_candidates": [[2, 4, 4], [4, 4, 4]],
+        "target_dynamic_shared_bytes": 96,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 245,
+          "note": "whole-warp logical blocks preserve the native 3D coordinates; DIR_OMNI avoids orientation-vector accesses and 96 bytes cover 3*(M_src+M_rcv) shared floats for M_src,M_rcv<=4."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 820,
+          "note": "native launch uses block (4,4,4); the supported single-block subset keeps each image dimension within its logical block dimension."
+        }
+      ]
+    },
+    {
+      "symbol_name": "_Z14diffRev_kernelPfS_S_S_iiii",
+      "kernel_id": "_Z14diffRev_kernelPfS_S_S_iiii__e9523a2e",
+      "display_name": "diffRev_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "rir",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "512", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "A",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "32", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "alpha",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "32", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 3,
+          "name": "tau_dp",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "32", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 4,
+          "name": "M_src",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 5,
+          "name": "M_rcv",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "2", "signed": true}
+        },
+        {
+          "arg": 6,
+          "name": "nSamplesISM",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "64", "signed": true}
+        },
+        {
+          "arg": 7,
+          "name": "nSamplesDiff",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "16", "signed": true}
+        }
+      ],
+      "constraints": [
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 7, "dimension": "x"},
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 4, "dimension": "y"},
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 5, "dimension": "z"},
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {
+                "kind": "binary", "op": "*",
+                "lhs": {"kind": "arg_value", "arg": 4},
+                "rhs": {"kind": "arg_value", "arg": 5}
+              },
+              "rhs": {"kind": "arg_value", "arg": 7}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 2},
+          "repair": {"kind": "resize_payload", "arg": 2}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 3},
+          "repair": {"kind": "resize_payload", "arg": 3}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [128],
+        "physical_block_max": 128,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [16, 4, 2],
+        "logical_block_candidates": [[8, 4, 1], [8, 4, 2], [16, 4, 2]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 445,
+          "note": "indexes samples, sources, and receivers through the logical x/y/z launch dimensions and bounds every global-memory access."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 882,
+          "note": "native launch uses block (16,4,2); the constrained single-block VConfig shapes preserve the same coordinate mapping."
+        }
+      ]
+    },
+    {
+      "symbol_name": "_Z14envPred_kernelPfS_S_S_iiiffffffffff",
+      "kernel_id": "_Z14envPred_kernelPfS_S_S_iiiffffffffff__4f38b2df",
+      "display_name": "envPred_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "A",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "alpha",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "RIRs_early",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "2048", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 3,
+          "name": "tau_dp",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false, "pattern_hex": "00000000"}
+        },
+        {
+          "arg": 4,
+          "name": "M_src",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 5,
+          "name": "M_rcv",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 6,
+          "name": "nSamples",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": true}
+        },
+        {
+          "arg": 7,
+          "name": "Fs",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 100.0, "max": 100.0, "allow_nan": false}
+        },
+        {
+          "arg": 8,
+          "name": "room_sz_x",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 1.0, "max": 10.0, "allow_nan": false}
+        },
+        {
+          "arg": 9,
+          "name": "room_sz_y",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 1.0, "max": 10.0, "allow_nan": false}
+        },
+        {
+          "arg": 10,
+          "name": "room_sz_z",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 1.0, "max": 10.0, "allow_nan": false}
+        },
+        {
+          "arg": 11,
+          "name": "beta_x1",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 12,
+          "name": "beta_x2",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 13,
+          "name": "beta_y1",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 14,
+          "name": "beta_y2",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 15,
+          "name": "beta_z1",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        },
+        {
+          "arg": 16,
+          "name": "beta_z2",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.1, "max": 0.9, "allow_nan": false}
+        }
+      ],
+      "constraints": [
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 4, "dimension": "x"},
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 5, "dimension": "y"},
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {
+                "kind": "binary", "op": "*",
+                "lhs": {"kind": "arg_value", "arg": 4},
+                "rhs": {"kind": "arg_value", "arg": 5}
+              },
+              "rhs": {"kind": "arg_value", "arg": 6}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 2},
+          "repair": {"kind": "resize_payload", "arg": 2}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 3},
+          "repair": {"kind": "resize_payload", "arg": 3}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [16],
+        "physical_block_max": 16,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [4, 4, 1],
+        "logical_block_candidates": [[2, 2, 1], [4, 2, 1], [4, 4, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 415,
+          "note": "bounds source/receiver indices before accessing product-sized buffers; fixed Fs=100 and zero tau_dp keep w_start within [0,nSamples)."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 862,
+          "note": "native launch uses block (4,4,1); the constrained single-block VConfig shapes preserve the two-dimensional mapping."
+        }
+      ]
+    },
+    {
+      "symbol_name": "_Z18generateRIR_kernelPfS_S_iiiiif",
+      "kernel_id": "_Z18generateRIR_kernelPfS_S_iiiiif__cd099106",
+      "display_name": "generateRIR_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "initialRIR",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "512", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "amp",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "256", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "tau",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "256", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 3,
+          "name": "T",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": true}
+        },
+        {
+          "arg": 4,
+          "name": "M",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}
+        },
+        {
+          "arg": 5,
+          "name": "N",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "16", "signed": true}
+        },
+        {
+          "arg": 6,
+          "name": "iniRIR_N",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "1", "signed": true}
+        },
+        {
+          "arg": 7,
+          "name": "ini_red",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "16", "signed": true}
+        },
+        {
+          "arg": 8,
+          "name": "Tw",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 1.0, "max": 16.0, "allow_nan": false}
+        }
+      ],
+      "constraints": [
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 3, "dimension": "x"},
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 4, "dimension": "y"},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 5, "op": "<=", "rhs_arg": 7},
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {
+                "kind": "binary", "op": "*",
+                "lhs": {"kind": "arg_value", "arg": 4},
+                "rhs": {"kind": "arg_value", "arg": 3}
+              },
+              "rhs": {"kind": "arg_value", "arg": 6}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 4},
+              "rhs": {"kind": "arg_value", "arg": 5}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 2},
+          "repair": {"kind": "resize_payload", "arg": 2}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [128],
+        "physical_block_max": 128,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [32, 4, 1],
+        "logical_block_candidates": [[8, 4, 1], [16, 4, 1], [32, 4, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 377,
+          "note": "bounds time/receiver coordinates and uses M*T*iniRIR_N plus M*N linearized payloads."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 644,
+          "note": "native launch uses block (32,4,1); iniRIR_N=1 and N<=ini_red reduce the supported subset to one logical z block."
+        }
+      ]
+    },
+    {
+      "symbol_name": "_Z24h2RIR_to_floatRIR_kernelP7__half2Pfii",
+      "kernel_id": "_Z24h2RIR_to_floatRIR_kernelP7__half2Pfii__d0f15d1b",
+      "display_name": "h2RIR_to_floatRIR_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "h2RIR",
+          "type": "half2 *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "512", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "floatRIR",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "8", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "M",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "1", "signed": true}
+        },
+        {
+          "arg": 3,
+          "name": "T",
+          "type": "int",
+          "domain": {"kind": "int_range", "min": "1", "max": "128", "signed": true}
+        }
+      ],
+      "constraints": [
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 3, "dimension": "x"},
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 2},
+              "rhs": {"kind": "arg_value", "arg": 3}
+            },
+            "rhs": {"kind": "const", "value": 4}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary", "op": "*",
+            "lhs": {
+              "kind": "binary", "op": "*",
+              "lhs": {"kind": "arg_value", "arg": 2},
+              "rhs": {"kind": "arg_value", "arg": 3}
+            },
+            "rhs": {"kind": "const", "value": 8}
+          },
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [128],
+        "physical_block_max": 128,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [128, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 541,
+          "note": "reads one 4-byte half2 payload element and writes two float elements after bounds checks; payload decoding uses raw aligned bytes rather than protected-field construction."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/gpuRIR/src/gpuRIR_cuda.cu",
+          "line": 728,
+          "note": "native launch uses block (128,1,1); M=1 keeps the supported subset within the single physical grid block."
+        }
+      ]
+    }
+  ],
+  "project": "gpurir",
+  "schema_version": 1
+}

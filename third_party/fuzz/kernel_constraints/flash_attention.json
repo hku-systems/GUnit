@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "project": "flash_attention",
+  "overrides": [
+    {
+      "symbol_name": "flash_bwd_dot_do_o_pod_kernel",
+      "kernel_id": "flash_bwd_dot_do_o_pod_kernel__4271cecf",
+      "display_name": "flash_bwd_dot_do_o_pod_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "dout",
+          "type": "const __half *",
+          "domain": {"kind": "bytes", "min_len": "2", "max_len": "65536", "elem_size_bytes": 2, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "out",
+          "type": "const __half *",
+          "domain": {"kind": "bytes", "min_len": "2", "max_len": "65536", "elem_size_bytes": 2, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "softmax_d",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "512", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 3,
+          "name": "dq_accum",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "131072", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 4,
+          "name": "seqlen_q",
+          "type": "const unsigned int",
+          "domain": {"kind": "int_range", "min": "1", "max": "128", "signed": false}
+        },
+        {
+          "arg": 5,
+          "name": "head_dim",
+          "type": "const unsigned int",
+          "domain": {"kind": "int_range", "min": "1", "max": "256", "signed": false}
+        },
+        {
+          "arg": 6,
+          "name": "scale",
+          "type": "const float",
+          "domain": {"kind": "float_range", "min": 0.5, "max": 1.0, "allow_nan": false}
+        }
+      ],
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 4}, "rhs": {"kind": "arg_value", "arg": 5}}, "rhs": {"kind": "const", "value": 2}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 4}, "rhs": {"kind": "arg_value", "arg": 5}}, "rhs": {"kind": "const", "value": 2}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        },
+        {
+          "kind": "count_fits_buffer",
+          "count_arg": 4,
+          "buffer_arg": 2,
+          "elem_size_bytes": 4
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 4}, "rhs": {"kind": "arg_value", "arg": 5}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 3},
+          "repair": {"kind": "resize_payload", "arg": 3}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [256, 128, 64, 32],
+        "physical_block_max": 256,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "buffer_allocation",
+          "file": "third_party/flash-attention/csrc/flash_attn/flash_api.cpp",
+          "line": 882,
+          "note": "The host allocates softmax_d as fp32 [batch,heads,seqlen_q_rounded] and dQaccum as fp32 [batch,seqlen_q_rounded,heads,head_size_rounded]; dO and O retain the half/bfloat input dtype. The adapter bounds one unrounded batch/head tile to seqlen_q<=128 and head_dim<=256."
+        },
+        {
+          "kind": "launch_site",
+          "file": "third_party/flash-attention/csrc/flash_attn/src/flash_bwd_launch_template.h",
+          "line": 74,
+          "note": "The upstream query grid uses ceil(seqlen_q/kBlockM) and kNThreads; the extracted single-block tile preserves the kBlockM<=128 query extent while grid-stride loops permit whole-warp logical candidates 32 through 256."
+        },
+        {
+          "kind": "adapter_bounds",
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/flash_attention/capture_sources/flash_bwd_dot_do_o_pod.cu",
+          "line": 10,
+          "note": "seqlen_q gates rows, head_dim gates columns, and the four payload constraints cover every half/float read and write."
+        }
+      ]
+    },
+    {
+      "symbol_name": "flash_bwd_convert_dq_pod_kernel",
+      "kernel_id": "flash_bwd_convert_dq_pod_kernel__0ad34144",
+      "display_name": "flash_bwd_convert_dq_pod_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "dq_accum",
+          "type": "const float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "524288", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "dq",
+          "type": "__half *",
+          "domain": {"kind": "bytes", "min_len": "2", "max_len": "65536", "elem_size_bytes": 2, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "seqlen_q",
+          "type": "const unsigned int",
+          "domain": {"kind": "int_range", "min": "1", "max": "128", "signed": false}
+        },
+        {
+          "arg": 3,
+          "name": "head_dim",
+          "type": "const unsigned int",
+          "domain": {"kind": "int_range", "min": "1", "max": "256", "signed": false}
+        },
+        {
+          "arg": 4,
+          "name": "nsplits",
+          "type": "const unsigned int",
+          "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": false}
+        },
+        {
+          "arg": 5,
+          "name": "scale",
+          "type": "const float",
+          "domain": {"kind": "float_range", "min": 0.001, "max": 2.0, "allow_nan": false}
+        }
+      ],
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 4}, "rhs": {"kind": "arg_value", "arg": 2}}, "rhs": {"kind": "arg_value", "arg": 3}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 0},
+          "repair": {"kind": "resize_payload", "arg": 0}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 2}, "rhs": {"kind": "arg_value", "arg": 3}}, "rhs": {"kind": "const", "value": 2}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 1},
+          "repair": {"kind": "resize_payload", "arg": 1}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [256, 128, 64, 32],
+        "physical_block_max": 256,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "buffer_allocation",
+          "file": "third_party/flash-attention/csrc/flash_attn/flash_api.cpp",
+          "line": 884,
+          "note": "The standard backward path allocates dQaccum as fp32 [nsplits,batch,seqlen_q_rounded,heads,head_size_rounded] when deterministic and dQ in the input dtype. Compact split planes retain the per-element nsplits accumulation for one batch/head tile."
+        },
+        {
+          "kind": "launch_site",
+          "file": "third_party/flash-attention/csrc/flash_attn/src/flash_bwd_launch_template.h",
+          "line": 119,
+          "note": "The upstream conversion kernel uses the query-block grid, kNThreads, dynamic shared storage, and nsplits selected from deterministic gridDimx; the POD extraction removes the layout-only shared-memory transpose while retaining accumulation, scaling, fp16 conversion, and bounds."
+        },
+        {
+          "kind": "adapter_bounds",
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/flash_attention/capture_sources/flash_bwd_convert_dq_pod.cu",
+          "line": 10,
+          "note": "The input repair covers nsplits*seqlen_q*head_dim fp32 values and the output repair covers seqlen_q*head_dim fp16 values; grid-stride access supports reduced logical blocks without barriers."
+        }
+      ]
+    }
+  ]
+}

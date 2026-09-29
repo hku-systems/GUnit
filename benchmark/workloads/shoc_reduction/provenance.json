@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workload_id": "shoc_reduction",
+  "upstream": {
+    "repository": "https://github.com/vetter/shoc",
+    "commit": "00b25e2751dde4f1d7c595cadbb7fdb0873257b0",
+    "path": "src/cuda/level1/reduction/reduction_kernel.h",
+    "source_file": "upstream.source",
+    "sha256": "9f612f11218d41d521babc23370cde766267f1e518e03fc5603370e983685fc2",
+    "license_file": "LICENSE.upstream"
+  },
+  "extraction": {
+    "kernel_file": "kernel.cu",
+    "kernel_sha256": "b2ac47dbd50258f9e2f086f9cd37c7639f6c9ef450c5701838103874a814e8c5",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "2fe54c0a51e0f6e487eb44d547e6f3d3234773f5457625f0fbb4b7d1be65cb7b",
+    "constraints_file": "constraints.json",
+    "constraints_sha256": "99c11e793d3dd0343c2f778f0cb7ae82ee747b061daeeb61fec6adb5615991e3"
+  },
+  "execution": {
+    "entry": "rq1_shoc_reduction",
+    "grid": [1, 1, 1],
+    "block": [256, 1, 1],
+    "dynamic_shared_bytes": 1024,
+    "payload_size": 2072,
+    "vconfig": {"fixed": true, "grid": [1, 1, 1], "block": [256, 1, 1]}
+  }
+}

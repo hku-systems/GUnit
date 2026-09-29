@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "target_id": "caffe_cll_backward_f32",
+  "upstream": {
+    "repository": "https://github.com/BVLC/caffe",
+    "commit": "9b891540183ddc834a02b2bd81b31afae71b2153",
+    "path": "src/caffe/layers/contrastive_loss_layer.cu",
+    "line_start": 53,
+    "line_end": 80,
+    "sha256": "d69ee88276db8ce50b5192b59b9971ed0e869f4c4ba4613cd449fe6a92617c64",
+    "license_file": "LICENSE.upstream",
+    "license_sha256": "d9f0110df59ef596566386b4e85f305857d15c74f32f9460860b91a9136bc509"
+  },
+  "extraction": {
+    "adapter_file": "adapter.cu",
+    "adapter_sha256": "934a01c34bcb53e8bd4548ba3287af37eff392076fe0d28d04de92b42e4906ab",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "f7c46e37823ce491e4fcc465464f9cad8bb94cae9116074fb273cf56e3b2aa51",
+    "changes": [
+      "instantiate Dtype as float",
+      "replace Caffe Blob and launch dependencies with a POD kernel ABI",
+      "derive count as batch * channels",
+      "represent legacy_version as int32_t while preserving boolean semantics",
+      "expand CUDA_KERNEL_LOOP as the equivalent grid-stride loop",
+      "reject shapes outside the reviewed batch, channels, and count domain before any payload access"
+    ]
+  },
+  "abi": "caffe_cll_backward_f32(uint32_t batch, uint32_t channels, float margin, int32_t legacy_version, float alpha, const float* y, const float* diff, const float* dist_sq, float* bottom_diff)",
+  "probe": {
+    "file": "adapter_probe.cu",
+    "sha256": "498d498b3d22b59191fc03193190513dee10bd76b1da9b44c1c85af6e27197e4"
+  }
+}

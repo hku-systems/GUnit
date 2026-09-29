@@ -1,0 +1,6 @@
+{
+  "description": "helper-based direct kernel",
+  "expected_exit_code": 0,
+  "expected_stdout": "payload matched (16 bytes)",
+  "kernel_display_name": "direct_kernel"
+}

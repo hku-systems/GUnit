@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workload_id": "flashattention_device1xn",
+  "upstream": {
+    "repository": "https://github.com/Dao-AILab/flash-attention",
+    "commit": "2dc1b205f609e83712438631c048988cf5ffce42",
+    "path": "csrc/flash_attn/src/fmha_fprop_kernel_1xN.h",
+    "source_file": "upstream.source",
+    "sha256": "a1a21f9d4d5b146048619ea437f4c00123cb97dbdaaa186f695c0690f1b29245",
+    "license_file": "LICENSE.upstream"
+  },
+  "extraction": {
+    "kernel_file": "kernel.cu",
+    "kernel_sha256": "5ee95549912d737cf665c1294d2740c2c36bd8a26a35def65d9fc112ef65d1c2",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "618c403c4e7e1a397cfe28becf7fd557eb62d49fc7e1d623e28b01f85c4e844d",
+    "constraints_file": "constraints.json",
+    "constraints_sha256": "424d92f961d62b7c9f614a758f5c83531f8d8c83668e33af88deba5f0be51340"
+  },
+  "execution": {
+    "entry": "rq1_flashattention_device1xn",
+    "grid": [1, 1, 1],
+    "block": [128, 1, 1],
+    "dynamic_shared_bytes": 0,
+    "payload_size": 1040,
+    "vconfig": {"fixed": true, "grid": [1, 1, 1], "block": [128, 1, 1]}
+  }
+}

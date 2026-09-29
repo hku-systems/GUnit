@@ -1,0 +1,120 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 90,
+          "note": "clipInference launches the INT8 clip specialization as clipKernel<int8_t, int8_t, 512><<<divUp(n, 512), 512>>> with input/output pointers and n element count."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "TensorRT enqueue passes n = mInputVolume * batchSize to clipInference; constraints bind n to input/output element counts."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIaaLj512EEviT_S0_PKT0_PS1___e7ab6476",
+      "symbol_name": "_Z10clipKernelIaaLj512EEviT_S0_PKT0_PS1_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 74,
+          "note": "clipInference launches the HALF storage specialization as clipKernel<float, half, 512><<<divUp(n, 512), 512>>> with input/output pointers and n element count."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "TensorRT enqueue passes n = mInputVolume * batchSize to clipInference; constraints bind n to input/output element counts."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIf6__halfLj512EEviT_S1_PKT0_PS2___79d01888",
+      "symbol_name": "_Z10clipKernelIf6__halfLj512EEviT_S1_PKT0_PS2_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 62,
+          "note": "clipInference launches the FLOAT specialization as clipKernel<float, float, 512><<<divUp(n, 512), 512>>> with input/output pointers and n element count."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "TensorRT enqueue passes n = mInputVolume * batchSize to clipInference; constraints bind n to input/output element counts."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIffLj512EEviT_S0_PKT0_PS1___c1c27f18",
+      "symbol_name": "_Z10clipKernelIffLj512EEviT_S0_PKT0_PS1_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clip.cu",
+          "kind": "call_site",
+          "line": 82,
+          "note": "clipInference launches the INT32 specialization as clipKernel<int32_t, int32_t, 512><<<divUp(n, 512), 512>>> with input/output pointers and n element count."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/clipPlugin/clipPlugin.cpp",
+          "kind": "call_site",
+          "line": 91,
+          "note": "TensorRT enqueue passes n = mInputVolume * batchSize to clipInference; constraints bind n to input/output element counts."
+        }
+      ],
+      "kernel_id": "_Z10clipKernelIiiLj512EEviT_S0_PKT0_PS1___136e29ff",
+      "symbol_name": "_Z10clipKernelIiiLj512EEviT_S0_PKT0_PS1_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/common/kernels/cropAndResizeKernel.cu",
+          "kind": "call_site",
+          "line": 131,
+          "note": "cropAndResizeInference launches cropAndResizeKernel<float> with output_volume and the image, ROI-box, shape, crop, depth, extrapolation, and output arguments."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/cropAndResizePlugin/cropAndResizePlugin.cpp",
+          "kind": "call_site",
+          "line": 97,
+          "note": "TensorRT enqueue derives batch, image, box, crop, and depth dimensions from plugin tensor state before calling cropAndResizeInference."
+        }
+      ],
+      "kernel_id": "_ZN8nvinfer16plugin19cropAndResizeKernelIfEEviPKT_PKfiiiiiiifPf__1e27108f",
+      "symbol_name": "_ZN8nvinfer16plugin19cropAndResizeKernelIfEEviPKT_PKfiiiiiiifPf"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/TensorRT/plugin/modulatedDeformConvPlugin/modulatedDeformConvPluginKernel.cu",
+          "kind": "call_site",
+          "line": 193,
+          "note": "trtModulatedDeformableIm2col launches the float specialization with numKernels, tensor buffers, convolution geometry, group dimensions, and the columns output buffer."
+        },
+        {
+          "file": "third_party/TensorRT/plugin/modulatedDeformConvPlugin/modulatedDeformConvPlugin.cpp",
+          "kind": "call_site",
+          "line": 237,
+          "note": "TensorRT enqueue passes float input, offset, mask, workspace, tensor dimensions, kernel shape, stride, padding, dilation, and deformable-group values into the launcher."
+        }
+      ],
+      "kernel_id": "_Z34modulatedDeformableIm2colGpuKernelIfEviPKT_S__418d0e4b",
+      "symbol_name": "_Z34modulatedDeformableIm2colGpuKernelIfEviPKT_S2_S2_iiiiiiiiiiiiiiiiPS0_"
+    }
+  ],
+  "project": "tensorrt_clip",
+  "schema_version": 1
+}

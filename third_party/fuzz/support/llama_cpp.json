@@ -1,0 +1,87 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/quantize.cu",
+          "kind": "kernel_body",
+          "line": 176,
+          "note": "The D2S6 specialization has size-gated float4 loads, full-mask warp reductions, and bounded q8_1 output indexing."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/quantize.cu",
+          "kind": "call_site",
+          "line": 289,
+          "note": "The host wrapper enforces ne00%4==0 and ne0%(4*QK8_1)==0 before launching 128 threads."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/mmq.cu",
+          "kind": "call_site",
+          "line": 121,
+          "note": "The selected native call uses null ids and allocates the padded q8_1 output before dispatch."
+        }
+      ],
+      "kernel_id": "_ZL17quantize_mmq_q8_1IL18mmq_q8_1_ds_layout2EEvPKfPKiPvlllllii__b56d9d0f",
+      "symbol_name": "_ZL17quantize_mmq_q8_1IL18mmq_q8_1_ds_layout2EEvPKfPKiPvlllllii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/upscale.cu",
+          "kind": "kernel_body",
+          "line": 86,
+          "note": "The antialias kernel has shape- and scale-dependent clipping, nested filter loops, and guarded weight accumulation."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/upscale.cu",
+          "kind": "call_site",
+          "line": 229,
+          "note": "The bilinear launcher selects this entry for antialias mode and derives a one-dimensional 256-thread launch."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/upscale.cu",
+          "kind": "call_site",
+          "line": 257,
+          "note": "The host operation supplies contiguous source strides and derives each scale from destination and source extents."
+        }
+      ],
+      "kernel_id": "_ZL30upscale_f32_bilinear_antialiasPKfPfiiiiiiiiiifffff__e079a648",
+      "symbol_name": "_ZL30upscale_f32_bilinear_antialiasPKfPfiiiiiiiiiifffff"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/topk-moe.cu",
+          "kind": "kernel_body",
+          "line": 79,
+          "note": "The <128,false> specialization combines NaN sanitization, deterministic top-k tie breaking, sigmoid/softmax selection, optional normalization, and full-mask warp reductions."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/topk-moe.cu",
+          "kind": "specialization_dispatch",
+          "line": 304,
+          "note": "The host dispatcher has a concrete 128-expert specialization."
+        },
+        {
+          "file": "third_party/llama.cpp/ggml/src/ggml-cuda/topk-moe.cu",
+          "kind": "optional_bias_dispatch",
+          "line": 367,
+          "note": "The host path selects has_bias=false and passes nullptr when the optional bias tensor is absent."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/llama_cpp/capture_sources/topk_moe_cuda_128_no_bias_adapter.cu",
+          "kind": "flat_config_adapter",
+          "line": 73,
+          "note": "The capture adapter exposes the three config booleans as scalar arguments, omits the null bias pointer, and preserves the concrete no-bias kernel logic."
+        }
+      ],
+      "kernel_id": "topk_moe_cuda_128_no_bias_adapter__fb60f880",
+      "symbol_name": "topk_moe_cuda_128_no_bias_adapter"
+    }
+  ],
+  "project": "llama_cpp",
+  "schema_version": 1
+}

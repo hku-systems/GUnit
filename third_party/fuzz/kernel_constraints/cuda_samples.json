@@ -1,0 +1,444 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "arg": 1,
+                "kind": "arg_value"
+              },
+              "op": "*",
+              "rhs": {
+                "arg": 2,
+                "kind": "arg_value"
+              }
+            },
+            "op": "*",
+            "rhs": {
+              "kind": "const",
+              "value": 4
+            }
+          },
+          "op": "<=",
+          "repair": {
+            "arg": 0,
+            "kind": "resize_payload"
+          },
+          "rhs": {
+            "arg": 0,
+            "kind": "payload_len"
+          }
+        }
+      ],
+      "display_name": "Mandelbrot1",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "dst",
+          "type": "uchar4 *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "imageW",
+          "type": "const int"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "1",
+            "signed": true
+          },
+          "name": "imageH",
+          "type": "const int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "200",
+            "min": "20",
+            "signed": true
+          },
+          "name": "crunch",
+          "type": "const int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 1.0,
+            "min": -2.0
+          },
+          "name": "xOff",
+          "type": "const float"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 1.5,
+            "min": -1.5
+          },
+          "name": "yOff",
+          "type": "const float"
+        },
+        {
+          "arg": 6,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 2.0,
+            "min": -2.0
+          },
+          "name": "xJP",
+          "type": "const float"
+        },
+        {
+          "arg": 7,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 2.0,
+            "min": -2.0
+          },
+          "name": "yJP",
+          "type": "const float"
+        },
+        {
+          "arg": 8,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 0.25,
+            "min": 0.0001
+          },
+          "name": "scale",
+          "type": "const float"
+        },
+        {
+          "arg": 10,
+          "domain": {
+            "kind": "int_range",
+            "max": "64",
+            "min": "0",
+            "signed": true
+          },
+          "name": "frame",
+          "type": "const int"
+        },
+        {
+          "arg": 11,
+          "domain": {
+            "kind": "int_range",
+            "max": "255",
+            "min": "0",
+            "signed": true
+          },
+          "name": "animationFrame",
+          "type": "const int"
+        },
+        {
+          "arg": 12,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "gridWidth",
+          "type": "const int"
+        },
+        {
+          "arg": 13,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "numBlocks",
+          "type": "const int"
+        },
+        {
+          "arg": 14,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "0",
+            "signed": false
+          },
+          "name": "isJ",
+          "type": "const bool"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/Mandelbrot/Mandelbrot_cuda.cu",
+          "kind": "kernel_body",
+          "line": 208,
+          "note": "imageW and imageH guard the pixel and four-neighbor reads; dst therefore requires imageW*imageH uchar4 elements."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/Mandelbrot/Mandelbrot_cuda.cu",
+          "kind": "call_site",
+          "line": 463,
+          "note": "The host uses block (16,16) and gridWidth=ceil(imageW/16); imageW,imageH<=16 make gridWidth=numBlocks=1 for the supported single-block domain."
+        }
+      ],
+      "kernel_id": "_Z11Mandelbrot1IfEvP6uchar4iiiT_S2_S2_S2_S2_S0_iiiib__deec3819",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z11Mandelbrot1IfEvP6uchar4iiiT_S2_S2_S2_S2_S0_iiiib"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        }
+      ],
+      "display_name": "inverseCNDKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "d_Output",
+          "type": "float *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "d_Input",
+          "type": "unsigned int *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "128",
+            "min": "1",
+            "signed": false
+          },
+          "name": "pathN",
+          "type": "unsigned int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "kernel_body",
+          "line": 146,
+          "note": "pathN bounds both d_Input[pos] and d_Output[pos], while d_Input must remain non-null to exercise data-driven inverse-CND branches."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "call_site",
+          "line": 171,
+          "note": "The host launches 128 threads; pathN in [1,128] gives a variable single-block domain with both flat buffers sized to pathN items."
+        }
+      ],
+      "kernel_id": "_ZL16inverseCNDKernelPfPjj__168b4c09",
+      "launch_policy": {
+        "block_candidates": [
+          128
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          128,
+          1,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 128,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZL16inverseCNDKernelPfPjj"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        }
+      ],
+      "display_name": "inverseCNDKernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "d_Output",
+          "type": "float *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "4",
+            "nullable": false
+          },
+          "name": "d_Input",
+          "type": "unsigned int *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "128",
+            "min": "1",
+            "signed": false
+          },
+          "name": "pathN",
+          "type": "unsigned int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "derived_variant",
+          "line": 146,
+          "note": "This direct-VConfig registry variant reuses the unchanged vendor kernel body and symbol under a distinct kernel ID."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "block_size_invariance",
+          "line": 149,
+          "note": "tid and threadN partition every output position with a blockDim.x*gridDim.x grid stride, so logical blocks 32, 64, and 128 write the same per-position inverse-CND result without shared state or synchronization."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "kernel_body",
+          "line": 146,
+          "note": "pathN bounds both d_Input[pos] and d_Output[pos], while d_Input must remain non-null to exercise data-driven inverse-CND branches."
+        },
+        {
+          "file": "third_party/cuda-samples/cpp/5_Domain_Specific/quasirandomGenerator/quasirandomGenerator_kernel.cu",
+          "kind": "call_site",
+          "line": 171,
+          "note": "The host launches 128 threads; pathN in [1,128] gives a variable single-block domain with both flat buffers sized to pathN items."
+        }
+      ],
+      "kernel_id": "inverseCNDKernel_vgeo",
+      "launch_policy": {
+        "block_candidates": [
+          128
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          128,
+          1,
+          1
+        ],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1]],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 128,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_ZL16inverseCNDKernelPfPjj"
+    }
+  ],
+  "project": "cuda_samples",
+  "schema_version": 1
+}

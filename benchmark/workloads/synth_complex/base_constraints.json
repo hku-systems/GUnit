@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "project": "synthetic_synth_complex",
+  "overrides": [
+    {
+      "symbol_name": "rq1_synth_complex",
+      "display_name": "rq1_synth_complex",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "input",
+          "type": "const unsigned char *",
+          "domain": {"kind": "bytes", "min_len": "128", "max_len": "4096", "elem_size_bytes": 1, "nullable": false}
+        },
+        {
+          "arg": 1,
+          "name": "output",
+          "type": "unsigned int *",
+          "domain": {"kind": "bytes", "min_len": "1024", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 2,
+          "name": "n",
+          "type": "const unsigned int",
+          "domain": {"kind": "int_range", "min": "128", "max": "4096", "signed": false}
+        }
+      ],
+      "constraints": [
+        {"kind": "count_fits_buffer", "count_arg": 2, "buffer_arg": 0, "elem_size_bytes": 1}
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [256],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": false
+      },
+      "evidence": [
+        {"kind": "synthetic_design", "file": "benchmark/rq2/workloads/synth_complex/kernel.cu", "line": 32, "note": "single-block grid-stride coverage workload with tunable nested magic guards"}
+      ]
+    }
+  ]
+}

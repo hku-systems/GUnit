@@ -1,0 +1,6 @@
+{
+  "description": "namespaced add kernel",
+  "expected_exit_code": 0,
+  "expected_stdout": "payload matched (20 bytes)",
+  "kernel_display_name": "ns1::ns2::ns_add"
+}

@@ -1,0 +1,82 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/optimizers/fused_adam_cuda_kernel.cu",
+          "kind": "kernel_body",
+          "line": 37,
+          "note": "the selected flattened Adam kernel uses grid-stride ownership, two legal mode branches, and an optional p_copy write without synchronization."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/apex/capture_sources/apex_optimizer_adapters.cu",
+          "kind": "aten_isolation_adapter",
+          "line": 11,
+          "note": "the concrete float adapter preserves the POD buffer and scalar logic; write_p_copy represents the vendor nullable-output branch without ATen or TensorListMetadata."
+        }
+      ],
+      "kernel_id": "apex_adam_cuda_kernel__bbf82dcc",
+      "symbol_name": "apex_adam_cuda_kernel"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/optimizers/fused_adam_cuda_kernel.cu",
+          "kind": "kernel_body",
+          "line": 381,
+          "note": "the selected kernel has an overflow early exit plus ILP=4 grid-stride load/store bounds branches and no synchronization."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/apex/capture_sources/apex_optimizer_adapters.cu",
+          "kind": "aten_isolation_adapter",
+          "line": 46,
+          "note": "the concrete float-to-float dispatch instance preserves the vendor ILP ownership and branch structure without ATen types or headers."
+        }
+      ],
+      "kernel_id": "apex_maybe_cast_kernel__206ea46b",
+      "symbol_name": "apex_maybe_cast_kernel"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/index_mul_2d/index_mul_2d_cuda_kernel.cu",
+          "kind": "kernel_body",
+          "line": 30,
+          "note": "the vendor generic float forward body derives row and feature ownership from blockDim.y and blockDim.x without synchronization."
+        },
+        {
+          "file": "benchmark/rq2/variants/apex_index_mul_vgeo/index_mul_vgeo.cu",
+          "kind": "derived_negative_control",
+          "line": 4,
+          "note": "the tracked negative control faithfully copies the vendor body and retains the host call site's fixed logical block (32,8,1)."
+        }
+      ],
+      "kernel_id": "_Z23index_mul_2d_float_origPfPKfS1_PKlll__60722a89",
+      "symbol_name": "_Z23index_mul_2d_float_origPfPKfS1_PKlll"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/index_mul_2d/index_mul_2d_cuda_kernel.cu",
+          "kind": "kernel_body",
+          "line": 30,
+          "note": "the vendor generic float forward body already uses dynamic blockDim.x stride and blockDim.y row ownership."
+        },
+        {
+          "file": "benchmark/rq2/variants/apex_index_mul_vgeo/index_mul_vgeo.cu",
+          "kind": "geometry_freed_variant",
+          "line": 24,
+          "note": "the tracked B-class rewrite changes only the exposed kernel name and launch policy; the forward body is unchanged."
+        }
+      ],
+      "kernel_id": "_Z23index_mul_2d_float_vgeoPfPKfS1_PKlll__88cdac70",
+      "symbol_name": "_Z23index_mul_2d_float_vgeoPfPKfS1_PKlll"
+    }
+  ],
+  "project": "apex",
+  "schema_version": 1
+}

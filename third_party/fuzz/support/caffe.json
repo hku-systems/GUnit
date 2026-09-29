@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "project": "caffe",
+  "kernels": [
+    {
+      "symbol_name": "caffe_cll_backward_f32",
+      "kernel_id": "caffe_cll_backward_f32__ed829c1f",
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/caffe/src/caffe/layers/contrastive_loss_layer.cu",
+          "line": 53,
+          "note": "The upstream float instance uses CUDA_KERNEL_LOOP ownership, indexes labels and squared distances by batch row, and retains distinct similar, legacy, positive-margin, and zero-output branches."
+        },
+        {
+          "kind": "pod_extraction_adapter",
+          "file": "third_party/fuzz/adapters/caffe_cll_backward/adapter.cu",
+          "line": 36,
+          "note": "The fixed-SHA adapter preserves CLLBackward<float> arithmetic and grid-stride ownership, derives count from batch*channels, rejects shapes outside the reviewed domain before payload access, and replaces only Caffe Blob/launch dependencies plus bool with an int32_t ABI flag."
+        },
+        {
+          "kind": "provenance",
+          "file": "third_party/fuzz/adapters/caffe_cll_backward/provenance.json",
+          "line": 1,
+          "note": "The extraction is tied to Caffe commit 9b891540183ddc834a02b2bd81b31afae71b2153 with source, adapter, patch, license, and probe hashes."
+        }
+      ]
+    }
+  ]
+}

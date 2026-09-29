@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+"""Compile command capture wrapper executable.
+
+Usage: rapid-wrap <compiler> <args...>
+"""
+
+import sys
+from pathlib import Path
+
+_SCRIPT_DIR = Path(__file__).resolve().parent
+if str(_SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPT_DIR))
+
+from adapters.capture_wrapper import run_and_capture
+
+sys.exit(run_and_capture(sys.argv[1:]))

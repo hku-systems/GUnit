@@ -1,0 +1,238 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {"buffer_arg": 0, "kind": "scalar_le_buffer_len", "scalar_arg": 10, "unit": "elements"},
+        {"buffer_arg": 1, "kind": "scalar_le_buffer_len", "scalar_arg": 10, "unit": "elements"},
+        {"buffer_arg": 2, "kind": "scalar_le_buffer_len", "scalar_arg": 10, "unit": "elements"},
+        {"buffer_arg": 3, "kind": "scalar_le_buffer_len", "scalar_arg": 10, "unit": "elements"},
+        {"buffer_arg": 4, "kind": "scalar_le_buffer_len", "scalar_arg": 10, "unit": "elements"}
+      ],
+      "display_name": "apex_adam_cuda_kernel",
+      "domains": [
+        {"arg": 0, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "p", "type": "float *__restrict"},
+        {"arg": 1, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "p_copy", "type": "float *__restrict"},
+        {"arg": 2, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "m", "type": "float *__restrict"},
+        {"arg": 3, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "v", "type": "float *__restrict"},
+        {"arg": 4, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "g", "type": "const float *__restrict"},
+        {"arg": 5, "domain": {"allow_nan": false, "kind": "float_range", "max": 0.999, "min": 0.0}, "name": "b1", "type": "float"},
+        {"arg": 6, "domain": {"allow_nan": false, "kind": "float_range", "max": 0.999, "min": 0.0}, "name": "b2", "type": "float"},
+        {"arg": 7, "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 1e-08}, "name": "eps", "type": "float"},
+        {"arg": 8, "domain": {"allow_nan": false, "kind": "float_range", "max": 8.0, "min": 0.125}, "name": "grad_scale", "type": "float"},
+        {"arg": 9, "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": -1.0}, "name": "step_size", "type": "float"},
+        {"arg": 10, "domain": {"kind": "int_range", "max": "512", "min": "1", "signed": false}, "name": "tsize", "type": "size_t"},
+        {"arg": 11, "domain": {"allow_unknown": false, "kind": "enum", "values": [{"name": "ADAM_MODE_0", "value": "0"}, {"name": "ADAM_MODE_1", "value": "1"}]}, "name": "mode", "type": "int"},
+        {"arg": 12, "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": -1.0}, "name": "decay", "type": "float"},
+        {"arg": 13, "domain": {"allow_unknown": false, "kind": "enum", "values": [{"name": "disabled", "value": "0"}, {"name": "enabled", "value": "1"}]}, "name": "write_p_copy", "type": "int"}
+      ],
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/optimizers/fused_adam_cuda_kernel.cu",
+          "kind": "call_site",
+          "line": 198,
+          "note": "the host dispatch launches the flattened kernel with 512 threads; the adapter restricts tsize to one such physical block and preserves modes 0 and 1."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/apex/capture_sources/apex_optimizer_adapters.cu",
+          "kind": "adapter_bounds",
+          "line": 11,
+          "note": "all five flat float buffers are repaired to at least tsize elements; grad_scale excludes zero and write_p_copy selects the nullable-output branch."
+        }
+      ],
+      "kernel_id": "apex_adam_cuda_kernel__bbf82dcc",
+      "launch_policy": {
+        "block_candidates": [512, 256, 128, 64, 32],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [512, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1], [512, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "apex_adam_cuda_kernel"
+    },
+    {
+      "constraints": [
+        {"buffer_arg": 1, "kind": "scalar_le_buffer_len", "scalar_arg": 3, "unit": "elements"},
+        {"buffer_arg": 2, "kind": "scalar_le_buffer_len", "scalar_arg": 3, "unit": "elements"}
+      ],
+      "display_name": "apex_maybe_cast_kernel",
+      "domains": [
+        {"arg": 0, "domain": {"allow_unknown": false, "kind": "enum", "values": [{"name": "continue", "value": "0"}, {"name": "overflow", "value": "1"}]}, "name": "overflow_flag", "type": "int"},
+        {"arg": 1, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "p_in", "type": "const float *"},
+        {"arg": 2, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "p_out", "type": "float *"},
+        {"arg": 3, "domain": {"kind": "int_range", "max": "512", "min": "1", "signed": false}, "name": "tsize", "type": "size_t"}
+      ],
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/optimizers/fused_adam_cuda_kernel.cu",
+          "kind": "call_site",
+          "line": 687,
+          "note": "the host requires equal input/output element counts and launches 512 threads; lines 700-702 instantiate the templated kernel and pass the optional overflow flag."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/apex/capture_sources/apex_optimizer_adapters.cu",
+          "kind": "adapter_bounds",
+          "line": 46,
+          "note": "input and output are repaired to at least tsize floats; overflow_flag retains both early-exit states under a variable logical block."
+        }
+      ],
+      "kernel_id": "apex_maybe_cast_kernel__206ea46b",
+      "launch_policy": {
+        "block_candidates": [512, 256, 128, 64, 32],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [512, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1], [512, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "apex_maybe_cast_kernel"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "lhs": {"kind": "binary", "lhs": {"arg": 4, "kind": "arg_value"}, "op": "*", "rhs": {"arg": 5, "kind": "arg_value"}}, "op": "*", "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "repair": {"arg": 0, "kind": "resize_payload"},
+          "rhs": {"arg": 0, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "lhs": {"kind": "binary", "lhs": {"arg": 4, "kind": "arg_value"}, "op": "*", "rhs": {"arg": 5, "kind": "arg_value"}}, "op": "*", "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "repair": {"arg": 1, "kind": "resize_payload"},
+          "rhs": {"arg": 1, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "lhs": {"kind": "binary", "lhs": {"arg": 4, "kind": "arg_value"}, "op": "*", "rhs": {"arg": 5, "kind": "arg_value"}}, "op": "*", "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "repair": {"arg": 2, "kind": "resize_payload"},
+          "rhs": {"arg": 2, "kind": "payload_len"}
+        },
+        {"buffer_arg": 3, "kind": "scalar_le_buffer_len", "scalar_arg": 4, "unit": "elements"},
+        {"buffer_arg": 3, "elem_size_bytes": 8, "kind": "buffer_elements_lt_scalar", "scalar_arg": 4}
+      ],
+      "display_name": "index_mul_2d_float_orig",
+      "domains": [
+        {"arg": 0, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "out", "type": "float *"},
+        {"arg": 1, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "in1", "type": "const float *"},
+        {"arg": 2, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "in2", "type": "const float *"},
+        {"arg": 3, "domain": {"elem_size_bytes": 8, "kind": "bytes", "max_len": "64", "min_len": "8", "nullable": false}, "name": "idx1", "type": "const int64_t *"},
+        {"arg": 4, "domain": {"kind": "int_range", "max": "8", "min": "1", "signed": true}, "name": "size", "type": "const int64_t"},
+        {"arg": 5, "domain": {"kind": "int_range", "max": "63", "min": "1", "signed": true}, "name": "fea_dim", "type": "const int64_t"}
+      ],
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/index_mul_2d/index_mul_2d_cuda_kernel.cu",
+          "kind": "call_site",
+          "line": 252,
+          "note": "the generic host branch fixes block (32,8,1); size is restricted to one y tile and every float buffer is sized for size*fea_dim elements."
+        },
+        {
+          "file": "benchmark/rq2/variants/apex_index_mul_vgeo/probe.cu",
+          "kind": "correctness_contract",
+          "line": 65,
+          "note": "the tracked probe launches this negative control at the fixed vendor geometry and compares its output bitwise."
+        }
+      ],
+      "kernel_id": "_Z23index_mul_2d_float_origPfPKfS1_PKlll__60722a89",
+      "layouts": [
+        {"align_bytes": 16, "arg": 0, "name": "out", "type": "float *"},
+        {"align_bytes": 16, "arg": 1, "name": "in1", "type": "const float *"},
+        {"align_bytes": 16, "arg": 2, "name": "in2", "type": "const float *"}
+      ],
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [32, 8, 1],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z23index_mul_2d_float_origPfPKfS1_PKlll"
+    },
+    {
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "lhs": {"kind": "binary", "lhs": {"arg": 4, "kind": "arg_value"}, "op": "*", "rhs": {"arg": 5, "kind": "arg_value"}}, "op": "*", "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "repair": {"arg": 0, "kind": "resize_payload"},
+          "rhs": {"arg": 0, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "lhs": {"kind": "binary", "lhs": {"arg": 4, "kind": "arg_value"}, "op": "*", "rhs": {"arg": 5, "kind": "arg_value"}}, "op": "*", "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "repair": {"arg": 1, "kind": "resize_payload"},
+          "rhs": {"arg": 1, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "lhs": {"kind": "binary", "lhs": {"arg": 4, "kind": "arg_value"}, "op": "*", "rhs": {"arg": 5, "kind": "arg_value"}}, "op": "*", "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "repair": {"arg": 2, "kind": "resize_payload"},
+          "rhs": {"arg": 2, "kind": "payload_len"}
+        },
+        {"buffer_arg": 3, "kind": "scalar_le_buffer_len", "scalar_arg": 4, "unit": "elements"},
+        {"buffer_arg": 3, "elem_size_bytes": 8, "kind": "buffer_elements_lt_scalar", "scalar_arg": 4}
+      ],
+      "display_name": "index_mul_2d_float_vgeo",
+      "domains": [
+        {"arg": 0, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "out", "type": "float *"},
+        {"arg": 1, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "in1", "type": "const float *"},
+        {"arg": 2, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "in2", "type": "const float *"},
+        {"arg": 3, "domain": {"elem_size_bytes": 8, "kind": "bytes", "max_len": "64", "min_len": "8", "nullable": false}, "name": "idx1", "type": "const int64_t *"},
+        {"arg": 4, "domain": {"kind": "int_range", "max": "8", "min": "1", "signed": true}, "name": "size", "type": "const int64_t"},
+        {"arg": 5, "domain": {"kind": "int_range", "max": "63", "min": "1", "signed": true}, "name": "fea_dim", "type": "const int64_t"}
+      ],
+      "evidence": [
+        {
+          "file": "third_party/apex/apex/contrib/csrc/index_mul_2d/index_mul_2d_cuda_kernel.cu",
+          "kind": "call_site",
+          "line": 252,
+          "note": "the native generic launch fixes y=8; the supported single-block subset keeps size<=8 and repairs idx1 values below the size rows allocated in in1."
+        },
+        {
+          "file": "benchmark/rq2/variants/apex_index_mul_vgeo/probe.cu",
+          "kind": "correctness_contract",
+          "line": 73,
+          "note": "the tracked probe covers x in 4,8,16,32 with non-multiple feature dimensions and repeated legal idx1 values."
+        }
+      ],
+      "kernel_id": "_Z23index_mul_2d_float_vgeoPfPKfS1_PKlll__88cdac70",
+      "layouts": [
+        {"align_bytes": 16, "arg": 0, "name": "out", "type": "float *"},
+        {"align_bytes": 16, "arg": 1, "name": "in1", "type": "const float *"},
+        {"align_bytes": 16, "arg": 2, "name": "in2", "type": "const float *"}
+      ],
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [32, 8, 1],
+        "logical_block_candidates": [[4, 8, 1], [8, 8, 1], [16, 8, 1], [32, 8, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z23index_mul_2d_float_vgeoPfPKfS1_PKlll"
+    }
+  ],
+  "project": "apex",
+  "schema_version": 1
+}

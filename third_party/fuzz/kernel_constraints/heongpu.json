@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "project": "heongpu",
+  "overrides": [
+    {
+      "symbol_name": "heongpu_decryption_tile_kernel",
+      "kernel_id": "heongpu_decryption_tile_kernel__8bcd6507",
+      "display_name": "heongpu_decryption_tile_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "ct0",
+          "type": "uint64_t *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "16384",
+            "max_len": "16384",
+            "elem_size_bytes": 8,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 1,
+          "name": "ct1",
+          "type": "uint64_t *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "16384",
+            "max_len": "16384",
+            "elem_size_bytes": 8,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 2,
+          "name": "plain",
+          "type": "uint64_t *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "2048",
+            "max_len": "2048",
+            "elem_size_bytes": 8,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 3,
+          "name": "modulus",
+          "type": "Modulus64 *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "192",
+            "max_len": "192",
+            "elem_size_bytes": 24,
+            "nullable": false,
+            "pattern_hex": "01c00f000000000014000000000000000682200000000000"
+          }
+        },
+        {
+          "arg": 4,
+          "name": "plain_mod_value",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "1032193",
+            "max": "1032193",
+            "signed": false
+          }
+        },
+        {
+          "arg": 5,
+          "name": "plain_mod_bit",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "20",
+            "max": "20",
+            "signed": false
+          }
+        },
+        {
+          "arg": 6,
+          "name": "plain_mod_mu",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "2130438",
+            "max": "2130438",
+            "signed": false
+          }
+        },
+        {
+          "arg": 7,
+          "name": "gamma_value",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "786433",
+            "max": "786433",
+            "signed": false
+          }
+        },
+        {
+          "arg": 8,
+          "name": "gamma_bit",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "20",
+            "max": "20",
+            "signed": false
+          }
+        },
+        {
+          "arg": 9,
+          "name": "gamma_mu",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "2796199",
+            "max": "2796199",
+            "signed": false
+          }
+        },
+        {
+          "arg": 10,
+          "name": "Qi_t",
+          "type": "uint64_t *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "64",
+            "max_len": "64",
+            "elem_size_bytes": 8,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 11,
+          "name": "Qi_gamma",
+          "type": "uint64_t *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "64",
+            "max_len": "64",
+            "elem_size_bytes": 8,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 12,
+          "name": "Qi_inverse",
+          "type": "uint64_t *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "64",
+            "max_len": "64",
+            "elem_size_bytes": 8,
+            "nullable": false
+          }
+        },
+        {
+          "arg": 13,
+          "name": "mulq_inv_t",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "0",
+            "max": "1032192",
+            "signed": false
+          }
+        },
+        {
+          "arg": 14,
+          "name": "mulq_inv_gamma",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "0",
+            "max": "786432",
+            "signed": false
+          }
+        },
+        {
+          "arg": 15,
+          "name": "inv_gamma",
+          "type": "uint64_t",
+          "domain": {
+            "kind": "int_range",
+            "min": "0",
+            "max": "1032192",
+            "signed": false
+          }
+        },
+        {
+          "arg": 16,
+          "name": "n_power",
+          "type": "int",
+          "domain": {
+            "kind": "int_range",
+            "min": "5",
+            "max": "8",
+            "signed": true
+          }
+        },
+        {
+          "arg": 17,
+          "name": "decomp_mod_count",
+          "type": "int",
+          "domain": {
+            "kind": "int_range",
+            "min": "1",
+            "max": "8",
+            "signed": true
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "kind": "count_fits_buffer",
+          "count_arg": 17,
+          "buffer_arg": 0,
+          "elem_size_bytes": 2048
+        },
+        {
+          "kind": "count_fits_buffer",
+          "count_arg": 17,
+          "buffer_arg": 1,
+          "elem_size_bytes": 2048
+        },
+        {
+          "kind": "count_fits_buffer",
+          "count_arg": 17,
+          "buffer_arg": 3,
+          "elem_size_bytes": 24
+        },
+        {
+          "kind": "count_fits_buffer",
+          "count_arg": 17,
+          "buffer_arg": 10,
+          "elem_size_bytes": 8
+        },
+        {
+          "kind": "count_fits_buffer",
+          "count_arg": 17,
+          "buffer_arg": 11,
+          "elem_size_bytes": 8
+        },
+        {
+          "kind": "count_fits_buffer",
+          "count_arg": 17,
+          "buffer_arg": 12,
+          "elem_size_bytes": 8
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [256],
+        "physical_block_max": 256,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [256, 1, 1],
+        "logical_block_candidates": [[256, 1, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": false
+      },
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/HEonGPU/src/lib/kernel/decryption.cu",
+          "line": 58,
+          "note": "decomp_mod_count gates the RNS loop; location=idx+(i<<n_power) accesses ct0/ct1 planes, while modulus and all Qi arrays are indexed by i."
+        },
+        {
+          "kind": "host_allocation",
+          "file": "third_party/HEonGPU/src/lib/host/bfv/decryptor.cu",
+          "line": 47,
+          "note": "The host allocates n output coefficients and uses n*Q_size storage for each RNS ciphertext component. Fixed maximum-capacity payloads conservatively cover n<=256 and Q_size<=8."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/HEonGPU/src/lib/host/bfv/decryptor.cu",
+          "line": 109,
+          "note": "The native launch uses exactly 256 threads. The single-candidate launch policy preserves that geometry and is intentionally not VConfig-responsive."
+        },
+        {
+          "kind": "adapter_bounds",
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/heongpu/capture_sources/heongpu_decryption_tile_adapter.cu",
+          "line": 98,
+          "note": "The adapter guards idx against 1<<n_power, fixes valid Barrett modulus triples, and uses maximum-capacity payloads plus Q_size count constraints. Responsiveness grade: 固定几何，仅可作阴性对照."
+        }
+      ]
+    }
+  ]
+}

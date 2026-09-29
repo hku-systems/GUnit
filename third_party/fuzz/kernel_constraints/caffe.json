@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "project": "caffe",
+  "overrides": [
+    {
+      "symbol_name": "caffe_cll_backward_f32",
+      "kernel_id": "caffe_cll_backward_f32__ed829c1f",
+      "display_name": "caffe_cll_backward_f32",
+      "domains": [
+        {
+          "arg": 0,
+          "name": "batch",
+          "type": "uint32_t",
+          "domain": {"kind": "int_range", "min": "1", "max": "32", "signed": false}
+        },
+        {
+          "arg": 1,
+          "name": "channels",
+          "type": "uint32_t",
+          "domain": {"kind": "int_range", "min": "1", "max": "256", "signed": false}
+        },
+        {
+          "arg": 2,
+          "name": "margin",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": 0.0, "max": 16.0, "allow_nan": false}
+        },
+        {
+          "arg": 3,
+          "name": "legacy_version",
+          "type": "int32_t",
+          "domain": {
+            "kind": "enum",
+            "values": [
+              {"name": "modern", "value": "0"},
+              {"name": "legacy", "value": "1"}
+            ],
+            "allow_unknown": false
+          }
+        },
+        {
+          "arg": 4,
+          "name": "alpha",
+          "type": "float",
+          "domain": {"kind": "float_range", "min": -4.0, "max": 4.0, "allow_nan": false}
+        },
+        {
+          "arg": 5,
+          "name": "y",
+          "type": "const float *",
+          "domain": {
+            "kind": "bytes",
+            "min_len": "4",
+            "max_len": "128",
+            "elem_size_bytes": 4,
+            "nullable": false,
+            "pattern_hex": "000000000000803f"
+          }
+        },
+        {
+          "arg": 6,
+          "name": "diff",
+          "type": "const float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "8192", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 7,
+          "name": "dist_sq",
+          "type": "const float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "128", "elem_size_bytes": 4, "nullable": false}
+        },
+        {
+          "arg": 8,
+          "name": "bottom_diff",
+          "type": "float *",
+          "domain": {"kind": "bytes", "min_len": "4", "max_len": "8192", "elem_size_bytes": 4, "nullable": false}
+        }
+      ],
+      "constraints": [
+        {
+          "kind": "scalar_product_le_const",
+          "lhs_arg": 0,
+          "rhs_arg": 1,
+          "value": 2048,
+          "repair_arg": 1
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 0}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 5},
+          "repair": {"kind": "resize_payload", "arg": 5}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 0}, "rhs": {"kind": "arg_value", "arg": 1}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 6},
+          "repair": {"kind": "resize_payload", "arg": 6}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 0}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 7},
+          "repair": {"kind": "resize_payload", "arg": 7}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 0}, "rhs": {"kind": "arg_value", "arg": 1}}, "rhs": {"kind": "const", "value": 4}},
+          "op": "<=",
+          "rhs": {"kind": "payload_len", "arg": 8},
+          "repair": {"kind": "resize_payload", "arg": 8}
+        }
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [32, 64, 128, 256, 512],
+        "physical_block_max": 512,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [512, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1], [512, 1, 1]],
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {
+          "kind": "upstream_launch_and_indexing",
+          "file": "third_party/caffe/src/caffe/layers/contrastive_loss_layer.cu",
+          "line": 53,
+          "note": "CLLBackward derives n=i/channels and reads y[n], dist_sq[n], and diff[i] before writing bottom_diff[i]; the native CUDA_KERNEL_LOOP is grid-stride and contains no synchronization."
+        },
+        {
+          "kind": "adapter_bounds",
+          "file": "third_party/fuzz/adapters/caffe_cll_backward/adapter.cu",
+          "line": 36,
+          "note": "The scalar product repair enforces batch*channels <= 2048 before four expression repairs size labels/distances and input/output payloads; the adapter repeats the reviewed shape check before payload access as defense in depth."
+        },
+        {
+          "kind": "boundary_probe",
+          "file": "third_party/fuzz/adapters/caffe_cll_backward/adapter_probe.cu",
+          "line": 147,
+          "note": "Fixed cases cover y=0/1, both legacy modes, margin=0/1, alpha=-1/0/1, dist_sq=0/tiny and values immediately below/above margin squared, signed diff values, and a valid 2048-element grid-stride case."
+        }
+      ]
+    }
+  ]
+}

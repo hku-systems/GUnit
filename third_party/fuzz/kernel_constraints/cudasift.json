@@ -1,0 +1,1728 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 1,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 1,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "CleanMatches",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "576",
+            "min_len": "576",
+            "nullable": false
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "1",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 289,
+          "note": "one-dimensional bounds-clamped launch"
+        }
+      ],
+      "kernel_id": "_Z12CleanMatchesP9SiftPointi__071b39fb",
+      "launch_policy": {
+        "block_candidates": [
+          64
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          64,
+          1,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 64,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12CleanMatchesP9SiftPointi"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 4,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 4,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "MatchSiftPoints2",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "1024",
+            "nullable": false
+          },
+          "name": "corrData",
+          "type": "float *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 39,
+          "note": "native 16x16 logical block"
+        }
+      ],
+      "kernel_id": "_Z16MatchSiftPoints2P9SiftPointS0_Pfii__35c51f10",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z16MatchSiftPoints2P9SiftPointS0_Pfii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 2,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        }
+      ],
+      "display_name": "ComputeHomographies",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16",
+            "min_len": "16",
+            "nullable": false
+          },
+          "name": "coord",
+          "type": "float *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "16384",
+            "min_len": "16384",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "randPts",
+          "type": "int *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "32768",
+            "min_len": "32768",
+            "nullable": false
+          },
+          "name": "homo",
+          "type": "float *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "numPts",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 910,
+          "note": "one-dimensional logical block"
+        }
+      ],
+      "kernel_id": "_Z19ComputeHomographiesPfPiS_i__6c6a7b01",
+      "launch_policy": {
+        "block_candidates": [
+          16
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          1,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 16,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z19ComputeHomographiesPfPiS_i"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 4,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 4,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "MatchSiftPoints",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "576",
+            "min_len": "576",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "64",
+            "min_len": "64",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "corrData",
+          "type": "float *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 6,
+          "note": "native MatchSiftPoints 16x16 logical block with grid.y=1"
+        }
+      ],
+      "kernel_id": "_Z15MatchSiftPointsP9SiftPointS0_Pfii__a1978421",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z15MatchSiftPointsP9SiftPointS0_Pfii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 2,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 4,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 2,
+          "count_arg": 4,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "1024",
+            "min_len": "1024",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "corrData",
+          "type": "float *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "corrWidth",
+          "type": "int"
+        },
+        {
+          "arg": 5,
+          "domain": {
+            "kind": "int_range",
+            "max": "576",
+            "min": "576",
+            "signed": true
+          },
+          "name": "siftSize",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 65,
+          "note": "native 16x16 logical block, corrWidth=16"
+        }
+      ],
+      "kernel_id": "_Z11FindMaxCorrPfP9SiftPointS1_iii__4f286b5c",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z11FindMaxCorrPfP9SiftPointS1_iii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 2,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 4,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 2,
+          "count_arg": 4,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr3",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "2048",
+            "min_len": "2048",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "corrData",
+          "type": "float *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 116,
+          "note": "native 16x16 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr3PfP9SiftPointS1_ii__079ca3bd",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr3PfP9SiftPointS1_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr2",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "576",
+            "min_len": "576",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "2304",
+            "min_len": "2304",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "1",
+            "min": "1",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "4",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 180,
+          "note": "native 16x4 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr2P9SiftPointS0_ii__497a5665",
+      "launch_policy": {
+        "block_candidates": [
+          64
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          4,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 64,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr2P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr4",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "2304",
+            "min_len": "2304",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "2304",
+            "min_len": "2304",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "4",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "4",
+            "min": "4",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 244,
+          "note": "native 16x4 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr4P9SiftPointS0_ii__8a70bde8",
+      "launch_policy": {
+        "block_candidates": [
+          64
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          4,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 64,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr4P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr5",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 763,
+          "note": "global-lock variant with native 16x16 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr5P9SiftPointS0_ii__8f05425b",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr5P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr6",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 699,
+          "note": "native 32x16 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr6P9SiftPointS0_ii__628acd7d",
+      "launch_policy": {
+        "block_candidates": [
+          512
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          32,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr6P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr7",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "9216",
+            "min_len": "9216",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 618,
+          "note": "global-lock variant with native 16x16 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr7P9SiftPointS0_ii__59fbb48a",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr7P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr8",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "18432",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "18432",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "32",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "32",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 530,
+          "note": "native 32x8 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr8P9SiftPointS0_ii__a552c77d",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          32,
+          8,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr8P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr9",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "18432",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "18432",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "32",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "32",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 414,
+          "note": "atomic-lock native 32x8 logical block"
+        }
+      ],
+      "kernel_id": "_Z12FindMaxCorr9P9SiftPointS0_ii__d5ba6cd9",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          32,
+          8,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z12FindMaxCorr9P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 1,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        },
+        {
+          "buffer_arg": 0,
+          "count_arg": 2,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        },
+        {
+          "buffer_arg": 1,
+          "count_arg": 3,
+          "elem_size_bytes": 576,
+          "kind": "count_fits_buffer"
+        }
+      ],
+      "display_name": "FindMaxCorr10",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "18432",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift1",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 576,
+            "kind": "bytes",
+            "max_len": "18432",
+            "min_len": "18432",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "sift2",
+          "type": "SiftPoint *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "32",
+            "signed": true
+          },
+          "name": "numPts1",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "32",
+            "min": "32",
+            "signed": true
+          },
+          "name": "numPts2",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 301,
+          "note": "native 32x8 logical block"
+        }
+      ],
+      "kernel_id": "_Z13FindMaxCorr10P9SiftPointS0_ii__845fd768",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          32,
+          8,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z13FindMaxCorr10P9SiftPointS0_ii"
+    },
+    {
+      "constraints": [
+        {
+          "buffer_arg": 0,
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 3,
+          "unit": "elements"
+        }
+      ],
+      "display_name": "TestHomographies",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "256",
+            "min_len": "256",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "d_coord",
+          "type": "float *"
+        },
+        {
+          "arg": 1,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "512",
+            "min_len": "512",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "d_homo",
+          "type": "float *"
+        },
+        {
+          "arg": 2,
+          "domain": {
+            "elem_size_bytes": 4,
+            "kind": "bytes",
+            "max_len": "64",
+            "min_len": "64",
+            "nullable": false,
+            "pattern_hex": "00000000"
+          },
+          "name": "d_counts",
+          "type": "int *"
+        },
+        {
+          "arg": 3,
+          "domain": {
+            "kind": "int_range",
+            "max": "16",
+            "min": "16",
+            "signed": true
+          },
+          "name": "numPts",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "allow_nan": false,
+            "kind": "float_range",
+            "max": 1.0,
+            "min": 1.0
+          },
+          "name": "thresh2",
+          "type": "float"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/CudaSift/matching.cu",
+          "kind": "kernel_body",
+          "line": 956,
+          "note": "native TESTHOMO 16x16 logical block with grid.y=1"
+        }
+      ],
+      "kernel_id": "_Z16TestHomographiesPfS_Piif__7f683dcb",
+      "launch_policy": {
+        "block_candidates": [
+          256
+        ],
+        "coverage_memory": "global",
+        "grid": [
+          1,
+          1,
+          1
+        ],
+        "logical_block": [
+          16,
+          16,
+          1
+        ],
+        "logical_grid": [
+          1,
+          1,
+          1
+        ],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z16TestHomographiesPfS_Piif"
+    }
+  ],
+  "project": "cudasift",
+  "schema_version": 1
+}

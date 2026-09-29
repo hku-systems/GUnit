@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workload_id": "shoc_scan",
+  "base_kernel": {
+    "path": "benchmark/rq1/workloads/shoc_scan/kernel.cu",
+    "sha256": "56193d2b560f2c3413c43ea17f247a4a9d025461d76152fe9394400be31d61f9"
+  },
+  "adapted_kernel": {
+    "path": "benchmark/rq2/workloads/shoc_scan/kernel.cu",
+    "sha256": "572887f9123c0c6778d87fa70ef7acd01ecf1087a99dae51a4deb2eb0dc3aacd"
+  },
+  "adaptation_patch": {
+    "path": "benchmark/rq2/workloads/shoc_scan/vconfig_adaptation.patch",
+    "sha256": "da71c40b0fe2f17afd1046b5c47141f1b8addf4a0d0798132a0c6d3894031b25"
+  },
+  "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+  "reason": "Parameterize the extracted fixed template width for semantically legal RQ2 VConfig block mutation while preserving the physical 256-thread envelope.",
+  "upstream": {
+    "repository": "https://github.com/vetter/shoc",
+    "commit": "00b25e2751dde4f1d7c595cadbb7fdb0873257b0",
+    "path": "src/cuda/level1/scan/scan_kernel.h"
+  }
+}

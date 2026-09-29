@@ -1,0 +1,112 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "dimension": "x",
+          "kind": "scalar_le_logical_block_dim",
+          "scalar_arg": 3
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {"arg": 3, "kind": "arg_value"},
+            "op": "*",
+            "rhs": {"kind": "const", "value": 144}
+          },
+          "op": "<=",
+          "repair": {"arg": 0, "kind": "resize_payload"},
+          "rhs": {"arg": 0, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {"arg": 3, "kind": "arg_value"},
+            "op": "*",
+            "rhs": {"kind": "const", "value": 24}
+          },
+          "op": "<=",
+          "repair": {"arg": 1, "kind": "resize_payload"},
+          "rhs": {"arg": 1, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {"arg": 3, "kind": "arg_value"},
+            "op": "*",
+            "rhs": {"kind": "const", "value": 24}
+          },
+          "op": "<=",
+          "repair": {"arg": 2, "kind": "resize_payload"},
+          "rhs": {"arg": 2, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "cholesky_solve6x6_forward_raw_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "36864", "min_len": "144", "nullable": false},
+          "name": "H_ptr",
+          "type": "const float *"
+        },
+        {
+          "arg": 1,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "6144", "min_len": "24", "nullable": false},
+          "name": "b_ptr",
+          "type": "const float *"
+        },
+        {
+          "arg": 2,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "6144", "min_len": "24", "nullable": false},
+          "name": "x_ptr",
+          "type": "float *"
+        },
+        {
+          "arg": 3,
+          "domain": {"kind": "int_range", "max": "256", "min": "1", "signed": true},
+          "name": "dim",
+          "type": "int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/lietorch/lietorch/extras/se3_solver.cu",
+          "kind": "kernel_body",
+          "line": 68,
+          "note": "the vendor body derives dim=ht*wd and indexes H as m+(6*i+j)*dim and b/x as m+i*dim after reducing accessors to raw data pointers."
+        },
+        {
+          "file": "third_party/lietorch/lietorch/extras/se3_solver.cu",
+          "kind": "call_site",
+          "line": 154,
+          "note": "the host wrapper uses batch_size=H.size(0), dim=H.size(3)*H.size(4), zeros_like(b) for x, and a 64-thread launch; the adapter assesses the batch=1, single-block subdomain."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave2/lietorch/capture_sources/cholesky_solve6x6_forward_raw.cu",
+          "kind": "adapter_bounds",
+          "line": 55,
+          "note": "one logical block maps m directly from threadIdx.x; dim is bounded by logical blockDim.x, and payload repairs provide 36*dim H floats plus 6*dim b/x floats."
+        }
+      ],
+      "kernel_id": "cholesky_solve6x6_forward_raw_kernel__3e2391fd",
+      "launch_policy": {
+        "block_candidates": [256, 128, 64, 32],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [64, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "cholesky_solve6x6_forward_raw_kernel"
+    }
+  ],
+  "project": "lietorch",
+  "schema_version": 1
+}

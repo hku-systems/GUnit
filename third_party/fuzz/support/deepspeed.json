@@ -1,0 +1,25 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/DeepSpeed/csrc/lamb/fused_lamb_cuda_kernel.cu",
+          "kind": "kernel_body",
+          "line": 260,
+          "note": "part3 alone uses grid-stride reassignment, coefficient and mode branches, and an optional p_copy write without the reductions, shuffles, or CTA barriers in parts 1 and 2."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/deepspeed/capture_sources/deepspeed_lamb_part3_adapter.cu",
+          "kind": "aten_isolation_adapter",
+          "line": 5,
+          "note": "the concrete float adapter preserves only the part3 POD buffers and scalar logic; write_p_copy represents the nullable output without ATen or Torch headers."
+        }
+      ],
+      "kernel_id": "deepspeed_lamb_cuda_kernel_part3__234a8314",
+      "symbol_name": "deepspeed_lamb_cuda_kernel_part3"
+    }
+  ],
+  "project": "deepspeed",
+  "schema_version": 1
+}

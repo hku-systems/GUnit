@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "project": "heongpu",
+  "kernels": [
+    {
+      "symbol_name": "heongpu_decryption_tile_kernel",
+      "kernel_id": "heongpu_decryption_tile_kernel__8bcd6507",
+      "decision": "run",
+      "evidence": [
+        {
+          "kind": "kernel_body",
+          "file": "third_party/HEonGPU/src/lib/kernel/decryption.cu",
+          "line": 44,
+          "note": "The upstream kernel accumulates each coefficient across Q_size RNS planes, takes a data-dependent sum_gamma > gamma/2 branch, and contains no synchronization."
+        },
+        {
+          "kind": "call_site",
+          "file": "third_party/HEonGPU/src/lib/host/bfv/decryptor.cu",
+          "line": 109,
+          "note": "The BFV decryptor launches decryption_kernel with 256 threads and grid.x=n>>8; the adapter extracts one guarded coefficient tile from that fixed geometry."
+        },
+        {
+          "kind": "tile_adapter",
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/heongpu/capture_sources/heongpu_decryption_tile_adapter.cu",
+          "line": 89,
+          "note": "The adapter preserves the RNS access and branch logic, flattens both 24-byte by-value Modulus64 values into six uint64_t fields, and bounds one 32..256 coefficient tile. VConfig responsiveness: 固定几何，仅可作阴性对照."
+        }
+      ]
+    }
+  ]
+}

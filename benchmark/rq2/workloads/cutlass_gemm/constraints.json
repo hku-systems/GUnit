@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "project": "rq2_cutlass_gemm",
+  "overrides": [
+    {
+      "symbol_name": "rq1_cutlass_gemm",
+      "display_name": "rq1_cutlass_gemm",
+      "domains": [
+        {"arg": 0, "name": "M", "type": "int", "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}},
+        {"arg": 1, "name": "N", "type": "int", "domain": {"kind": "int_range", "min": "1", "max": "1", "signed": true}},
+        {"arg": 2, "name": "K", "type": "int", "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}},
+        {"arg": 3, "name": "alpha", "type": "float", "domain": {"kind": "float_range", "min": -1.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 4, "name": "A", "type": "const float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 5, "name": "lda", "type": "int", "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": true}},
+        {"arg": 6, "name": "B", "type": "const float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "16", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 7, "name": "ldb", "type": "int", "domain": {"kind": "int_range", "min": "4", "max": "4", "signed": true}},
+        {"arg": 8, "name": "beta", "type": "float", "domain": {"kind": "float_range", "min": -1.0, "max": 1.0, "allow_nan": false}},
+        {"arg": 9, "name": "C", "type": "float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "16", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 10, "name": "ldc", "type": "int", "domain": {"kind": "int_range", "min": "4", "max": "4", "signed": true}}
+      ],
+      "constraints": [
+        {"kind": "scalar_compare_scalar", "lhs_arg": 5, "op": ">=", "rhs_arg": 0},
+        {"kind": "expression_compare", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "binary", "op": "*", "lhs": {"kind": "arg_value", "arg": 2}, "rhs": {"kind": "arg_value", "arg": 5}}, "rhs": {"kind": "const", "value": 4}}, "op": "<=", "rhs": {"kind": "payload_len", "arg": 4}, "repair": {"kind": "resize_payload", "arg": 4}},
+        {"kind": "count_fits_buffer", "count_arg": 2, "buffer_arg": 6, "elem_size_bytes": 4},
+        {"kind": "count_fits_buffer", "count_arg": 0, "buffer_arg": 9, "elem_size_bytes": 4}
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [16],
+        "physical_block_max": 16,
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [16, 1, 1],
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {"kind": "upstream_extraction", "file": "benchmark/rq2/workloads/cutlass_gemm/kernel.cu", "line": 2, "note": "naive CUTLASS example ReferenceGemm_kernel on fixed 4x4 storage"}
+      ]
+    }
+  ]
+}

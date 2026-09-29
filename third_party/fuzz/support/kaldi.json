@@ -1,0 +1,212 @@
+{
+  "kernels": [
+    {
+      "decision": "skip",
+      "detail": "CUB helper entry emitted by the translation unit is not a scouted Kaldi RQ2 target and has no reviewed host-side input contract.",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "translation_unit",
+          "line": 27,
+          "note": "Including CUB emits cub::EmptyKernel in the captured module; the RQ2 audit selected Kaldi spectral kernels instead of this library helper."
+        }
+      ],
+      "kernel_id": "_ZN3cub11EmptyKernelIvEEvv__e3a565c7",
+      "reason_code": "not_selected_for_rq2_wave2",
+      "symbol_name": "_ZN3cub11EmptyKernelIvEEvv"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "allocation",
+          "line": 79,
+          "note": "The FFT output has padded_length+2 input elements, while power_spectrum_ has padded_length/2+1 output elements."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 173,
+          "note": "The host passes padded_length, the FFT/output strides, and disjoint tmp_window_/power_spectrum_ storage."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 483,
+          "note": "The native launch uses CU1DBLOCK=256; the kernel loop also advances by that compile-time constant, so logical block.x remains fixed at 256."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi21power_spectrum_kernelEiPKfiPfib__7815ddf8",
+      "symbol_name": "_ZN5kaldi21power_spectrum_kernelEiPKfiPfib"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "benchmark/rq2/variants/kaldi_power_spectrum_blockdim/power_spectrum_blockdim.cu",
+          "kind": "derived_variant",
+          "line": 17,
+          "note": "The tracked derived kernel has a new name and advances the element loop by blockDim.x; the remaining vendor kernel body is unchanged."
+        },
+        {
+          "file": "benchmark/rq2/variants/kaldi_power_spectrum_blockdim/probe.cu",
+          "kind": "correctness_probe",
+          "line": 101,
+          "note": "The tracked probe compares every output bit against the original fixed-256-stride kernel, including both special endpoints."
+        },
+        {
+          "file": "benchmark/rq2/variants/kaldi_power_spectrum_blockdim/probe.cu",
+          "kind": "correctness_matrix",
+          "line": 120,
+          "note": "The probe covers row lengths and variant blocks 32, 64, 128, and 256 for both use_power branches."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 173,
+          "note": "The native call passes disjoint multi-row FFT input and power-spectrum output matrices with their reviewed strides; the registry deliberately selects the one-row subset."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi37power_spectrum_kernel_blockdim_strideEiPKfiPfib__48ee4406",
+      "symbol_name": "_ZN5kaldi37power_spectrum_kernel_blockdim_strideEiPKfiPfib"
+    },
+    {
+      "decision": "skip",
+      "detail": "The dot-log kernel was captured successfully but was not one of the host-constraint-audited RQ2 wave-2 candidates.",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 374,
+          "note": "The translation unit contains this separate reduction kernel, outside the three scouted spectral targets."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi22batched_dot_log_kernelEiiPfiS0_i__b5664e4a",
+      "reason_code": "not_selected_for_rq2_wave2",
+      "symbol_name": "_ZN5kaldi22batched_dot_log_kernelEiiPfiS0_i"
+    },
+    {
+      "decision": "skip",
+      "detail": "The stash-update kernel was captured successfully but was not one of the host-constraint-audited RQ2 wave-2 candidates.",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 404,
+          "note": "The translation unit contains this separate state-update kernel, outside the three scouted spectral targets."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi27batched_update_stash_kernelEPKNS_8LaneDescEiPKfiPfii__7bbec04f",
+      "reason_code": "not_selected_for_rq2_wave2",
+      "symbol_name": "_ZN5kaldi27batched_update_stash_kernelEPKNS_8LaneDescEiPKfiPfii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 109,
+          "note": "The host passes one LaneDesc array, frame dimensions, wave/window strides, and the preallocated stash directly to cuda_extract_window."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 327,
+          "note": "With a single first-frame lane, snip_edges=true, and num_chunk_samples covering frame_length, execution stays in the direct-copy branch and bounds all wave/window accesses."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 536,
+          "note": "The native launch uses CU1DBLOCK=256; blockDim.x-strided loops remain valid for reviewed logical whole-warp sizes up to 256."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi29batched_extract_window_kernelEPKNS_8L__5231516c",
+      "symbol_name": "_ZN5kaldi29batched_extract_window_kernelEPKNS_8LaneDescEiiiibPKfiPfiiS5_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "derived_variant",
+          "line": 283,
+          "note": "This direct-VConfig registry variant reuses the unchanged Kaldi kernel body and symbol under a distinct kernel ID."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "block_size_invariance",
+          "line": 329,
+          "note": "All direct-copy, reflected-edge, and padding loops stride by blockDim.x and assign disjoint output indices, so logical blocks 32, 64, 128, and 256 produce the same window without reductions or synchronization."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 536,
+          "note": "The native launch uses CU1DBLOCK=256; the derived registry opens only logical block.x while retaining the reviewed frame/window relationships and buffer-capacity contract."
+        }
+      ],
+      "kernel_id": "batched_extract_window_vgeo",
+      "symbol_name": "_ZN5kaldi29batched_extract_window_kernelEPKNS_8LaneDescEiiiibPKfiPfiiS5_ii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda.cc",
+          "kind": "call_site",
+          "line": 123,
+          "note": "The host passes frame_length, scalar feature options, and the preallocated log/window buffers and strides directly to cuda_process_window."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 146,
+          "note": "The CUB BlockReduce type and all element loops use compile-time CU1DBLOCK=256, requiring a fixed 256-thread logical block."
+        },
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "launch_site",
+          "line": 522,
+          "note": "The native launch is one CU1DBLOCK=256 block for each frame/lane; the reviewed subset fixes both dimensions to one."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi29batched_process_window_kernelEPKNS_8L__abf3b5ce",
+      "symbol_name": "_ZN5kaldi29batched_process_window_kernelEPKNS_8LaneDescEiiiffbfbPfiPKfS3_iS3_i"
+    },
+    {
+      "decision": "skip",
+      "detail": "The mel-bank kernel was captured successfully but its float** filter-bank ownership was not part of the three host-constraint-audited RQ2 wave-2 candidates.",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 42,
+          "note": "This separate entry consumes a pointer-to-pointer filter-bank table and is outside the selected spectral target set."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi32batched_mel_banks_compute_kernelEPKNS__80828bba",
+      "reason_code": "not_selected_for_rq2_wave2",
+      "symbol_name": "_ZN5kaldi32batched_mel_banks_compute_kernelEPKNS_8LaneDescEiifPiS3_PPfPKfiS4_ib"
+    },
+    {
+      "decision": "skip",
+      "detail": "The lifter/energy kernel was captured successfully but was not one of the host-constraint-audited RQ2 wave-2 candidates.",
+      "evidence": [
+        {
+          "file": "third_party/kaldi/src/cudafeat/feature-online-batched-spectral-cuda-kernels.cu",
+          "kind": "kernel_body",
+          "line": 98,
+          "note": "The translation unit contains this separate post-processing kernel, outside the three scouted spectral targets."
+        }
+      ],
+      "kernel_id": "_ZN5kaldi44batched_apply_lifter_and_floor_energy__a6e28a43",
+      "reason_code": "not_selected_for_rq2_wave2",
+      "symbol_name": "_ZN5kaldi44batched_apply_lifter_and_floor_energy_kernelEPKNS_8LaneDescEiiifbfPfiS3_S3_i"
+    }
+  ],
+  "project": "kaldi",
+  "schema_version": 1
+}

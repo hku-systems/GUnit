@@ -1,0 +1,6 @@
+{
+  "description": "reduce pair kernel",
+  "expected_exit_code": 0,
+  "expected_stdout": "payload matched (20 bytes)",
+  "kernel_display_name": "reduce_pair"
+}

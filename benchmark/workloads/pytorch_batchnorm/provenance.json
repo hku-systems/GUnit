@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workload_id": "pytorch_batchnorm",
+  "upstream": {
+    "repository": "https://github.com/pytorch/pytorch",
+    "commit": "1207745e98d740c6c275fbf80193cb537f6edf6f",
+    "path": "aten/src/ATen/native/cuda/Normalization.cuh",
+    "source_file": "upstream.source",
+    "sha256": "0bc9f9984ef342142e8cace15c2ce9b3756d9ee09e8c8429b879bd2c3049681e",
+    "license_file": "LICENSE.upstream"
+  },
+  "extraction": {
+    "kernel_file": "kernel.cu",
+    "kernel_sha256": "916a45c99fc78a58699e9599712359709658b7baa6d75a813f4efc77e1c60585",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "f891ed607a1512c1614ff74183d7d8d8b0a0cf4c565381cb90faad66577c650b",
+    "constraints_file": "constraints.json",
+    "constraints_sha256": "4a9af5015753ebbb5c984976249636413d731a876c64cb8c7c851eaa2143a55c"
+  },
+  "execution": {
+    "entry": "rq1_pytorch_batchnorm",
+    "grid": [1, 1, 1],
+    "block": [32, 1, 1],
+    "dynamic_shared_bytes": 0,
+    "payload_size": 3393,
+    "vconfig": {"fixed": true, "grid": [1, 1, 1], "block": [32, 1, 1]}
+  }
+}

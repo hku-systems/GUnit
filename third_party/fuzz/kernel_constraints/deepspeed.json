@@ -1,0 +1,66 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {"buffer_arg": 0, "kind": "scalar_le_buffer_len", "scalar_arg": 12, "unit": "elements"},
+        {"buffer_arg": 1, "kind": "scalar_le_buffer_len", "scalar_arg": 12, "unit": "elements"},
+        {"buffer_arg": 2, "kind": "scalar_le_buffer_len", "scalar_arg": 12, "unit": "elements"},
+        {"buffer_arg": 3, "kind": "scalar_le_buffer_len", "scalar_arg": 12, "unit": "elements"},
+        {"buffer_arg": 4, "kind": "scalar_le_buffer_len", "scalar_arg": 12, "unit": "elements"},
+        {"kind": "scalar_compare_scalar", "lhs_arg": 8, "op": "<=", "rhs_arg": 7}
+      ],
+      "display_name": "deepspeed_lamb_cuda_kernel_part3",
+      "domains": [
+        {"arg": 0, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "p", "type": "float *__restrict"},
+        {"arg": 1, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "p_copy", "type": "float *__restrict"},
+        {"arg": 2, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "m", "type": "float *__restrict"},
+        {"arg": 3, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "v", "type": "float *__restrict"},
+        {"arg": 4, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "2048", "min_len": "4", "nullable": false}, "name": "g", "type": "const float *__restrict"},
+        {"arg": 5, "domain": {"allow_nan": false, "kind": "float_range", "max": 0.999, "min": 0.0}, "name": "b1", "type": "float"},
+        {"arg": 6, "domain": {"allow_nan": false, "kind": "float_range", "max": 0.999, "min": 0.0}, "name": "b2", "type": "float"},
+        {"arg": 7, "domain": {"allow_nan": false, "kind": "float_range", "max": 10.0, "min": 0.0}, "name": "max_coeff", "type": "float"},
+        {"arg": 8, "domain": {"allow_nan": false, "kind": "float_range", "max": 10.0, "min": 0.0}, "name": "min_coeff", "type": "float"},
+        {"arg": 9, "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": 1e-08}, "name": "eps", "type": "float"},
+        {"arg": 10, "domain": {"allow_nan": false, "kind": "float_range", "max": 8.0, "min": 0.125}, "name": "grad_scale", "type": "float"},
+        {"arg": 11, "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": -1.0}, "name": "step_size", "type": "float"},
+        {"arg": 12, "domain": {"kind": "int_range", "max": "512", "min": "1", "signed": false}, "name": "tsize", "type": "size_t"},
+        {"arg": 13, "domain": {"allow_unknown": false, "kind": "enum", "values": [{"name": "ADAM_MODE_0", "value": "0"}, {"name": "ADAM_MODE_1", "value": "1"}]}, "name": "mode", "type": "int"},
+        {"arg": 14, "domain": {"allow_nan": false, "kind": "float_range", "max": 1.0, "min": -1.0}, "name": "decay", "type": "float"},
+        {"arg": 15, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "4", "min_len": "4", "nullable": false}, "name": "w_l2_i", "type": "float *__restrict"},
+        {"arg": 16, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "4", "min_len": "4", "nullable": false}, "name": "u_l2_i", "type": "float *__restrict"},
+        {"arg": 17, "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "4", "min_len": "4", "nullable": false}, "name": "lamb_coeff_val", "type": "float *__restrict"},
+        {"arg": 18, "domain": {"allow_unknown": false, "kind": "enum", "values": [{"name": "disabled", "value": "0"}, {"name": "enabled", "value": "1"}]}, "name": "write_p_copy", "type": "int"}
+      ],
+      "evidence": [
+        {
+          "file": "third_party/DeepSpeed/csrc/lamb/fused_lamb_cuda_kernel.cu",
+          "kind": "call_site",
+          "line": 405,
+          "note": "the mixed-precision host path launches part3 after the reductions; the float path repeats the same part3 launch at line 452."
+        },
+        {
+          "file": "build/e2e/third-party-fuzz/20260802-rq2-wave3/deepspeed/capture_sources/deepspeed_lamb_part3_adapter.cu",
+          "kind": "adapter_bounds",
+          "line": 5,
+          "note": "all optimizer buffers are repaired to at least tsize elements, norm and coefficient buffers hold one float, grad_scale excludes zero, and min_coeff is constrained not to exceed max_coeff."
+        }
+      ],
+      "kernel_id": "deepspeed_lamb_cuda_kernel_part3__234a8314",
+      "launch_policy": {
+        "block_candidates": [512, 256, 128, 64, 32],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [512, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1], [512, 1, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 512,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "deepspeed_lamb_cuda_kernel_part3"
+    }
+  ],
+  "project": "deepspeed",
+  "schema_version": 1
+}

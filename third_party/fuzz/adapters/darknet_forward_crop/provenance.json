@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "target_id": "darknet_forward_crop",
+  "upstream": {
+    "repository": "https://github.com/pjreddie/darknet",
+    "commit": "f6afaabcdf85f77e7aff2ec55c020c0e297c77f9",
+    "path": "src/crop_layer_kernels.cu",
+    "line_start": 139,
+    "line_end": 181,
+    "sha256": "611d0dc0bc3c9a5182d38de99c7a3499a25cc5cdaa8f5dcb487c41e641bb4ad0",
+    "license_file": "LICENSE.upstream",
+    "license_sha256": "2021f0b8d6426fbf9a2f0126f1e8a7d3b1d7027c871b9979fa2543b9557000c4",
+    "license_note": "The pinned upstream license declares Darknet public domain."
+  },
+  "extraction": {
+    "adapter_file": "adapter.cu",
+    "adapter_sha256": "cf2ac8da5ac72ce49e1d50d14e16469a09ff73371dbb1008b01057ec754095b1",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "db351122303de7441d25fc7bad13f3162863b0f57ddce246d628368e3b8a99e9",
+    "changes": [
+      "isolate forward_crop_layer_kernel and its pixel/bilinear helpers from Darknet host and image-adjustment dependencies",
+      "make batch explicit and derive size as batch * channels * crop_height * crop_width",
+      "replace the per-batch rand buffer with explicit finite r4/r5/r6/r7 scalars shared across the adapter's reviewed batch subset",
+      "guard the reviewed batch/channel/image/crop domain before payload access",
+      "export the original one-evaluation body as darknet_forward_crop_orig512",
+      "add darknet_forward_crop_vgeo as a separately named grid-stride derived variant"
+    ]
+  },
+  "abi": "darknet_forward_crop_{orig512,vgeo}(float* input, float* output, uint32_t batch, uint32_t channels, uint32_t height, uint32_t width, uint32_t crop_height, uint32_t crop_width, int32_t train, int32_t flip, float angle, float r4, float r5, float r6, float r7)",
+  "variants": [
+    {
+      "name": "darknet_forward_crop_orig512",
+      "kind": "negative_control",
+      "launch": "registry fixes logical_grid=(1,1,1) and logical_block=(512,1,1)",
+      "note": "The per-thread body retains upstream single-evaluation ownership; the registered domain contains at most 512 output elements."
+    },
+    {
+      "name": "darknet_forward_crop_vgeo",
+      "kind": "grid_stride_derived",
+      "launch": "logical_grid=(1,1,1), logical_block.x in {32,64,128,256,512}",
+      "note": "Only output-index ownership changes. Each output has no reduction or cross-thread state and executes the same floating-point helper sequence, so byte equality is expected only when both variants use the same compiler flags and CUDA device; the GPU probe enforces that condition."
+    }
+  ],
+  "probe": {
+    "file": "adapter_probe.cu",
+    "sha256": "de86beec9108c7634f0fd92a1be9c21646748253b2538f394300efecbfd31d64",
+    "oracle": "Upstream-style orig512 launch with ceil(size/512) blocks compared byte-for-byte with singleton-grid vgeo launches at every registered block candidate."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "project": "rq2_flashattention_device1xn",
+  "overrides": [
+    {
+      "symbol_name": "rq1_flashattention_device1xn",
+      "display_name": "rq1_flashattention_device1xn",
+      "domains": [
+        {"arg": 0, "name": "input", "type": "const float *", "domain": {"kind": "bytes", "min_len": "4", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 1, "name": "output", "type": "float *", "domain": {"kind": "bytes", "min_len": "1024", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 2, "name": "n", "type": "const unsigned int", "domain": {"kind": "int_range", "min": "1", "max": "256", "signed": false}}
+      ],
+      "constraints": [
+        {"kind": "count_fits_buffer", "count_arg": 2, "buffer_arg": 0, "elem_size_bytes": 4},
+        {"kind": "scalar_le_logical_block_dim", "scalar_arg": 2, "dimension": "x"}
+      ],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [256],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [128, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {"kind": "upstream_extraction", "file": "benchmark/rq2/workloads/flashattention_device1xn/kernel.cu", "line": 5, "note": "fixed d=16 device1xN row-validity path from upstream patch"}
+      ]
+    }
+  ]
+}

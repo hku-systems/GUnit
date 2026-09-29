@@ -1,0 +1,12 @@
+*.o
+*.so
+
+test_main
+
+# Clangd cache and compile commands
+.cache/
+compile_commands.json
+
+# CMake out-of-source build
+build/
+build_*/

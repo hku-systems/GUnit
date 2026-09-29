@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rapid.local/schemas/artifact-metadata-v1.json",
+  "title": "RAPID Artifact Metadata v1",
+  "description": "Per-kernel build artifact metadata for traceability, reproducibility, and validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "target_lib",
+    "kernel_id",
+    "kernel_symbol",
+    "build_status",
+    "output_hashes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "target_lib": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Logical library/package name this kernel belongs to."
+    },
+    "kernel_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Deterministic kernel identifier (for example hash(symbol+signature))."
+    },
+    "kernel_symbol": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Original discovered kernel symbol."
+    },
+    "rewritten_symbol": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional rewritten Phase 2 symbol metadata. In the long-term IR architecture, detailed `impl_symbol` / `entry_symbol` layering lives in rewrite-plan or phase2 metadata rather than this single field."
+    },
+    "build_status": {
+      "type": "string",
+      "enum": ["built", "failed", "skipped"]
+    },
+    "failure_reason": {
+      "description": "Stable reason code when build_status is failed/skipped.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "unsupported_ir",
+            "rewrite_verify_fail",
+            "extract_fail",
+            "link_fail",
+            "toolchain_mismatch",
+            "whitelisted_skip"
+          ]
+        }
+      ]
+    },
+    "failure_detail": {
+      "description": "Optional detailed stderr/diagnostic context when build_status is failed/skipped.",
+      "type": ["string", "null"]
+    },
+    "input_bc_hash": {
+      "$ref": "#/$defs/hash_string",
+      "description": "Hash of canonical input bitcode used to build this artifact."
+    },
+    "output_hashes": {
+      "type": "object",
+      "description": "Hashes for output files in artifact directory.",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/hash_string"
+      }
+    },
+    "toolchain_versions": {
+      "type": "object",
+      "description": "Toolchain version snapshot for reproducibility.",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "properties": {
+        "clang": {
+          "type": "string"
+        },
+        "llvm_opt": {
+          "type": "string"
+        },
+        "nvcc": {
+          "type": "string"
+        },
+        "driver": {
+          "type": "string"
+        }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "hash_string": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-fA-F]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "build_status": {
+            "const": "built"
+          }
+        },
+        "required": ["build_status"]
+      },
+      "then": {
+        "properties": {
+          "failure_reason": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "build_status": {
+            "enum": ["failed", "skipped"]
+          }
+        },
+        "required": ["build_status"]
+      },
+      "then": {
+        "required": ["failure_reason"],
+        "properties": {
+          "failure_reason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

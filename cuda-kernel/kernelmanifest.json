@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kernels": [
+    {
+      "symbol_name": "vulnerable_kernel",
+      "display_name": "vulnerable_kernel",
+      "args": [
+        {
+          "index": 0,
+          "name": "input",
+          "type": "volatile uint8_t *",
+          "kind": "pointer",
+          "pointer_role": "payload_buffer",
+          "size_bytes": 8,
+          "align_bytes": 8
+        },
+        {
+          "index": 1,
+          "name": "output",
+          "type": "volatile uint8_t *",
+          "kind": "pointer",
+          "pointer_role": "payload_buffer",
+          "size_bytes": 8,
+          "align_bytes": 8
+        },
+        {
+          "index": 2,
+          "name": "size",
+          "type": "size_t",
+          "kind": "scalar",
+          "size_bytes": 8,
+          "align_bytes": 8,
+          "domain": {
+            "kind": "int_range",
+            "min": "0",
+            "signed": false
+          }
+        }
+      ],
+      "constraints": [
+        {
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "buffer_arg": 0,
+          "unit": "bytes"
+        },
+        {
+          "kind": "scalar_le_buffer_len",
+          "scalar_arg": 2,
+          "buffer_arg": 1,
+          "unit": "bytes"
+        }
+      ],
+      "others": {
+        "source_file": "cuda-kernel/kernel.cu",
+        "source_line": 5,
+        "origin_project": "rapid"
+      }
+    }
+  ]
+}

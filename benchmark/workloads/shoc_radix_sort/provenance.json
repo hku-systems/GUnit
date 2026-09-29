@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workload_id": "shoc_radix_sort",
+  "upstream": {
+    "repository": "https://github.com/vetter/shoc",
+    "commit": "00b25e2751dde4f1d7c595cadbb7fdb0873257b0",
+    "path": "src/cuda/level1/sort/sort_kernel.cu",
+    "source_file": "upstream.source",
+    "sha256": "8ee17b95409225e4a0972914d127f94a91a6209218f5d06236bb6b6a2a1bbaaa",
+    "license_file": "LICENSE.upstream"
+  },
+  "extraction": {
+    "kernel_file": "kernel.cu",
+    "kernel_sha256": "6fa54395a4fb1bfcd0f035aa73dc584d45f36c03e55ee59be5513f48f0b02e72",
+    "patch_file": "extraction.patch",
+    "patch_sha256": "f55eafadaa70b57a811d1880ddbaa81c6491b004754592b2e063e9b5d754909e",
+    "constraints_file": "constraints.json",
+    "constraints_sha256": "b7a4c83c0871b717508380880097b5d13bb8ff04de1c927fa2ccb5ee7de32670"
+  },
+  "execution": {
+    "entry": "rq1_shoc_radix_sort",
+    "grid": [1, 1, 1],
+    "block": [128, 1, 1],
+    "dynamic_shared_bytes": 0,
+    "payload_size": 8256,
+    "vconfig": {"fixed": true, "grid": [1, 1, 1], "block": [128, 1, 1]}
+  }
+}

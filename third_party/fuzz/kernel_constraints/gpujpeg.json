@@ -1,0 +1,413 @@
+{
+  "overrides": [
+    {
+      "constraints": [
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {"arg": 1, "kind": "arg_value"},
+                  "op": "*",
+                  "rhs": {"kind": "const", "value": 8}
+                },
+                "op": "-",
+                "rhs": {"kind": "const", "value": 1}
+              },
+              "op": "*",
+              "rhs": {"arg": 3, "kind": "arg_value"}
+            },
+            "op": "+",
+            "rhs": {
+              "kind": "binary",
+              "lhs": {"arg": 0, "kind": "arg_value"},
+              "op": "*",
+              "rhs": {"kind": "const", "value": 8}
+            }
+          },
+          "op": "<=",
+          "repair": {"arg": 2, "kind": "resize_payload"},
+          "rhs": {"arg": 2, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {"arg": 1, "kind": "arg_value"},
+                  "op": "-",
+                  "rhs": {"kind": "const", "value": 1}
+                },
+                "op": "*",
+                "rhs": {"arg": 5, "kind": "arg_value"}
+              },
+              "op": "+",
+              "rhs": {
+                "kind": "binary",
+                "lhs": {"arg": 0, "kind": "arg_value"},
+                "op": "*",
+                "rhs": {"kind": "const", "value": 64}
+              }
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 2}
+          },
+          "op": "<=",
+          "repair": {"arg": 4, "kind": "resize_payload"},
+          "rhs": {"arg": 4, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "gpujpeg_dct_gpu_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {"kind": "int_range", "max": "4", "min": "4", "signed": true},
+          "name": "block_count_x",
+          "type": "int"
+        },
+        {
+          "arg": 1,
+          "domain": {"kind": "int_range", "max": "4", "min": "1", "signed": true},
+          "name": "block_count_y",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {"elem_size_bytes": 1, "kind": "bytes", "max_len": "1024", "min_len": "256", "nullable": false},
+          "name": "source",
+          "type": "uint8_t *"
+        },
+        {
+          "arg": 3,
+          "domain": {"kind": "int_range", "max": "32", "min": "32", "signed": false},
+          "name": "source_stride",
+          "type": "const unsigned int"
+        },
+        {
+          "arg": 4,
+          "domain": {"elem_size_bytes": 2, "kind": "bytes", "max_len": "2048", "min_len": "512", "nullable": false},
+          "name": "output",
+          "type": "int16_t *"
+        },
+        {
+          "arg": 5,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "output_stride",
+          "type": "int"
+        },
+        {
+          "arg": 6,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "256", "min_len": "256", "nullable": false},
+          "name": "quant_table",
+          "type": "const float *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_dct_gpu.cu",
+          "kind": "kernel_body",
+          "line": 193,
+          "note": "block counts gate every load/store; one native block covers at most four 8x8 blocks in each dimension."
+        },
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_dct_gpu.cu",
+          "kind": "call_site",
+          "line": 649,
+          "note": "block_count_x=4 gives the native source_stride=32 and output_stride=256 tuple, while block_count_y remains variable from 1 through 4; the quantization table contains exactly 64 floats."
+        }
+      ],
+      "kernel_id": "_Z22gpujpeg_dct_gpu_kernelILi4EEviiPhjPsiPKf__1d4723f3",
+      "layouts": [
+        {
+          "align_bytes": 16,
+          "arg": 4,
+          "name": "output",
+          "type": "int16_t *"
+        }
+      ],
+      "launch_policy": {
+        "block_candidates": [128],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [32, 4, 1],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 128,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": false,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z22gpujpeg_dct_gpu_kernelILi4EEviiPhjPsiPKf"
+    },
+    {
+      "constraints": [
+        {"dimension": "x", "kind": "scalar_le_logical_block_dim", "scalar_arg": 1},
+        {"dimension": "y", "kind": "scalar_le_logical_block_dim", "scalar_arg": 3},
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {"arg": 2, "kind": "arg_value"},
+            "op": "*",
+            "rhs": {"arg": 3, "kind": "arg_value"}
+          },
+          "op": "<=",
+          "repair": {"arg": 0, "kind": "resize_payload"},
+          "rhs": {"arg": 0, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "channel_remap_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {"elem_size_bytes": 1, "kind": "bytes", "max_len": "768", "min_len": "48", "nullable": false},
+          "name": "data",
+          "type": "uint8_t *"
+        },
+        {
+          "arg": 1,
+          "domain": {"kind": "int_range", "max": "16", "min": "1", "signed": true},
+          "name": "width",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {"kind": "int_range", "max": "48", "min": "48", "signed": true},
+          "name": "pitch",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {"kind": "int_range", "max": "16", "min": "1", "signed": true},
+          "name": "height",
+          "type": "int"
+        },
+        {
+          "arg": 4,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "map_012", "value": "528"},
+              {"name": "map_021", "value": "288"},
+              {"name": "map_102", "value": "513"},
+              {"name": "map_120", "value": "33"},
+              {"name": "map_201", "value": "258"},
+              {"name": "map_210", "value": "18"}
+            ]
+          },
+          "name": "byte_map",
+          "type": "unsigned int"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_preprocessor.cu",
+          "kind": "kernel_body",
+          "line": 495,
+          "note": "width and height gate the in-place packed-buffer accesses; the 422 P1020 specialization exercises the input-position parity branch at line 143."
+        },
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_preprocessor.cu",
+          "kind": "call_site",
+          "line": 532,
+          "note": "the native launch uses block (16,16); pitch is computed at lines 535-536, and fixed pitch 48 represents nonnegative row padding for every width in 1..16."
+        },
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_encoder.c",
+          "kind": "host_validation",
+          "line": 673,
+          "note": "three-channel remaps are parsed from exactly three selectors; the curated enum retains all six channel permutations and excludes selectors for the uninitialized fourth lane."
+        }
+      ],
+      "kernel_id": "_Z20channel_remap_kernelIL20gpujpeg_pixel_format3EEvPhiiij__587fa403",
+      "launch_policy": {
+        "block_candidates": [64, 128, 256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [16, 16, 1],
+        "logical_block_candidates": [[8, 8, 1], [16, 8, 1], [8, 16, 1], [16, 16, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z20channel_remap_kernelIL20gpujpeg_pixel_format3EEvPhiiij"
+    },
+    {
+      "constraints": [
+        {"dimension": "y", "kind": "scalar_eq_logical_block_dim", "scalar_arg": 0},
+        {"dimension": "y", "kind": "scalar_le_logical_block_dim", "scalar_arg": 2},
+        {"kind": "scalar_compare_const", "op": "==", "scalar_arg": 1, "value": 4},
+        {"kind": "scalar_compare_const", "op": ">=", "scalar_arg": 4, "value": 32},
+        {"kind": "scalar_compare_const", "op": "==", "scalar_arg": 6, "value": 256},
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {"arg": 2, "kind": "arg_value"},
+                  "op": "*",
+                  "rhs": {"kind": "const", "value": 8}
+                },
+                "op": "-",
+                "rhs": {"kind": "const", "value": 1}
+              },
+              "op": "*",
+              "rhs": {"arg": 4, "kind": "arg_value"}
+            },
+            "op": "+",
+            "rhs": {
+              "kind": "binary",
+              "lhs": {"arg": 1, "kind": "arg_value"},
+              "op": "*",
+              "rhs": {"kind": "const", "value": 8}
+            }
+          },
+          "op": "<=",
+          "repair": {"arg": 3, "kind": "resize_payload"},
+          "rhs": {"arg": 3, "kind": "payload_len"}
+        },
+        {
+          "kind": "expression_compare",
+          "lhs": {
+            "kind": "binary",
+            "lhs": {
+              "kind": "binary",
+              "lhs": {
+                "kind": "binary",
+                "lhs": {
+                  "kind": "binary",
+                  "lhs": {"arg": 2, "kind": "arg_value"},
+                  "op": "-",
+                  "rhs": {"kind": "const", "value": 1}
+                },
+                "op": "*",
+                "rhs": {"arg": 6, "kind": "arg_value"}
+              },
+              "op": "+",
+              "rhs": {
+                "kind": "binary",
+                "lhs": {"arg": 1, "kind": "arg_value"},
+                "op": "*",
+                "rhs": {"kind": "const", "value": 64}
+              }
+            },
+            "op": "*",
+            "rhs": {"kind": "const", "value": 2}
+          },
+          "op": "<=",
+          "repair": {"arg": 5, "kind": "resize_payload"},
+          "rhs": {"arg": 5, "kind": "payload_len"}
+        }
+      ],
+      "display_name": "gpujpeg_dct_dispatch_kernel",
+      "domains": [
+        {
+          "arg": 0,
+          "domain": {
+            "allow_unknown": false,
+            "kind": "enum",
+            "values": [
+              {"name": "warp_count_2", "value": "2"},
+              {"name": "warp_count_4", "value": "4"},
+              {"name": "warp_count_8", "value": "8"}
+            ]
+          },
+          "name": "warp_count",
+          "type": "uint32_t"
+        },
+        {
+          "arg": 1,
+          "domain": {"kind": "int_range", "max": "4", "min": "4", "signed": true},
+          "name": "block_count_x",
+          "type": "int"
+        },
+        {
+          "arg": 2,
+          "domain": {"kind": "int_range", "max": "8", "min": "1", "signed": true},
+          "name": "block_count_y",
+          "type": "int"
+        },
+        {
+          "arg": 3,
+          "domain": {"elem_size_bytes": 1, "kind": "bytes", "max_len": "4096", "min_len": "256", "nullable": false},
+          "name": "source",
+          "type": "uint8_t *"
+        },
+        {
+          "arg": 4,
+          "domain": {"kind": "int_range", "max": "64", "min": "32", "signed": false},
+          "name": "source_stride",
+          "type": "unsigned int"
+        },
+        {
+          "arg": 5,
+          "domain": {"elem_size_bytes": 2, "kind": "bytes", "max_len": "4096", "min_len": "512", "nullable": false},
+          "name": "output",
+          "type": "int16_t *"
+        },
+        {
+          "arg": 6,
+          "domain": {"kind": "int_range", "max": "256", "min": "256", "signed": true},
+          "name": "output_stride",
+          "type": "int"
+        },
+        {
+          "arg": 7,
+          "domain": {"elem_size_bytes": 4, "kind": "bytes", "max_len": "256", "min_len": "256", "nullable": false},
+          "name": "quant_table",
+          "type": "const float *"
+        }
+      ],
+      "evidence": [
+        {
+          "file": "benchmark/rq2/variants/gpujpeg_dct_dispatch/gpujpeg_dct_dispatch.cu",
+          "kind": "warp_shape_dispatch",
+          "line": 173,
+          "note": "warp_count selects exactly one full-warp logical shape; scalar_eq_logical_block_dim pairs the selector with logical block y and block_count_y is capped to the selected single block."
+        },
+        {
+          "file": "third_party/GPUJPEG/src/gpujpeg_dct_gpu.cu",
+          "kind": "call_site",
+          "line": 649,
+          "note": "The host derives block counts from 8x8 image blocks, uses source_stride of at least 8*block_count_x, output_stride of 64*block_count_x, and a 64-float quantization table."
+        }
+      ],
+      "kernel_id": "_Z27gpujpeg_dct_dispatch_kerneljiiPhjPsiPKf__82472776",
+      "layouts": [
+        {"align_bytes": 16, "arg": 5, "name": "output", "type": "int16_t *"}
+      ],
+      "launch_policy": {
+        "block_candidates": [256],
+        "coverage_memory": "global",
+        "grid": [1, 1, 1],
+        "logical_block": [32, 4, 1],
+        "logical_block_candidates": [[32, 2, 1], [32, 4, 1], [32, 8, 1]],
+        "logical_grid": [1, 1, 1],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "vconfig_mutation": true,
+        "vconfig_reserved": true
+      },
+      "symbol_name": "_Z27gpujpeg_dct_dispatch_kerneljiiPhjPsiPKf"
+    }
+  ],
+  "project": "gpujpeg",
+  "schema_version": 1
+}

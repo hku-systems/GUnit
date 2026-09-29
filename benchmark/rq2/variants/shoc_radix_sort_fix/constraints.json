@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "project": "rq2_shoc_radix_sort_fix",
+  "overrides": [
+    {
+      "symbol_name": "rq1_shoc_radix_sort_scanfix",
+      "display_name": "rq1_shoc_radix_sort_scanfix",
+      "domains": [
+        {"arg": 0, "name": "nbits", "type": "const unsigned int", "domain": {"kind": "int_range", "min": "1", "max": "4", "signed": false}},
+        {"arg": 1, "name": "startbit", "type": "const unsigned int", "domain": {"kind": "int_range", "min": "0", "max": "28", "signed": false}},
+        {"arg": 2, "name": "keysOut", "type": "uint4 *", "domain": {"kind": "bytes", "min_len": "4096", "max_len": "4096", "elem_size_bytes": 16, "nullable": false}},
+        {"arg": 3, "name": "valuesOut", "type": "uint4 *", "domain": {"kind": "bytes", "min_len": "4096", "max_len": "4096", "elem_size_bytes": 16, "nullable": false}},
+        {"arg": 4, "name": "keysIn", "type": "uint4 *", "domain": {"kind": "bytes", "min_len": "4096", "max_len": "4096", "elem_size_bytes": 16, "nullable": false}},
+        {"arg": 5, "name": "valuesIn", "type": "uint4 *", "domain": {"kind": "bytes", "min_len": "4096", "max_len": "4096", "elem_size_bytes": 16, "nullable": false}}
+      ],
+      "constraints": [],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [32, 64, 128, 256],
+        "physical_block_max": 256,
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": true,
+        "logical_grid": [1, 1, 1],
+        "logical_block": [128, 1, 1],
+        "logical_block_candidates": [[32, 1, 1], [64, 1, 1], [128, 1, 1], [256, 1, 1]],
+        "vconfig_mutation": true
+      },
+      "evidence": [
+        {"kind": "derived_variant", "file": "benchmark/rq2/variants/shoc_radix_sort_fix/kernel.cu", "line": 39, "note": "The distance-64 scan read contributes zero when its shared-memory index would be negative."},
+        {"kind": "correctness_probe", "file": "benchmark/rq2/variants/shoc_radix_sort_fix/probe.cu", "line": 114, "note": "The probe checks the original block-128 kernel and the fixed 32/64/128/256-thread variants against block-local CPU stable-radix references; an opt-in mode reproduces the original block-32 failure."}
+      ]
+    }
+  ]
+}

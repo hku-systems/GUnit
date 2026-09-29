@@ -1,0 +1,6 @@
+{
+  "description": "bitwise blend kernel",
+  "expected_exit_code": 0,
+  "expected_stdout": "payload matched (24 bytes)",
+  "kernel_display_name": "bitwise_blend"
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "project": "rq1_pytorch_batchnorm",
+  "overrides": [
+    {
+      "symbol_name": "rq1_pytorch_batchnorm",
+      "display_name": "rq1_pytorch_batchnorm",
+      "domains": [
+        {"arg": 0, "name": "input", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "1024", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 1, "name": "z", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "1024", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 2, "name": "mean", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "64", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 3, "name": "inv_std", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "64", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 4, "name": "weight", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "64", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 5, "name": "shift", "type": "const float *__restrict", "domain": {"kind": "bytes", "min_len": "64", "max_len": "64", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 6, "name": "out", "type": "float *__restrict", "domain": {"kind": "bytes", "min_len": "1024", "max_len": "1024", "elem_size_bytes": 4, "nullable": false}},
+        {"arg": 7, "name": "reduction_size", "type": "const int", "domain": {"kind": "int_range", "min": "16", "max": "16", "signed": true}},
+        {"arg": 8, "name": "stride", "type": "const int", "domain": {"kind": "int_range", "min": "16", "max": "16", "signed": true}},
+        {"arg": 9, "name": "fuse_relu", "type": "const bool", "domain": {"kind": "int_range", "min": "0", "max": "1", "signed": false}}
+      ],
+      "constraints": [],
+      "launch_policy": {
+        "grid": [1, 1, 1],
+        "block_candidates": [32],
+        "physical_block_max": 32,
+        "target_dynamic_shared_bytes": 0,
+        "coverage_memory": "global",
+        "vconfig_reserved": false
+      },
+      "evidence": [
+        {"kind": "upstream_extraction", "file": "benchmark/rq1/workloads/pytorch_batchnorm/kernel.cu", "line": 5, "note": "float NHWC forward body with PARALLEL_LOADS=2 and fixed early return"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "description": "uint3 by-value kernel",
+  "expected_exit_code": 0,
+  "expected_stdout": "payload matched (24 bytes)",
+  "kernel_display_name": "uint3_write_sum"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workloads": [
+    {
+      "id": "shoc_reduction",
+      "label": "SHOC Reduction",
+      "provenance": "workloads/shoc_reduction/provenance.json"
+    },
+    {
+      "id": "shoc_radix_sort",
+      "label": "SHOC RadixSortBlock",
+      "provenance": "workloads/shoc_radix_sort/provenance.json"
+    },
+    {
+      "id": "shoc_scan",
+      "label": "SHOC ScanSingleBlock",
+      "provenance": "workloads/shoc_scan/provenance.json"
+    },
+    {
+      "id": "cutlass_gemm",
+      "label": "CUTLASS ReferenceGemm",
+      "provenance": "workloads/cutlass_gemm/provenance.json"
+    },
+    {
+      "id": "flashattention_device1xn",
+      "label": "FlashAttention-derived device1xN",
+      "provenance": "workloads/flashattention_device1xn/provenance.json"
+    },
+    {
+      "id": "pytorch_batchnorm",
+      "label": "PyTorch-derived BatchNorm",
+      "provenance": "workloads/pytorch_batchnorm/provenance.json"
+    }
+  ]
+}

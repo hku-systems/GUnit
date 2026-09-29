@@ -1,0 +1,173 @@
+{
+  "kernels": [
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "call_site",
+          "line": 278,
+          "note": "ReferenceGemm launches ReferenceGemm_kernel<<<grid, block>>>(M, N, K, alpha, A, lda, B, ldb, beta, C, ldc); constraints pin N=1 and leading dimensions to safe fixed values for the current one-dimensional physical launch."
+        },
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "allocation",
+          "line": 196,
+          "note": "AllocateMatrix allocates sizeof(float) * rows * columns; the override uses bounded M/K and fixed leading dimensions so A/B/C buffers cover all referenced elements."
+        }
+      ],
+      "kernel_id": "_Z20ReferenceGemm_kerneliiifPKfiS0_ifPfi__efdc1030",
+      "symbol_name": "_Z20ReferenceGemm_kerneliiifPKfiS0_ifPfi"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "call_site",
+          "line": 185,
+          "note": "InitializeMatrix launches InitializeMatrix_kernel<<<grid, block>>>(matrix, rows, columns, seed); constraints pin columns=1 so the current one-dimensional physical launch covers the full logical y extent."
+        },
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "allocation",
+          "line": 196,
+          "note": "AllocateMatrix allocates sizeof(float) * rows * columns; constraints bind matrix bytes to rows * columns."
+        }
+      ],
+      "kernel_id": "_Z23InitializeMatrix_kernelPfiii__e2fd3d42",
+      "symbol_name": "_Z23InitializeMatrix_kernelPfiii"
+    },
+    {
+      "decision": "skip",
+      "detail": "This helper is a collateral kernel from the basic_syrk translation unit; wave2 selected ReferenceSyrk_kernel and nhwc_padding_kernel<float2> as the two new RQ2 targets.",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/31_basic_syrk/basic_syrk.cu",
+          "kind": "call_site",
+          "line": 206,
+          "note": "InitializeMatrix launches the double initialization kernel while preparing SYRK operands, but that helper is outside the two-kernel wave2 target scope."
+        }
+      ],
+      "kernel_id": "_Z23InitializeMatrix_kernelPdiiii__ab1021b9",
+      "reason_code": "not_selected_rq2_wave2_candidate",
+      "symbol_name": "_Z23InitializeMatrix_kernelPdiiii"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/31_basic_syrk/basic_syrk.cu",
+          "kind": "call_site",
+          "line": 293,
+          "note": "ReferenceSyrk launches a native 16x16 block with N, K, A, lda, C, and ldc passed directly; the reviewed single-block VConfig preserves that 2D coordinate mapping for variable N and K up to 16."
+        },
+        {
+          "file": "third_party/cutlass/examples/31_basic_syrk/basic_syrk.cu",
+          "kind": "allocation",
+          "line": 325,
+          "note": "TestCutlassSyrk allocates A with lda rows and K columns and allocates C with ldc rows and N columns; the override sizes both double buffers from those products."
+        }
+      ],
+      "kernel_id": "_Z20ReferenceSyrk_kerneliidPKdidPdi__43f64bea",
+      "symbol_name": "_Z20ReferenceSyrk_kerneliidPKdidPdi"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/tools/util/include/cutlass/util/device_nhwc_padding.h",
+          "kind": "call_site",
+          "line": 261,
+          "note": "The even-channel float path launches nhwc_padding_kernel<float2> with positive NHW dimensions, halved input/output channel counts, a zero float2 value, and TensorRef-backed input/output buffers."
+        },
+        {
+          "file": "third_party/cutlass/tools/util/include/cutlass/util/device_nhwc_padding.h",
+          "kind": "precondition",
+          "line": 171,
+          "note": "The host helper requires equal N/H/W extents and input channels not exceeding output channels; the reviewed domains and c_in<=c_out constraint preserve that relationship for the float2 specialization."
+        }
+      ],
+      "kernel_id": "_ZN7cutlass19nhwc_padding_kernelI6float2EEviiiiiT_PKS2_PS2___af58c0d1",
+      "symbol_name": "_ZN7cutlass19nhwc_padding_kernelI6float2EEviiiiiT_PKS2_PS2_"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/31_basic_syrk/basic_syrk.cu",
+          "kind": "kernel_body",
+          "line": 252,
+          "note": "The derived variant preserves ReferenceSyrk_kernel's native two-dimensional i/j ownership, lower-triangle predicate, K loop, and alpha/beta epilogue."
+        },
+        {
+          "file": "benchmark/rq2/variants/cutlass_syrk_dispatch/reference_syrk_dispatch.cu",
+          "kind": "tile_shape_dispatch",
+          "line": 28,
+          "note": "The tracked dispatcher selects only the reviewed 8x8, 16x16, and 32x8 template instantiations and fails closed when tile_x does not match blockDim."
+        }
+      ],
+      "kernel_id": "_Z30reference_syrk_dispatch_kerneljiidPKdidPdi__2f6a4695",
+      "symbol_name": "_Z30reference_syrk_dispatch_kerneljiidPKdidPdi"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/00_basic_gemm/basic_gemm.cu",
+          "kind": "kernel_body",
+          "line": 231,
+          "note": "The derived variant preserves ReferenceGemm_kernel's native two-dimensional i/j ownership, K loop, and alpha/beta epilogue."
+        },
+        {
+          "file": "benchmark/rq2/variants/cutlass_gemm_dispatch/reference_gemm_dispatch.cu",
+          "kind": "tile_shape_dispatch",
+          "line": 31,
+          "note": "The tracked dispatcher selects only the reviewed 8x8, 16x16, and 32x8 template instantiations and fails closed when tile_x does not match blockDim."
+        }
+      ],
+      "kernel_id": "_Z30reference_gemm_dispatch_kerneljiiifPKfiS0_ifPfi__efc18fc2",
+      "symbol_name": "_Z30reference_gemm_dispatch_kerneljiiifPKfiS0_ifPfi"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/32_basic_trmm/basic_trmm.cu",
+          "kind": "call_site",
+          "line": 305,
+          "note": "ReferenceTrmm launches ReferenceTrmm_kernel with a native 16x16 block and passes M, N, alpha, A, lda, B, ldb, C, and ldc directly; this fixed geometry is the dispatcher negative control."
+        },
+        {
+          "file": "third_party/cutlass/examples/32_basic_trmm/basic_trmm.cu",
+          "kind": "allocation",
+          "line": 339,
+          "note": "TestCutlassTrmm allocates A as lda*M doubles and B/C as ldb*N and ldc*N doubles; the reviewed constraints size all payloads from those products."
+        }
+      ],
+      "kernel_id": "_Z20ReferenceTrmm_kerneliidPKdiS0_iPdi__651c005f",
+      "symbol_name": "_Z20ReferenceTrmm_kerneliidPKdiS0_iPdi"
+    },
+    {
+      "decision": "run",
+      "evidence": [
+        {
+          "file": "third_party/cutlass/examples/32_basic_trmm/basic_trmm.cu",
+          "kind": "kernel_body",
+          "line": 262,
+          "note": "The derived variant preserves ReferenceTrmm_kernel's native two-dimensional i/j ownership, M-length K loop, Left-side indexing, and alpha epilogue."
+        },
+        {
+          "file": "benchmark/rq2/variants/cutlass_trmm_dispatch/reference_trmm_dispatch.cu",
+          "kind": "tile_shape_dispatch",
+          "line": 29,
+          "note": "The tracked dispatcher selects only the reviewed 8x8, 16x16, and 32x8 template instantiations and fails closed when tile_x does not match blockDim."
+        }
+      ],
+      "kernel_id": "_Z30reference_trmm_dispatch_kerneljiidPKdiS0_iPdi__a79a6b09",
+      "symbol_name": "_Z30reference_trmm_dispatch_kerneljiidPKdiS0_iPdi"
+    }
+  ],
+  "project": "cutlass_basic",
+  "schema_version": 1
+}

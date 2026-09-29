@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "workloads": [
+    "apex_maybe_cast",
+    "llama_upscale_f32_bilinear",
+    "gpurir_generate_rir",
+    "apex_index_mul_2d_vgeo",
+    "cuda_samples_inverse_cnd",
+    "synth_complex"
+  ]
+}
